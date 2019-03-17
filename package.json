@@ -21,5 +21,31 @@
   "bugs": {
     "url": "https://github.com/barksh/Core/issues"
   },
-  "homepage": "https://github.com/barksh/Core#readme"
+  "homepage": "https://github.com/barksh/Core#readme",
+  "dependencies": {
+    "@sudoo/bark": "^2.1.0",
+    "@sudoo/log": "^1.2.2",
+    "connor": "^2.0.0"
+  },
+  "devDependencies": {
+    "@sudoo/triforce": "^1.5.0"
+  },
+  "nyc": {
+    "extension": [
+      ".ts"
+    ],
+    "include": [
+      "src/**/*.ts"
+    ],
+    "instrument": true,
+    "reporter": [
+      "json",
+      "text-summary"
+    ],
+    "report-dir": "coverage",
+    "require": [
+      "./test/tshook.js"
+    ],
+    "sourceMap": true
+  }
 }
