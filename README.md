@@ -1,0 +1,2 @@
+# Core
+:dog: Bark Core
