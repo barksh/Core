@@ -1,0 +1,25 @@
+{
+  "name": "@barksh/core",
+  "version": "1.0.0",
+  "description": ":dog: Bark Core",
+  "main": "dist/index.js",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/barksh/Core.git"
+  },
+  "keywords": [
+    "bark"
+  ],
+  "author": "WMXPY",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/barksh/Core/issues"
+  },
+  "homepage": "https://github.com/barksh/Core#readme"
+}
