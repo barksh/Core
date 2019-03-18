@@ -12,6 +12,11 @@
   resolved "https://registry.yarnpkg.com/@sudoo/log/-/log-1.2.2.tgz#936acb5017c957a10a17052f11a51485edb3ba54"
   integrity sha512-5dgkXkchOSZwsFEazUsNmUV0/XjmX9yc7mkqauPCYOJWQHxcko6fKHh10mg5COUKMoAB9uPUL4M86o/HeHk8oA==
 
+"@sudoo/mock@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@sudoo/mock/-/mock-1.0.0.tgz#333c2df6b8a8e27b062a799e767772ca53a39e05"
+  integrity sha512-jPoJrsI/3UchQpeBGYj6ds4Hmnwzy+b3NKBTMjlyC3rPlx74y4HHm2ussmydDaJAxLm6iG/1EKRR0Kqdb90YYw==
+
 "@sudoo/triforce@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@sudoo/triforce/-/triforce-1.5.0.tgz#128b9177d2ff4ad0ce19e05bffc9fc408eee0bcd"
