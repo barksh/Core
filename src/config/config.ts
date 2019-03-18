@@ -4,12 +4,22 @@
  * @description Config
  */
 
-import { getConfigFile } from "../io/file";
-import { BarkConfig } from "./declare";
+import { getConfigFile, replaceConfigFile } from "../io/file";
+import { BarkConfig, getDefaultConfig } from "./declare";
 
-export const getConfig = async (): Promise<BarkConfig> => {
+export const getOrInitConfig = async (): Promise<BarkConfig> => {
 
-    const file: string = await getConfigFile();
+    const file: string | null = await getConfigFile();
+    if (file) {
+        try {
+            const barkConfig: BarkConfig = JSON.parse(file);
+            return barkConfig;
+        } catch (error) {
+            throw new Error('Not valid');
+        }
+    }
+    const defaultConfig: BarkConfig = getDefaultConfig();
+    await replaceConfigFile(JSON.stringify(getDefaultConfig(), null, 2));
 
-    return {} as any;
+    return defaultConfig;
 };

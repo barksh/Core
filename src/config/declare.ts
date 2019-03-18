@@ -14,3 +14,10 @@ export type BarkConfig = {
 
     readonly source: BarkConfigSource[];
 };
+
+export const getDefaultConfig = (): BarkConfig => {
+
+    return {
+        source: [],
+    };
+};

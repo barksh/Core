@@ -4,10 +4,12 @@
  * @description Index
  */
 
-import { getConfig } from "./config/config";
+import { getOrInitConfig } from "./config/config";
 
-const a = getConfig();
-console.log(a);
-setTimeout(() => {
-    console.log(a);
-}, 100);
+(async () => {
+    try {
+        console.log(await getOrInitConfig());
+    } catch (err) {
+        throw err;
+    }
+})();

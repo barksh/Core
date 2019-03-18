@@ -5,7 +5,7 @@
  */
 
 import * as Fs from 'fs';
-import { getConfigFilePath } from './util';
+import { getAppDataPath, getAppDataPathMakeDirList, getConfigFilePath } from './util';
 
 export const UTF8 = 'utf8';
 
@@ -65,7 +65,7 @@ export const fileExists = async (path: string): Promise<boolean> =>
 export const attemptMarkDir = async (path: string): Promise<void> =>
     new Promise<void>((resolve: () => void, reject: (reason: NodeJS.ErrnoException) => void) => {
         Fs.exists(path, (exists: boolean) => {
-            if (exists) {
+            if (!exists) {
                 Fs.mkdir(path, (error: NodeJS.ErrnoException) => {
                     if (error) {
                         reject(error);
@@ -74,15 +74,49 @@ export const attemptMarkDir = async (path: string): Promise<void> =>
                     resolve();
                     return;
                 });
+            } else {
+                resolve();
             }
         });
         return;
     });
 
-export const getConfigFile = async (): Promise<string> => {
+export const ensureConfigPath = async (): Promise<void> => {
+
+    const configPath: string = getAppDataPath();
+    const exists: boolean = await fileExists(configPath);
+    if (exists) {
+        return;
+    }
+
+    const preList: string[] = getAppDataPathMakeDirList();
+    console.log(preList);
+    for (const dir of preList) {
+        console.log(dir);
+        await attemptMarkDir(dir);
+    }
+    return;
+};
+
+export const getConfigFile = async (): Promise<string | null> => {
 
     const configFilePath: string = getConfigFilePath();
     const exists: boolean = await fileExists(configFilePath);
-    console.log(exists);
-    return '';
+
+    if (exists) {
+        return await readTextFile(configFilePath);
+    }
+    return null;
+};
+
+export const replaceConfigFile = async (content: string): Promise<void> => {
+
+    const configFilePath: string = getConfigFilePath();
+    const exists: boolean = await fileExists(configFilePath);
+
+    if (!exists) {
+        await ensureConfigPath();
+    }
+    await writeTextFile(configFilePath, content);
+    return;
 };
