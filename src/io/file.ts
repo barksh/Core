@@ -6,9 +6,11 @@
 
 import * as Fs from 'fs';
 
+export const UTF8 = 'utf8';
+
 export const readTextFile = async (path: string): Promise<string> =>
     new Promise<string>((resolve: (result: string) => void, reject: (reason: NodeJS.ErrnoException) => void) =>
-        Fs.readFile(path, 'utf8', (error: NodeJS.ErrnoException, data: string) => {
+        Fs.readFile(path, UTF8, (error: NodeJS.ErrnoException, data: string) => {
 
             if (error) {
                 reject(error);
@@ -20,7 +22,7 @@ export const readTextFile = async (path: string): Promise<string> =>
 
 export const writeTextFile = async (path: string, content: string): Promise<void> =>
     new Promise<void>((resolve: () => void, reject: (reason: NodeJS.ErrnoException) => void) =>
-        Fs.writeFile(path, content, 'utf8', (error: NodeJS.ErrnoException) => {
+        Fs.writeFile(path, content, UTF8, (error: NodeJS.ErrnoException) => {
 
             if (error) {
                 reject(error);
