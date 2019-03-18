@@ -14,9 +14,9 @@ export const readTextFile = async (path: string): Promise<string> =>
 
             if (error) {
                 reject(error);
+                return;
             }
             resolve(data);
-
             return;
         }));
 
@@ -26,9 +26,9 @@ export const writeTextFile = async (path: string, content: string): Promise<void
 
             if (error) {
                 reject(error);
+                return;
             }
             resolve();
-
             return;
         }));
 
@@ -44,6 +44,21 @@ export const recursiveDo = async (path: string, func: (file: string) => Promise<
     } else if (status.isFile()) {
         await func(path);
     }
-
     return;
 };
+
+export const attemptMarkDir = async (path: string): Promise<void> =>
+    new Promise<void>((resolve: () => void, reject: (reason: NodeJS.ErrnoException) => void) => {
+        Fs.exists(path, (exists: boolean) => {
+            if (exists) {
+                Fs.mkdir(path, (error: NodeJS.ErrnoException) => {
+                    if (error) {
+                        reject(error);
+                        return;
+                    }
+                    resolve();
+                    return;
+                });
+            }
+        });
+    });
