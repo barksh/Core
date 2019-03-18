@@ -33,17 +33,41 @@ export const writeTextFile = async (path: string, content: string): Promise<void
             return;
         }));
 
+export const getPathStatus = async (path: string): Promise<Fs.Stats> =>
+    new Promise<Fs.Stats>((resolve: (status: Fs.Stats) => void, reject: (reason: NodeJS.ErrnoException) => void) => {
+        Fs.stat(path, (error: NodeJS.ErrnoException, status: Fs.Stats) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+            resolve(status);
+            return;
+        });
+    });
+
+export const getDirectoryFiles = async (path: string): Promise<string[]> =>
+    new Promise<string[]>((resolve: (files: string[]) => void, reject: (reason: NodeJS.ErrnoException) => void) => {
+        Fs.readdir(path, (error: NodeJS.ErrnoException, files: string[]) => {
+            if (error) {
+                reject(error);
+                return;
+            }
+            resolve(files);
+            return;
+        });
+    });
+
 export const recursiveDo = async (
     path: string,
     folder: (file: string) => Promise<void>,
     directory: (path: string) => Promise<void>,
 ): Promise<void> => {
 
-    const status: Fs.Stats = Fs.statSync(path);
+    const status: Fs.Stats = await getPathStatus(path);
 
     if (status.isDirectory()) {
         await directory(path);
-        const files: string[] = Fs.readdirSync(path);
+        const files: string[] = await getDirectoryFiles(path);
         for (const file of files) {
             await recursiveDo(file, folder, directory);
         }
@@ -53,7 +77,7 @@ export const recursiveDo = async (
     return;
 };
 
-export const fileExists = async (path: string): Promise<boolean> =>
+export const checkPathExists = async (path: string): Promise<boolean> =>
     new Promise<boolean>((resolve: (exist: boolean) => void) => {
         Fs.exists(path, (exists: boolean) => {
             resolve(exists);
@@ -84,7 +108,7 @@ export const attemptMarkDir = async (path: string): Promise<void> =>
 export const ensureConfigPath = async (): Promise<void> => {
 
     const configPath: string = getAppDataPath();
-    const exists: boolean = await fileExists(configPath);
+    const exists: boolean = await checkPathExists(configPath);
     if (exists) {
         return;
     }
@@ -101,7 +125,7 @@ export const ensureConfigPath = async (): Promise<void> => {
 export const getConfigFile = async (): Promise<string | null> => {
 
     const configFilePath: string = getConfigFilePath();
-    const exists: boolean = await fileExists(configFilePath);
+    const exists: boolean = await checkPathExists(configFilePath);
 
     if (exists) {
         return await readTextFile(configFilePath);
@@ -112,7 +136,7 @@ export const getConfigFile = async (): Promise<string | null> => {
 export const replaceConfigFile = async (content: string): Promise<void> => {
 
     const configFilePath: string = getConfigFilePath();
-    const exists: boolean = await fileExists(configFilePath);
+    const exists: boolean = await checkPathExists(configFilePath);
 
     if (!exists) {
         await ensureConfigPath();
