@@ -4,8 +4,8 @@
  * @description Fs
  */
 
+import { Mock } from "@sudoo/mock";
 import * as Fs from "fs";
-import { Mock } from "./mock";
 
 export const mockReadFile = (): () => Array<{
     path: string;
