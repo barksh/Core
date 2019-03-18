@@ -32,17 +32,22 @@ export const writeTextFile = async (path: string, content: string): Promise<void
             return;
         }));
 
-export const recursiveDo = async (path: string, func: (file: string) => Promise<void>): Promise<void> => {
+export const recursiveDo = async (
+    path: string,
+    folder: (file: string) => Promise<void>,
+    directory: (path: string) => Promise<void>,
+): Promise<void> => {
 
     const status: Fs.Stats = Fs.statSync(path);
 
     if (status.isDirectory()) {
+        await directory(path);
         const files: string[] = Fs.readdirSync(path);
         for (const file of files) {
-            await recursiveDo(file, func);
+            await recursiveDo(file, folder, directory);
         }
     } else if (status.isFile()) {
-        await func(path);
+        await folder(path);
     }
     return;
 };
