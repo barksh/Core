@@ -6,11 +6,13 @@
  */
 
 import { Mock, Sandbox } from "@sudoo/mock";
+import { fail } from "assert";
 import { expect } from "chai";
 import * as Chance from "chance";
 import { getOrInitConfig } from "../../../src/config/config";
 import { BarkConfig, getDefaultConfig } from "../../../src/config/declare";
 import * as func_IO_FILE from "../../../src/io/file";
+import { ERROR_CODE } from "../../../src/panic/declare";
 
 describe('Given [config] helper methods', (): void => {
 
@@ -40,6 +42,28 @@ describe('Given [config] helper methods', (): void => {
         expect(config).to.be.deep.equal(json);
         expect(getConfigFileStack).to.have.lengthOf(1);
         expect(replaceConfigFileStack).to.have.lengthOf(0);
+    });
+
+    it('should be able to throw error with invalid config', async (): Promise<void> => {
+
+        const getConfigFileStack = Sandbox.create();
+        const replaceConfigFileStack = Sandbox.create();
+
+        const getConfigFileMock = Mock.create(func_IO_FILE, 'getConfigFile');
+        const replaceConfigFileMock = Mock.create(func_IO_FILE, 'replaceConfigFile');
+
+        getConfigFileMock.mock(getConfigFileStack.func(chance.string()));
+        replaceConfigFileMock.mock(replaceConfigFileStack.func());
+
+        try {
+            await getOrInitConfig();
+            fail();
+        } catch (error) {
+            expect(error.code).to.be.equal(ERROR_CODE.CONFIG_PARSE_FAILED);
+        } finally {
+            getConfigFileMock.restore();
+            replaceConfigFileMock.restore();
+        }
     });
 
     it('should be able to replace config', async (): Promise<void> => {
