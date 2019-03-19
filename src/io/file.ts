@@ -36,6 +36,7 @@ export const writeTextFile = async (path: string, content: string): Promise<void
 export const getPathStatus = async (path: string): Promise<Fs.Stats> =>
     new Promise<Fs.Stats>((resolve: (status: Fs.Stats) => void, reject: (reason: NodeJS.ErrnoException) => void) => {
         Fs.stat(path, (error: NodeJS.ErrnoException, status: Fs.Stats) => {
+
             if (error) {
                 reject(error);
                 return;
@@ -48,6 +49,7 @@ export const getPathStatus = async (path: string): Promise<Fs.Stats> =>
 export const getDirectoryFiles = async (path: string): Promise<string[]> =>
     new Promise<string[]>((resolve: (files: string[]) => void, reject: (reason: NodeJS.ErrnoException) => void) => {
         Fs.readdir(path, (error: NodeJS.ErrnoException, files: string[]) => {
+
             if (error) {
                 reject(error);
                 return;
@@ -80,6 +82,7 @@ export const recursiveDo = async (
 export const checkPathExists = async (path: string): Promise<boolean> =>
     new Promise<boolean>((resolve: (exist: boolean) => void) => {
         Fs.exists(path, (exists: boolean) => {
+
             resolve(exists);
             return;
         });
@@ -89,6 +92,7 @@ export const checkPathExists = async (path: string): Promise<boolean> =>
 export const attemptMarkDir = async (path: string): Promise<void> =>
     new Promise<void>((resolve: () => void, reject: (reason: NodeJS.ErrnoException) => void) => {
         Fs.exists(path, (exists: boolean) => {
+
             if (!exists) {
                 Fs.mkdir(path, (error: NodeJS.ErrnoException) => {
                     if (error) {
