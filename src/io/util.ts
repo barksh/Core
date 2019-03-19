@@ -59,7 +59,10 @@ export const getAppDataPathMakeDirList = (): string[] => {
 
 export const getConfigFilePath = (): string => Path.join(getAppDataPath(), 'bark.json');
 
-export const parseExternalProtocol = (url: string): EXTERNAL_PROTOCOL => {
+export const resolveUrl = (url: string): {
+    protocol: EXTERNAL_PROTOCOL;
+    rest: string[];
+} => {
 
     const splited: string[] = url.split(/(:\/\/)|(\/)/g);
 
@@ -67,12 +70,47 @@ export const parseExternalProtocol = (url: string): EXTERNAL_PROTOCOL => {
         throw Panic.code(ERROR_CODE.INVALID_EXTERNAL_URL, url);
     }
 
-    const protocol: string = splited.shift().toLowerCase();
+    const firstElement: string = splited.shift() as string;
+    const protocol: string = firstElement.toLowerCase();
+
     switch (protocol) {
         case 'http':
-        case 'https': return EXTERNAL_PROTOCOL.HTTP_HTTPS;
-        case 'github': return EXTERNAL_PROTOCOL.GITHUB;
-        case 'file': return EXTERNAL_PROTOCOL.FILE;
+        case 'https': return {
+            protocol: EXTERNAL_PROTOCOL.HTTP_HTTPS,
+            rest: splited,
+        };
+        case 'github': return {
+            protocol: EXTERNAL_PROTOCOL.GITHUB,
+            rest: splited,
+        };
+        case 'file': return {
+            protocol: EXTERNAL_PROTOCOL.FILE,
+            rest: splited,
+        };
         default: throw Panic.code(ERROR_CODE.INVALID_EXTERNAL_PROTOCOL, protocol);
     }
+};
+
+export const parseExternalProtocol = (url: string): EXTERNAL_PROTOCOL => {
+
+    const resolvedUrl: {
+        protocol: EXTERNAL_PROTOCOL;
+        rest: string[];
+    } = resolveUrl(url);
+
+    return resolvedUrl.protocol;
+};
+
+export const parseGithubProtocol = (url: string): string => {
+
+    const { protocol, rest }: {
+        protocol: EXTERNAL_PROTOCOL;
+        rest: string[];
+    } = resolveUrl(url);
+
+    if (protocol !== EXTERNAL_PROTOCOL.GITHUB) {
+        throw Panic.code(ERROR_CODE.INTERNAL_ISSUE);
+    }
+
+    return 'https://raw.githubusercontent.com/' + rest.join('/');
 };

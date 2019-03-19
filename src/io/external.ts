@@ -7,7 +7,11 @@
 import * as Fs from "fs";
 import * as Http from "http";
 import * as Https from "https";
-import { removeFile } from "./file";
+import { ERROR_CODE } from "../panic/declare";
+import { Panic } from "../panic/panic";
+import { EXTERNAL_PROTOCOL } from "./declare";
+import { getRandomTempFilePath, removeFile } from "./file";
+import { parseExternalProtocol, parseGithubProtocol } from "./util";
 
 export const getHttpClient = (url: string) => {
 
@@ -46,3 +50,23 @@ export const downloadFile = (url: string, targetPath: string): Promise<void> =>
             });
         });
     });
+
+export const downloadAndDecompress = async (url: string, targetPath: string): Promise<void> => {
+
+    const tempFilePath: string = await getRandomTempFilePath('zip');
+    await downloadFile(url, tempFilePath);
+};
+
+export const moveAnyExternalFile = async (url: string, targetPath: string): Promise<void> => {
+
+    const protocol: EXTERNAL_PROTOCOL = parseExternalProtocol(url);
+
+    switch (protocol) {
+        case EXTERNAL_PROTOCOL.GITHUB: {
+            const parsed: string = parseGithubProtocol(url);
+            await downloadAndDecompress(parsed, targetPath);
+            return;
+        }
+        default: throw Panic.code(ERROR_CODE.NOT_IMPLEMENTED);
+    }
+};

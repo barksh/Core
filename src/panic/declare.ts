@@ -14,6 +14,9 @@ export enum ERROR_CODE {
 
     INVALID_EXTERNAL_URL = 5050,
     INVALID_EXTERNAL_PROTOCOL = 5051,
+
+    INTERNAL_ISSUE = 9000,
+    NOT_IMPLEMENTED = 9001,
 }
 
 export const ERROR_LIST = {
@@ -24,4 +27,7 @@ export const ERROR_LIST = {
 
     [ERROR_CODE.INVALID_EXTERNAL_URL]: 'Invalid external url, "{}"',
     [ERROR_CODE.INVALID_EXTERNAL_PROTOCOL]: 'Invalid external protocol, "{}"',
+
+    [ERROR_CODE.INTERNAL_ISSUE]: 'Internal error',
+    [ERROR_CODE.NOT_IMPLEMENTED]: 'Not implemented',
 };

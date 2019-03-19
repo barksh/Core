@@ -12,7 +12,7 @@ export const decompressZipFile = (filePath: string, targetPath: string) =>
     new Promise<void>((resolve: () => void, reject: (reason: Error) => void) => {
 
         const unzip: ChildProcess = spawn('unzip', ['-o', filePath, '-d', targetPath]);
-        unzip.on('exit', (code: number, signal: string) => {
+        unzip.on('exit', (code: number) => {
             if (code === 0) {
                 resolve();
                 return;

@@ -4,8 +4,10 @@
  * @description File
  */
 
-import * as Fs from 'fs';
-import { getAppDataPath, getAppDataPathMakeDirList, getConfigFilePath } from './util';
+import * as Fs from "fs";
+import * as Path from "path";
+import { unique } from "../util/random";
+import { getAppDataPath, getAppDataPathMakeDirList, getConfigFilePath } from "./util";
 
 export const UTF8 = 'utf8';
 
@@ -171,4 +173,15 @@ export const removeConfigFile = async (): Promise<void> => {
         await removeFile(configFilePath);
     }
     return;
+};
+
+export const getRandomTempFilePath = async (extension: string): Promise<string> => {
+
+    const appDataPath: string = getAppDataPath();
+    const exists: boolean = await checkPathExists(appDataPath);
+
+    if (!exists) {
+        await ensureConfigPath();
+    }
+    return Path.join(appDataPath, unique() + '.' + extension);
 };
