@@ -9,7 +9,7 @@ import { getAppDataPath, getAppDataPathMakeDirList, getConfigFilePath } from './
 
 export const UTF8 = 'utf8';
 
-export const removeTextFile = async (path: string): Promise<void> =>
+export const removeFile = (path: string): Promise<void> =>
     new Promise<void>((resolve: () => void, reject: (reason: NodeJS.ErrnoException) => void) => {
         Fs.unlink(path, (error: NodeJS.ErrnoException) => {
 
@@ -22,7 +22,7 @@ export const removeTextFile = async (path: string): Promise<void> =>
         });
     });
 
-export const readTextFile = async (path: string): Promise<string> =>
+export const readTextFile = (path: string): Promise<string> =>
     new Promise<string>((resolve: (result: string) => void, reject: (reason: NodeJS.ErrnoException) => void) =>
         Fs.readFile(path, UTF8, (error: NodeJS.ErrnoException, data: string) => {
 
@@ -34,7 +34,7 @@ export const readTextFile = async (path: string): Promise<string> =>
             return;
         }));
 
-export const writeTextFile = async (path: string, content: string): Promise<void> =>
+export const writeTextFile = (path: string, content: string): Promise<void> =>
     new Promise<void>((resolve: () => void, reject: (reason: NodeJS.ErrnoException) => void) =>
         Fs.writeFile(path, content, UTF8, (error: NodeJS.ErrnoException) => {
 
@@ -46,7 +46,7 @@ export const writeTextFile = async (path: string, content: string): Promise<void
             return;
         }));
 
-export const getPathStatus = async (path: string): Promise<Fs.Stats> =>
+export const getPathStatus = (path: string): Promise<Fs.Stats> =>
     new Promise<Fs.Stats>((resolve: (status: Fs.Stats) => void, reject: (reason: NodeJS.ErrnoException) => void) => {
         Fs.stat(path, (error: NodeJS.ErrnoException, status: Fs.Stats) => {
 
@@ -59,7 +59,7 @@ export const getPathStatus = async (path: string): Promise<Fs.Stats> =>
         });
     });
 
-export const getDirectoryFiles = async (path: string): Promise<string[]> =>
+export const getDirectoryFiles = (path: string): Promise<string[]> =>
     new Promise<string[]>((resolve: (files: string[]) => void, reject: (reason: NodeJS.ErrnoException) => void) => {
         Fs.readdir(path, (error: NodeJS.ErrnoException, files: string[]) => {
 
@@ -92,7 +92,7 @@ export const recursiveDo = async (
     return;
 };
 
-export const checkPathExists = async (path: string): Promise<boolean> =>
+export const checkPathExists = (path: string): Promise<boolean> =>
     new Promise<boolean>((resolve: (exist: boolean) => void) => {
         Fs.exists(path, (exists: boolean) => {
 
@@ -102,7 +102,7 @@ export const checkPathExists = async (path: string): Promise<boolean> =>
         return;
     });
 
-export const attemptMarkDir = async (path: string): Promise<void> =>
+export const attemptMarkDir = (path: string): Promise<void> =>
     new Promise<void>((resolve: () => void, reject: (reason: NodeJS.ErrnoException) => void) => {
         Fs.exists(path, (exists: boolean) => {
 
@@ -168,7 +168,7 @@ export const removeConfigFile = async (): Promise<void> => {
     const exists: boolean = await checkPathExists(configFilePath);
 
     if (exists) {
-        await removeTextFile(configFilePath);
+        await removeFile(configFilePath);
     }
     return;
 };
