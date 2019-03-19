@@ -4,7 +4,7 @@
  * @description Fs
  */
 
-import { Mock } from "@sudoo/mock";
+import { Mock, Sandbox } from "@sudoo/mock";
 import * as Fs from "fs";
 
 export const mockReadFile = (): () => Array<{
@@ -50,5 +50,58 @@ export const mockWriteFile = (): () => Array<{
     return () => {
         mock.restore();
         return results;
+    };
+};
+
+
+export const mockWriteStream = (): {
+    restore: () => {
+        eventList: string[];
+        contentList: any[];
+    };
+    tray: Record<string, any>;
+} => {
+
+    type eventCB = (...any: any[]) => void;
+
+    const writeStreamMock = Mock.create(Fs, 'createWriteStream');
+
+    const eventList: string[] = [];
+    const contentList: any[] = [];
+
+    const functionTray: Record<string, eventCB> = {
+        end: null as any,
+    };
+
+    writeStreamMock.mock((path: string) => {
+
+        return {
+            writable: true,
+            on: (event: string, cb: eventCB) => {
+                if (event === 'finish') {
+                    functionTray.end = cb;
+                }
+                eventList.push(event);
+            },
+            write: (content: any) => {
+                contentList.push(content);
+            },
+            close: Sandbox.stub(),
+            end: Sandbox.stub(),
+        };
+    });
+
+    return {
+        restore: (): {
+            eventList: string[];
+            contentList: any[];
+        } => {
+            writeStreamMock.restore();
+            return {
+                eventList,
+                contentList,
+            };
+        },
+        tray: functionTray,
     };
 };
