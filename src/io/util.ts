@@ -14,6 +14,10 @@ export const splitPath = (path: string): string[] => path.split(Path.sep);
 
 export const getAppDataPath = (): string => {
 
+    if (process.env.BARKSH_LOCALLY_TEST) {
+        return Path.resolve('./test_barksh');
+    }
+
     const os: NodeJS.Platform = OS.platform();
     const home: string = OS.homedir();
     switch (os) {
@@ -29,6 +33,10 @@ export const getAppDataPath = (): string => {
 };
 
 export const getAppDataPathMakeDirList = (): string[] => {
+
+    if (process.env.BARKSH_LOCALLY_TEST) {
+        return [Path.resolve('./test_barksh')];
+    }
 
     const os: NodeJS.Platform = OS.platform();
     const home: string = OS.homedir();
@@ -64,7 +72,7 @@ export const resolveUrl = (url: string): {
     rest: string[];
 } => {
 
-    const splited: string[] = url.split(/(:\/\/)|(\/)/g);
+    const splited: string[] = url.split(/:\/\/|\//g);
 
     if (splited.length < 2) {
         throw Panic.code(ERROR_CODE.INVALID_EXTERNAL_URL, url);

@@ -133,9 +133,7 @@ export const ensureConfigPath = async (): Promise<void> => {
     }
 
     const preList: string[] = getAppDataPathMakeDirList();
-    console.log(preList);
     for (const dir of preList) {
-        console.log(dir);
         await attemptMarkDir(dir);
     }
     return;

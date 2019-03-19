@@ -8,6 +8,7 @@
 import { Mock, Sandbox } from "@sudoo/mock";
 import { expect } from "chai";
 import * as Chance from "chance";
+import { EXTERNAL_PROTOCOL } from "../../../src/io/declare";
 import * as func_IO_EXTERNAL from "../../../src/io/external";
 import * as func_IO_FILE from "../../../src/io/file";
 import { mockWriteStream } from "../../mock/fs";
@@ -71,7 +72,7 @@ describe('Given [external] helper methods', (): void => {
         expect(result.eventList).to.have.lengthOf(2);
     });
 
-    it('should be able to move github protocol file', async (): Promise<void> => {
+    it('should be able to fetch github protocol file', async (): Promise<void> => {
 
         const downloadAndDecompressStack = Sandbox.create();
 
@@ -80,10 +81,26 @@ describe('Given [external] helper methods', (): void => {
 
         const path: string = 'github://' + chance.string();
         const targetPath: string = chance.string();
-        await func_IO_EXTERNAL.moveAnyExternalFile(path, targetPath);
+        await func_IO_EXTERNAL.fetchFromAnyExternalByProtocol(EXTERNAL_PROTOCOL.GITHUB, path, targetPath);
 
         downloadAndDecompressMock.restore();
 
         expect(downloadAndDecompressStack).to.have.lengthOf(1);
+    });
+
+    it('should be able to move any external protocol file', async (): Promise<void> => {
+
+        const fetchFromAnyExternalByProtocolStack = Sandbox.create();
+
+        const fetchFromAnyExternalByProtocolMock = Mock.create(func_IO_EXTERNAL, 'fetchFromAnyExternalByProtocol');
+        fetchFromAnyExternalByProtocolMock.mock(fetchFromAnyExternalByProtocolStack.func());
+
+        const path: string = 'github://' + chance.string();
+        const targetPath: string = chance.string();
+        await func_IO_EXTERNAL.fetchAndDecompressFromAnyExternal(path, targetPath);
+
+        fetchFromAnyExternalByProtocolMock.restore();
+
+        expect(fetchFromAnyExternalByProtocolStack).to.have.lengthOf(1);
     });
 });

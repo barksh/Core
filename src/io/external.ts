@@ -57,9 +57,7 @@ export const downloadAndDecompress = async (url: string, targetPath: string): Pr
     await downloadFile(url, tempFilePath);
 };
 
-export const moveAnyExternalFile = async (url: string, targetPath: string): Promise<void> => {
-
-    const protocol: EXTERNAL_PROTOCOL = parseExternalProtocol(url);
+export const fetchFromAnyExternalByProtocol = async (protocol: EXTERNAL_PROTOCOL, url: string, targetPath: string): Promise<void> => {
 
     switch (protocol) {
         case EXTERNAL_PROTOCOL.GITHUB: {
@@ -69,4 +67,10 @@ export const moveAnyExternalFile = async (url: string, targetPath: string): Prom
         }
         default: throw Panic.code(ERROR_CODE.NOT_IMPLEMENTED);
     }
+};
+
+export const fetchAndDecompressFromAnyExternal = async (url: string, targetPath: string): Promise<void> => {
+
+    const protocol: EXTERNAL_PROTOCOL = parseExternalProtocol(url);
+    await fetchFromAnyExternalByProtocol(protocol, url, targetPath);
 };
