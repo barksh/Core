@@ -4,6 +4,7 @@
  * @description File
  */
 
+import * as Crypto from "crypto";
 import * as Fs from "fs";
 import * as Path from "path";
 import { unique } from "../util/random";
@@ -124,6 +125,34 @@ export const attemptMarkDir = (path: string): Promise<void> =>
         return;
     });
 
+export const getFileMd5 = (path: string): Promise<string> =>
+    new Promise<string>((resolve: (result: string) => void, reject: (reason: Error) => void) => {
+
+        const readStream: Fs.ReadStream = Fs.createReadStream(path);
+
+        const hash: Crypto.Hash = Crypto.createHash('md5');
+        readStream.on('data', hash.update.bind(hash));
+        readStream.on('end', () => {
+            resolve(hash.digest('hex'));
+        });
+        readStream.on('error', (error: Error) => {
+            reject(error);
+        });
+    });
+
+export const renameFile = (origin: string, target: string): Promise<void> =>
+    new Promise<void>((resolve: () => void, reject: (error: NodeJS.ErrnoException) => void) => {
+        Fs.rename(origin, target, (error: NodeJS.ErrnoException) => {
+
+            if (error) {
+                reject(error);
+                return;
+            }
+            resolve();
+            return;
+        });
+    });
+
 export const ensureConfigPath = async (): Promise<void> => {
 
     const configPath: string = getAppDataPath();
@@ -173,7 +202,7 @@ export const removeConfigFile = async (): Promise<void> => {
     return;
 };
 
-export const getRandomTempFilePath = async (extension: string): Promise<string> => {
+export const getRandomTempFilePath = async (extension: string, filename?: string): Promise<string> => {
 
     const appDataPath: string = getAppDataPath();
     const tempPath: string = Path.join(appDataPath, 'temp');
@@ -183,11 +212,11 @@ export const getRandomTempFilePath = async (extension: string): Promise<string> 
         await ensureConfigPath();
         await attemptMarkDir(tempPath);
     }
-    const uniqueFileName: string = unique() + '.' + extension;
+    const uniqueFileName: string = (filename || unique()) + '.' + extension;
     return Path.join(tempPath, uniqueFileName);
 };
 
-export const getRandomPackagePath = async (): Promise<string> => {
+export const getRandomPackagePath = async (filename?: string): Promise<string> => {
 
     const appDataPath: string = getAppDataPath();
     const packagePath: string = Path.join(appDataPath, 'package');
@@ -197,6 +226,6 @@ export const getRandomPackagePath = async (): Promise<string> => {
         await ensureConfigPath();
         await attemptMarkDir(packagePath);
     }
-    const uniqueFolderName: string = unique();
+    const uniqueFolderName: string = filename || unique();
     return Path.join(packagePath, uniqueFolderName);
 };

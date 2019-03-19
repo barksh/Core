@@ -11,7 +11,7 @@ import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
 import { decompressZipFile } from "./compress";
 import { EXTERNAL_PROTOCOL } from "./declare";
-import { getRandomTempFilePath, removeFile } from "./file";
+import { getFileMd5, getRandomTempFilePath, removeFile, renameFile } from "./file";
 import { parseExternalProtocol, parseGithubProtocol } from "./util";
 
 export const getHttpClient = (url: string) => {
@@ -56,10 +56,15 @@ export const downloadAndDecompress = async (url: string, targetPath: string): Pr
 
     const tempFilePath: string = await getRandomTempFilePath('zip');
     await downloadFile(url, tempFilePath);
-    await decompressZipFile(tempFilePath, targetPath);
+
+    const hash: string = await getFileMd5(tempFilePath);
+    const newFilePath: string = await getRandomTempFilePath('zip', hash);
+
+    await renameFile(tempFilePath, newFilePath);
+    await decompressZipFile(newFilePath, targetPath);
 };
 
-export const fetchFromAnyExternalByProtocol = async (protocol: EXTERNAL_PROTOCOL, url: string, targetPath: string): Promise<void> => {
+export const fetchAndDecompressFromAnyExternalByProtocol = async (protocol: EXTERNAL_PROTOCOL, url: string, targetPath: string): Promise<void> => {
 
     switch (protocol) {
         case EXTERNAL_PROTOCOL.GITHUB: {
@@ -74,5 +79,5 @@ export const fetchFromAnyExternalByProtocol = async (protocol: EXTERNAL_PROTOCOL
 export const fetchAndDecompressFromAnyExternal = async (url: string, targetPath: string): Promise<void> => {
 
     const protocol: EXTERNAL_PROTOCOL = parseExternalProtocol(url);
-    await fetchFromAnyExternalByProtocol(protocol, url, targetPath);
+    await fetchAndDecompressFromAnyExternalByProtocol(protocol, url, targetPath);
 };
