@@ -9,6 +9,7 @@ import * as Http from "http";
 import * as Https from "https";
 import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
+import { decompressZipFile } from "./compress";
 import { EXTERNAL_PROTOCOL } from "./declare";
 import { getRandomTempFilePath, removeFile } from "./file";
 import { parseExternalProtocol, parseGithubProtocol } from "./util";
@@ -28,13 +29,13 @@ export const downloadFile = (url: string, targetPath: string): Promise<void> =>
 
         const writeStream: Fs.WriteStream = Fs.createWriteStream(targetPath);
         writeStream.on('finish', () => {
-            writeStream.close();
             resolve();
+            writeStream.close();
             return;
         });
         writeStream.on('error', (error: Error) => {
-            writeStream.close();
             reject(error);
+            writeStream.close();
             return;
         });
 
@@ -55,6 +56,7 @@ export const downloadAndDecompress = async (url: string, targetPath: string): Pr
 
     const tempFilePath: string = await getRandomTempFilePath('zip');
     await downloadFile(url, tempFilePath);
+    await decompressZipFile(tempFilePath, targetPath);
 };
 
 export const fetchFromAnyExternalByProtocol = async (protocol: EXTERNAL_PROTOCOL, url: string, targetPath: string): Promise<void> => {

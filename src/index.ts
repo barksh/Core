@@ -4,13 +4,13 @@
  * @description Index
  */
 
-import * as Path from "path";
 import { fetchAndDecompressFromAnyExternal } from "./io/external";
+import { getRandomPackagePath } from "./io/file";
 
 (async () => {
     try {
-        console.log(await fetchAndDecompressFromAnyExternal('github://WMXPY/Ghoti-CLI-templates/master/dist/react-ssr.zip', Path.resolve('./')));
+        console.log(await fetchAndDecompressFromAnyExternal('github://WMXPY/Ghoti-CLI-templates/master/dist/react-ssr.zip', await getRandomPackagePath()));
     } catch (err) {
-        throw err;
+        console.log(err);
     }
 })();

@@ -176,10 +176,27 @@ export const removeConfigFile = async (): Promise<void> => {
 export const getRandomTempFilePath = async (extension: string): Promise<string> => {
 
     const appDataPath: string = getAppDataPath();
-    const exists: boolean = await checkPathExists(appDataPath);
+    const tempPath: string = Path.join(appDataPath, 'temp');
+    const exists: boolean = await checkPathExists(tempPath);
 
     if (!exists) {
         await ensureConfigPath();
+        await attemptMarkDir(tempPath);
     }
-    return Path.join(appDataPath, unique() + '.' + extension);
+    const uniqueFileName: string = unique() + '.' + extension;
+    return Path.join(tempPath, uniqueFileName);
+};
+
+export const getRandomPackagePath = async (): Promise<string> => {
+
+    const appDataPath: string = getAppDataPath();
+    const packagePath: string = Path.join(appDataPath, 'package');
+    const exists: boolean = await checkPathExists(packagePath);
+
+    if (!exists) {
+        await ensureConfigPath();
+        await attemptMarkDir(packagePath);
+    }
+    const uniqueFolderName: string = unique();
+    return Path.join(packagePath, uniqueFolderName);
 };
