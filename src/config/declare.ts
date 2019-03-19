@@ -6,18 +6,27 @@
 
 export type BarkConfigSource = {
 
-    readonly url: string;
     readonly lastUpdate: Date;
+    readonly url: string;
+};
+
+export type BarkTemplate = {
+
+    readonly name: string;
+    readonly url: string;
+    readonly version: string;
 };
 
 export type BarkConfig = {
 
+    readonly templates: BarkTemplate[];
     readonly source: BarkConfigSource[];
 };
 
 export const getDefaultConfig = (): BarkConfig => {
 
     return {
+        templates: [],
         source: [],
     };
 };

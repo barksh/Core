@@ -9,6 +9,19 @@ import { getAppDataPath, getAppDataPathMakeDirList, getConfigFilePath } from './
 
 export const UTF8 = 'utf8';
 
+export const removeTextFile = async (path: string): Promise<void> =>
+    new Promise<void>((resolve: () => void, reject: (reason: NodeJS.ErrnoException) => void) => {
+        Fs.unlink(path, (error: NodeJS.ErrnoException) => {
+
+            if (error) {
+                reject(error);
+                return;
+            }
+            resolve();
+            return;
+        });
+    });
+
 export const readTextFile = async (path: string): Promise<string> =>
     new Promise<string>((resolve: (result: string) => void, reject: (reason: NodeJS.ErrnoException) => void) =>
         Fs.readFile(path, UTF8, (error: NodeJS.ErrnoException, data: string) => {
@@ -146,5 +159,16 @@ export const replaceConfigFile = async (content: string): Promise<void> => {
         await ensureConfigPath();
     }
     await writeTextFile(configFilePath, content);
+    return;
+};
+
+export const removeConfigFile = async (): Promise<void> => {
+
+    const configFilePath: string = getConfigFilePath();
+    const exists: boolean = await checkPathExists(configFilePath);
+
+    if (exists) {
+        await removeTextFile(configFilePath);
+    }
     return;
 };
