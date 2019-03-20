@@ -7,12 +7,13 @@
 import * as Fs from "fs";
 import * as Http from "http";
 import * as Https from "https";
+import { Environment } from "../config/environment";
 import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
 import { decompressZipFile } from "./compress";
 import { EXTERNAL_PROTOCOL } from "./declare";
-import { getFileMd5, getRandomTempFilePath, removeFile, renameFile } from "./file";
-import { parseExternalProtocol, parseGithubProtocol } from "./util";
+import { getFileMd5, removeFile, renameFile } from "./file";
+import { getRandomTempFilePath, parseExternalProtocol, parseGithubProtocol } from "./util";
 
 export const getHttpClient = (url: string) => {
 
@@ -52,32 +53,32 @@ export const downloadFile = (url: string, targetPath: string): Promise<void> =>
         });
     });
 
-export const downloadAndDecompress = async (url: string, targetPath: string): Promise<void> => {
+export const downloadAndDecompress = async (env: Environment, url: string, targetPath: string): Promise<void> => {
 
-    const tempFilePath: string = await getRandomTempFilePath('zip');
+    const tempFilePath: string = await getRandomTempFilePath(env, 'zip');
     await downloadFile(url, tempFilePath);
 
     const hash: string = await getFileMd5(tempFilePath);
-    const newFilePath: string = await getRandomTempFilePath('zip', hash);
+    const newFilePath: string = await getRandomTempFilePath(env, 'zip', hash);
 
     await renameFile(tempFilePath, newFilePath);
     await decompressZipFile(newFilePath, targetPath);
 };
 
-export const fetchAndDecompressFromAnyExternalByProtocol = async (protocol: EXTERNAL_PROTOCOL, url: string, targetPath: string): Promise<void> => {
+export const fetchAndDecompressFromAnyExternalByProtocol = async (env: Environment, protocol: EXTERNAL_PROTOCOL, url: string, targetPath: string): Promise<void> => {
 
     switch (protocol) {
         case EXTERNAL_PROTOCOL.GITHUB: {
             const parsed: string = parseGithubProtocol(url);
-            await downloadAndDecompress(parsed, targetPath);
+            await downloadAndDecompress(env, parsed, targetPath);
             return;
         }
         default: throw Panic.code(ERROR_CODE.NOT_IMPLEMENTED);
     }
 };
 
-export const fetchAndDecompressFromAnyExternal = async (url: string, targetPath: string): Promise<void> => {
+export const fetchAndDecompressFromAnyExternal = async (env: Environment, url: string, targetPath: string): Promise<void> => {
 
     const protocol: EXTERNAL_PROTOCOL = parseExternalProtocol(url);
-    await fetchAndDecompressFromAnyExternalByProtocol(protocol, url, targetPath);
+    await fetchAndDecompressFromAnyExternalByProtocol(env, protocol, url, targetPath);
 };

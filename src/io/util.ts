@@ -4,68 +4,15 @@
  * @description Util
  */
 
-import * as OS from "os";
 import * as Path from "path";
+import { Environment } from "../config/environment";
 import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
+import { unique } from "../util/random";
 import { EXTERNAL_PROTOCOL } from "./declare";
+import { checkPathExists } from "./file";
 
 export const splitPath = (path: string): string[] => path.split(Path.sep);
-
-export const getAppDataPath = (): string => {
-
-    if (process.env.BARKSH_LOCALLY_TEST) {
-        return Path.resolve('./test_barksh');
-    }
-
-    const os: NodeJS.Platform = OS.platform();
-    const home: string = OS.homedir();
-    switch (os) {
-
-        case 'darwin': return Path.join(home, 'Library', 'Application Support', '.barksh');
-        case 'linux': {
-            const linuxPath: string | undefined = process.env.XDG_CONFIG_HOME;
-            return linuxPath || Path.join(home, '.config', '.barksh');
-        }
-        case 'win32': throw new Error('...TODO');
-        default: return Path.join(home, '.barksh');
-    }
-};
-
-export const getAppDataPathMakeDirList = (): string[] => {
-
-    if (process.env.BARKSH_LOCALLY_TEST) {
-        return [Path.resolve('./test_barksh')];
-    }
-
-    const os: NodeJS.Platform = OS.platform();
-    const home: string = OS.homedir();
-    switch (os) {
-
-        case 'darwin': return [
-            Path.join(home, 'Library', 'Application Support'),
-            Path.join(home, 'Library', 'Application Support', '.barksh'),
-        ];
-        case 'linux': {
-            const linuxPath: string | undefined = process.env.XDG_CONFIG_HOME;
-            if (linuxPath) {
-                return [
-                    linuxPath,
-                ];
-            }
-            return [
-                Path.join(home, '.config'),
-                Path.join(home, '.config', '.barksh'),
-            ];
-        }
-        case 'win32': throw new Error('...TODO');
-        default: return [
-            Path.join(home, '.barksh'),
-        ];
-    }
-};
-
-export const getConfigFilePath = (): string => Path.join(getAppDataPath(), 'bark.json');
 
 export const resolveUrl = (url: string): {
     protocol: EXTERNAL_PROTOCOL;
@@ -121,4 +68,28 @@ export const parseGithubProtocol = (url: string): string => {
     }
 
     return 'https://raw.githubusercontent.com/' + rest.join('/');
+};
+
+export const getRandomTempFilePath = async (env: Environment, extension: string, filename?: string): Promise<string> => {
+
+    const tempPath: string = env.temporaryPath;
+    const exists: boolean = await checkPathExists(tempPath);
+
+    if (!exists) {
+        throw Panic.code(ERROR_CODE.PATH_NOT_EXIST, tempPath);
+    }
+    const uniqueFileName: string = (filename || unique()) + '.' + extension;
+    return Path.join(tempPath, uniqueFileName);
+};
+
+export const getRandomPackagePath = async (env: Environment, filename?: string): Promise<string> => {
+
+    const packagePath: string = env.packagePath;
+    const exists: boolean = await checkPathExists(packagePath);
+
+    if (!exists) {
+        throw Panic.code(ERROR_CODE.PATH_NOT_EXIST, packagePath);
+    }
+    const uniqueFolderName: string = filename || unique();
+    return Path.join(packagePath, uniqueFolderName);
 };

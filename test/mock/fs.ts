@@ -7,7 +7,7 @@
 import { Mock, Sandbox } from "@sudoo/mock";
 import * as Fs from "fs";
 
-export const mockReadFile = (): () => Array<{
+export const mockReadFile = (response?: any): () => Array<{
     path: string;
     code: string;
 }> => {
@@ -20,7 +20,7 @@ export const mockReadFile = (): () => Array<{
 
     mock.mock((path: string, code: string, callback: (error: any, data: string) => void) => {
         results.push({ path, code });
-        callback(null, path);
+        callback(null, response === undefined ? path : response);
     });
 
     return () => {
