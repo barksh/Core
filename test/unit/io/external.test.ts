@@ -14,7 +14,7 @@ import * as func_IO_EXTERNAL from "../../../src/io/external";
 import * as func_IO_FILE from "../../../src/io/file";
 import { mockWriteStream } from "../../mock/fs";
 
-describe('Given [external] helper methods', (): void => {
+describe('Given [io-external] helper methods', (): void => {
 
     const chance: Chance.Chance = new Chance('io-external');
 

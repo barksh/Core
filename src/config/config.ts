@@ -4,24 +4,17 @@
  * @description Config
  */
 
-import { getConfigFile, replaceConfigFile } from "../io/file";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
-import { BarkConfig, getDefaultConfig } from "./declare";
+import { BarkConfig } from "./declare";
 
-export const getOrInitConfig = async (): Promise<BarkConfig> => {
+export const verifyBarkConfig = (config: BarkConfig): boolean => {
 
-    const file: string | null = await getConfigFile();
-    if (file) {
-        try {
-            const barkConfig: BarkConfig = JSON.parse(file);
-            return barkConfig;
-        } catch (error) {
-            throw Panic.code(ERROR_CODE.CONFIG_PARSE_FAILED);
-        }
+    if (!config.source) {
+        return false;
     }
-    const defaultConfig: BarkConfig = getDefaultConfig();
-    await replaceConfigFile(JSON.stringify(getDefaultConfig(), null, 2));
 
-    return defaultConfig;
+    if (!config.templates) {
+        return false;
+    }
+
+    return true;
 };

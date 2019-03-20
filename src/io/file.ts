@@ -8,7 +8,7 @@ import * as Crypto from "crypto";
 import * as Fs from "fs";
 import * as Path from "path";
 import { unique } from "../util/random";
-import { getAppDataPath, getAppDataPathMakeDirList, getConfigFilePath } from "./util";
+import { getAppDataPath, getAppDataPathMakeDirList } from "./util";
 
 export const UTF8 = 'utf8';
 
@@ -153,7 +153,7 @@ export const renameFile = (origin: string, target: string): Promise<void> =>
         });
     });
 
-export const ensureConfigPath = async (): Promise<void> => {
+export const ensureAppDataPath = async (): Promise<void> => {
 
     const configPath: string = getAppDataPath();
     const exists: boolean = await checkPathExists(configPath);
@@ -168,40 +168,6 @@ export const ensureConfigPath = async (): Promise<void> => {
     return;
 };
 
-export const getConfigFile = async (): Promise<string | null> => {
-
-    const configFilePath: string = getConfigFilePath();
-    const exists: boolean = await checkPathExists(configFilePath);
-
-    if (exists) {
-        return await readTextFile(configFilePath);
-    }
-    return null;
-};
-
-export const replaceConfigFile = async (content: string): Promise<void> => {
-
-    const configFilePath: string = getConfigFilePath();
-    const exists: boolean = await checkPathExists(configFilePath);
-
-    if (!exists) {
-        await ensureConfigPath();
-    }
-    await writeTextFile(configFilePath, content);
-    return;
-};
-
-export const removeConfigFile = async (): Promise<void> => {
-
-    const configFilePath: string = getConfigFilePath();
-    const exists: boolean = await checkPathExists(configFilePath);
-
-    if (exists) {
-        await removeFile(configFilePath);
-    }
-    return;
-};
-
 export const getRandomTempFilePath = async (extension: string, filename?: string): Promise<string> => {
 
     const appDataPath: string = getAppDataPath();
@@ -209,7 +175,7 @@ export const getRandomTempFilePath = async (extension: string, filename?: string
     const exists: boolean = await checkPathExists(tempPath);
 
     if (!exists) {
-        await ensureConfigPath();
+        await ensureAppDataPath();
         await attemptMarkDir(tempPath);
     }
     const uniqueFileName: string = (filename || unique()) + '.' + extension;
@@ -223,7 +189,7 @@ export const getRandomPackagePath = async (filename?: string): Promise<string> =
     const exists: boolean = await checkPathExists(packagePath);
 
     if (!exists) {
-        await ensureConfigPath();
+        await ensureAppDataPath();
         await attemptMarkDir(packagePath);
     }
     const uniqueFolderName: string = filename || unique();

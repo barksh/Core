@@ -10,7 +10,7 @@ import * as Chance from "chance";
 import { readTextFile, UTF8, writeTextFile } from "../../../src/io/file";
 import { mockReadFile, mockWriteFile } from "../../mock/fs";
 
-describe('Given [file] helper methods', (): void => {
+describe('Given [io-file] helper methods', (): void => {
 
     const chance: Chance.Chance = new Chance('io-file');
 
