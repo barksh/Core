@@ -13,7 +13,7 @@ main: run
 
 run: 
 	@echo "[INFO] Running through ts-node"
-	@BARKSH_LOCALLY_TEST=true $(ts_node) src/index.ts
+	@BARKSH_LOCALLY_TEST=true $(ts_node) src/example.ts
 
 dev:
 	@echo "[INFO] Building for development"
