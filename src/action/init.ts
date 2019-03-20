@@ -4,7 +4,7 @@
  * @description Init
  */
 
-export const init =  async (template: string, targetPath: string): Promise<void> => {
+export const init = async (template: string, targetPath: string): Promise<void> => {
 
     return;
 };

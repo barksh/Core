@@ -26,6 +26,7 @@ export type BarkConfig = {
 export const getDefaultConfig = (): BarkConfig => {
 
     return {
+
         templates: [],
         source: [],
     };
