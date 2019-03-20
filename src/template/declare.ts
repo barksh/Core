@@ -4,6 +4,12 @@
  * @description Declare
  */
 
+export enum VERSION_QUERY {
+
+    LATEST = 'LATEST',
+    ANY = 'ANY',
+}
+
 export enum TEMPLATE_METHOD {
 
     EJS = 'EJS',
