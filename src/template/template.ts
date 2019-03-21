@@ -25,11 +25,13 @@ export const parseTemplateQuery = (query: string): TemplateQueryInfo => {
     };
 };
 
-export const searchTemplateFromEnv = (config: BarkConfig, info: TemplateQueryInfo): BarkTemplate | null => {
+export const searchTemplateFromConfig = (config: BarkConfig, info: TemplateQueryInfo): BarkTemplate | null => {
 
-    for (const template of config.templates) {
-        if (template.name === info.name && template.version === info.version) {
-            return template;
+    for (const source of config.sources) {
+        for (const template of source.templates) {
+            if (template.name === info.name && template.version === info.version) {
+                return template;
+            }
         }
     }
     return null;
@@ -39,5 +41,5 @@ export const analysis = (env: Environment, query: string) => {
 
     const config: BarkConfig = env.config;
     const info: TemplateQueryInfo = parseTemplateQuery(query);
-    const templateFromEnv: BarkTemplate | null = searchTemplateFromEnv(config, info);
+    const templateFromEnv: BarkTemplate | null = searchTemplateFromConfig(config, info);
 };

@@ -10,6 +10,9 @@ export enum ERROR_CODE {
 
     CONFIG_PARSE_FAILED = 1500,
 
+    EXTERNAL_SOURCE_PARSE_FAILED = 1603,
+    EXTERNAL_SOURCE_VERIFY_FAILED = 1604,
+
     DECOMPRESS_FILE_FAILED = 1645,
 
     INVALID_EXTERNAL_URL = 5050,
@@ -26,6 +29,9 @@ export enum ERROR_CODE {
 export const ERROR_LIST = {
 
     [ERROR_CODE.CONFIG_PARSE_FAILED]: 'Failed parsing config file',
+
+    [ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED]: 'Failed parse external source file',
+    [ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED]: 'Failed verify external source file',
 
     [ERROR_CODE.DECOMPRESS_FILE_FAILED]: 'Decompress file failed from, "{}"',
 

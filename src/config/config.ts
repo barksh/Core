@@ -8,11 +8,7 @@ import { BarkConfig } from "./declare";
 
 export const verifyBarkConfig = (config: BarkConfig): boolean => {
 
-    if (!config.source) {
-        return false;
-    }
-
-    if (!config.templates) {
+    if (!config.sources) {
         return false;
     }
 
