@@ -4,6 +4,11 @@
  * @description Declare
  */
 
+export type TemplateQueryInfo = {
+    name: string;
+    version: string | VERSION_QUERY;
+};
+
 export enum VERSION_QUERY {
 
     LATEST = 'LATEST',

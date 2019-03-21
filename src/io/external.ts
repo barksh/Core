@@ -10,6 +10,7 @@ import * as Https from "https";
 import { Environment } from "../config/environment";
 import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
+import { StringBuffer } from "../util/buffer/string";
 import { decompressZipFile } from "./compress";
 import { EXTERNAL_PROTOCOL } from "./declare";
 import { getFileMd5, removeFile, renameFile } from "./file";
@@ -22,6 +23,24 @@ export const getHttpClient = (url: string) => {
     }
     return Http;
 };
+
+export const getExternalData = (url: string): Promise<string> =>
+    new Promise<string>((resolve: (data: string) => void, reject: (reason: Error) => void) => {
+
+        const client: typeof Http | typeof Https = getHttpClient(url);
+        const stringBuffer: StringBuffer = StringBuffer.create();
+
+        client.get(url, (response: Http.IncomingMessage) => {
+            response.on('data', (chunk: string) => {
+                stringBuffer.add(chunk);
+            });
+            response.on('end', () => {
+                resolve(stringBuffer.value);
+            });
+        }).on("error", (error: Error) => {
+            reject(error);
+        });
+    });
 
 export const downloadFile = (url: string, targetPath: string): Promise<void> =>
     new Promise<void>((resolve: () => void, reject: (reason: Error) => void) => {

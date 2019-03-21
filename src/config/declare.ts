@@ -4,7 +4,7 @@
  * @description Declare
  */
 
-export type BarkConfigSource = {
+export type BarkSource = {
 
     readonly lastUpdate: Date;
     readonly url: string;
@@ -13,14 +13,14 @@ export type BarkConfigSource = {
 export type BarkTemplate = {
 
     readonly name: string;
-    readonly url: string;
+    readonly path: string;
     readonly version: string;
 };
 
 export type BarkConfig = {
 
     readonly templates: BarkTemplate[];
-    readonly source: BarkConfigSource[];
+    readonly source: BarkSource[];
 };
 
 export const getDefaultConfig = (): BarkConfig => {
