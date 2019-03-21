@@ -1,7 +1,7 @@
 /**
  * @author WMXPY
  * @namespace IO
- * @description func_IO_EXTERNAL
+ * @description External
  * @override
  */
 

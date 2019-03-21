@@ -1,7 +1,7 @@
 /**
  * @author WMXPY
  * @namespace Source
- * @description Template
+ * @description Refresh
  */
 
 import { BarkSource } from "../config/declare";
