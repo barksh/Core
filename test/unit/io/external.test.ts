@@ -25,37 +25,35 @@ describe('Given [io-external] helper methods', (): void => {
 
         const downloadFileStack = Sandbox.create();
         const getFileMd5Stack = Sandbox.create();
-        const renameFileStack = Sandbox.create();
         const getRandomTempFilePathStack = Sandbox.create();
+        const getRandomPackagePathStack = Sandbox.create();
         const decompressZipFileStack = Sandbox.create();
 
         const downloadFileMock = Mock.create(func_IO_EXTERNAL, 'downloadFile');
         const getFileMd5Mock = Mock.create(func_IO_FILE, 'getFileMd5');
-        const renameFileMock = Mock.create(func_IO_FILE, 'renameFile');
         const getRandomTempFilePathMock = Mock.create(func_IO_UTIL, 'getRandomTempFilePath');
+        const getRandomPackagePathMock = Mock.create(func_IO_UTIL, 'getRandomPackagePath');
         const decompressZipFileMock = Mock.create(func_IO_COMPRESS, 'decompressZipFile');
 
         downloadFileMock.mock(downloadFileStack.func());
         getFileMd5Mock.mock(getFileMd5Stack.func());
-        renameFileMock.mock(renameFileStack.func());
         getRandomTempFilePathMock.mock(getRandomTempFilePathStack.func());
+        getRandomPackagePathMock.mock(getRandomPackagePathStack.func());
         decompressZipFileMock.mock(decompressZipFileStack.func());
 
         const path: string = chance.string();
-        const targetPath: string = chance.string();
 
         const env: Environment = createMockEnvironment();
-        await func_IO_EXTERNAL.downloadAndDecompress(env, path, targetPath);
+        await func_IO_EXTERNAL.downloadAndDecompress(env, path);
 
         downloadFileMock.restore();
         getFileMd5Mock.restore();
-        renameFileMock.restore();
         getRandomTempFilePathMock.restore();
+        getRandomPackagePathMock.restore();
         decompressZipFileMock.restore();
 
         expect(downloadFileStack).to.have.lengthOf(1);
         expect(getFileMd5Stack).to.have.lengthOf(1);
-        expect(renameFileStack).to.have.lengthOf(1);
         expect(decompressZipFileStack).to.have.lengthOf(1);
     });
 
@@ -104,7 +102,7 @@ describe('Given [io-external] helper methods', (): void => {
         const targetPath: string = chance.string();
 
         const env: Environment = createMockEnvironment();
-        await func_IO_EXTERNAL.fetchAndDecompressFromAnyExternalByProtocol(env, EXTERNAL_PROTOCOL.GITHUB, path, targetPath);
+        await func_IO_EXTERNAL.fetchAndDecompressFromAnyExternalByProtocol(env, EXTERNAL_PROTOCOL.GITHUB, path);
 
         downloadAndDecompressMock.restore();
 
@@ -122,7 +120,7 @@ describe('Given [io-external] helper methods', (): void => {
         const targetPath: string = chance.string();
 
         const env: Environment = createMockEnvironment();
-        await func_IO_EXTERNAL.fetchAndDecompressFromAnyExternal(env, path, targetPath);
+        await func_IO_EXTERNAL.fetchAndDecompressFromAnyExternal(env, path);
 
         fetchAndDecompressFromAnyExternalByProtocolMock.restore();
 

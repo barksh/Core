@@ -20,7 +20,7 @@ import { getRandomPackagePath } from "./io/util";
         console.log(await fetchAndDecompressFromAnyExternal(
             env,
             'github://WMXPY/Ghoti-CLI-templates/master/dist/react-ssr.zip',
-            await getRandomPackagePath(env)));
+        ));
     } catch (err) {
         console.log(err);
     }
