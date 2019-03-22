@@ -33,11 +33,13 @@ describe('Given [source-refresh] helper methods', (): void => {
 
         const source: BarkSource = {
             lastUpdate: new Date(),
-            templates: [],
+            structure: {
+                templates: [],
+            },
             url: chance.string(),
         };
 
-       const newSource: BarkSource = await func_SOURCE_REFRESH.updateSourceFromExternal(source);
+        const newSource: BarkSource = await func_SOURCE_REFRESH.updateSourceFromExternal(source);
 
         getExternalDataMock.restore();
         safeParseJSONMock.restore();

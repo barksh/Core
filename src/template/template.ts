@@ -26,11 +26,9 @@ export const parseTemplateQuery = (query: string): TemplateQueryInfo => {
 
 export const searchTemplateFromConfig = (config: BarkConfig, info: TemplateQueryInfo): BarkTemplate | null => {
 
-    for (const source of config.sources) {
-        for (const template of source.templates) {
-            if (template.name === info.name && template.version === info.version) {
-                return template;
-            }
+    for (const template of config.templates) {
+        if (template.name === info.name && template.version === info.version) {
+            return template;
         }
     }
     return null;
