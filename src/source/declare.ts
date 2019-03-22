@@ -4,12 +4,12 @@
  * @description Declare
  */
 
+import { BarkTemplateBase } from "../config/declare";
+
 export type ExternalTemplate = {
 
-    readonly name: string;
-    readonly version: string;
     readonly url: string;
-};
+} & BarkTemplateBase;
 
 export type ExternalSourceStructure = {
 

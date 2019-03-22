@@ -12,13 +12,17 @@ export type BarkSource = {
     readonly url: string;
 };
 
-export type BarkTemplate = {
+export type BarkTemplateBase = {
 
     readonly name: string;
     readonly version: string;
+};
+
+export type BarkTemplate = {
+
     readonly path?: string;
     readonly url?: string;
-};
+} & BarkTemplateBase;
 
 export type BarkConfig = {
 

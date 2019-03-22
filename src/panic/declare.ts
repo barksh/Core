@@ -15,6 +15,9 @@ export enum ERROR_CODE {
 
     DECOMPRESS_FILE_FAILED = 1645,
 
+    TEMPLATE_NOT_INSTALLED = 4001,
+    TEMPLATE_NOT_EXIST = 4002,
+
     INVALID_EXTERNAL_URL = 5050,
     INVALID_EXTERNAL_PROTOCOL = 5051,
 
@@ -34,6 +37,9 @@ export const ERROR_LIST = {
     [ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED]: 'Failed verify external source file',
 
     [ERROR_CODE.DECOMPRESS_FILE_FAILED]: 'Decompress file failed from, "{}"',
+
+    [ERROR_CODE.TEMPLATE_NOT_INSTALLED]: 'Wanted template: "{}" not installed',
+    [ERROR_CODE.TEMPLATE_NOT_EXIST]: 'Wanted template: "{}" not exist',
 
     [ERROR_CODE.INVALID_EXTERNAL_URL]: 'Invalid external url, "{}"',
     [ERROR_CODE.INVALID_EXTERNAL_PROTOCOL]: 'Invalid external protocol, "{}"',

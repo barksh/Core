@@ -74,20 +74,28 @@ export const getDirectoryFiles = (path: string): Promise<string[]> =>
 
 export const recursiveDo = async (
     path: string,
-    folder: (file: string) => Promise<void>,
-    directory: (path: string) => Promise<void>,
+    fileFunction: (file: string) => Promise<void>,
+    directoryFunction?: (path: string) => Promise<void>,
+    condition?: (isFile: boolean, path: string) => boolean,
 ): Promise<void> => {
 
     const status: Fs.Stats = await getPathStatus(path);
 
     if (status.isDirectory()) {
-        await directory(path);
-        const files: string[] = await getDirectoryFiles(path);
-        for (const file of files) {
-            await recursiveDo(file, folder, directory);
+
+        if (condition(false, path)) {
+            if (directoryFunction) {
+                await directoryFunction(path);
+            }
+            const files: string[] = await getDirectoryFiles(path);
+            for (const file of files) {
+                await recursiveDo(file, fileFunction, directoryFunction);
+            }
         }
     } else if (status.isFile()) {
-        await folder(path);
+        if (condition(true, path)) {
+            await fileFunction(path);
+        }
     }
     return;
 };
