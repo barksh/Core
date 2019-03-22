@@ -8,14 +8,16 @@ export type BarkSource = {
 
     readonly lastUpdate: Date;
     readonly templates: BarkTemplate[];
+    readonly reachable: boolean;
     readonly url: string;
 };
 
 export type BarkTemplate = {
 
     readonly name: string;
-    readonly path: string;
     readonly version: string;
+    readonly path?: string;
+    readonly url?: string;
 };
 
 export type BarkConfig = {
