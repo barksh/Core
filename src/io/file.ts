@@ -83,7 +83,7 @@ export const recursiveDo = async (
 
     if (status.isDirectory()) {
 
-        if (condition(false, path)) {
+        if (condition ? condition(false, path) : true) {
             if (directoryFunction) {
                 await directoryFunction(path);
             }
@@ -93,7 +93,7 @@ export const recursiveDo = async (
             }
         }
     } else if (status.isFile()) {
-        if (condition(true, path)) {
+        if (condition ? condition(true, path) : true) {
             await fileFunction(path);
         }
     }
