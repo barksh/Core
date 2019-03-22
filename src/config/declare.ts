@@ -4,29 +4,26 @@
  * @description Declare
  */
 
+import { ExternalSourceStructure } from "../source/declare";
+
 export type BarkSource = {
 
     readonly lastUpdate: Date;
-    readonly templates: BarkTemplate[];
-    readonly reachable: boolean;
+    readonly structure: ExternalSourceStructure;
     readonly url: string;
-};
-
-export type BarkTemplateBase = {
-
-    readonly name: string;
-    readonly version: string;
 };
 
 export type BarkTemplate = {
 
-    readonly path?: string;
-    readonly url?: string;
-} & BarkTemplateBase;
+    readonly name: string;
+    readonly path: string;
+    readonly version: string;
+};
 
 export type BarkConfig = {
 
     readonly sources: BarkSource[];
+    readonly templates: BarkTemplate[];
 };
 
 export const getDefaultConfig = (): BarkConfig => {
@@ -34,5 +31,6 @@ export const getDefaultConfig = (): BarkConfig => {
     return {
 
         sources: [],
+        templates: [],
     };
 };
