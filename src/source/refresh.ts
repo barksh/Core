@@ -9,13 +9,23 @@ import { getExternalData } from "../io/external";
 import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
 import { safeParseJSON } from "../util/safe";
-import { ExternalSourceStructure } from "./declare";
+import { ExternalSourceStructure, ExternalTemplate } from "./declare";
 
 export const verifyExternalSourceStructure = (structure: ExternalSourceStructure): boolean => {
 
     if (!structure.templates) {
         return false;
     }
+
+    if (!structure.templates.every(
+        (template: ExternalTemplate) => {
+            return Boolean(template.name)
+                && Boolean(template.url)
+                && Boolean(template.version);
+        })) {
+        return false;
+    }
+
     return true;
 };
 
