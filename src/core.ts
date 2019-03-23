@@ -4,7 +4,9 @@
  * @description Core
  */
 
+import { BarkTemplate } from "./config/declare";
 import { Environment } from "./config/environment";
+import { searchTemplateFromEnvironmentByQuery } from "./template/template";
 
 export class Core {
 
@@ -18,5 +20,10 @@ export class Core {
     private constructor(env: Environment) {
 
         this._env = env;
+    }
+
+    public attempt(query: string): BarkTemplate | null {
+
+        return searchTemplateFromEnvironmentByQuery(this._env, query);
     }
 }
