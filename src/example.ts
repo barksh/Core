@@ -7,7 +7,6 @@
 import * as Path from "path";
 import { Environment } from "./config/environment";
 import { fetchAndDecompressFromAnyExternal } from "./io/external";
-import { getRandomPackagePath } from "./io/util";
 
 (async () => {
 
