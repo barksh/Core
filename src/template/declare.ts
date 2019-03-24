@@ -4,6 +4,8 @@
  * @description Declare
  */
 
+export const ConfigFileName = '.bark.config.json';
+
 export type TemplateQueryInfo = {
     name: string;
     version: string | VERSION_QUERY;

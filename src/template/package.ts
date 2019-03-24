@@ -4,14 +4,14 @@
  * @description Package
  */
 
-import * as Path from "path";
 import { Environment } from "../config/environment";
 import { checkPathExists } from "../io/file";
-import { ConfigFileName, TemplateConfig } from "./declare";
+import { getBarkTemplateConfigFilePath } from "../io/util";
+import { TemplateConfig } from "./declare";
 
 export const getPackageInstruction = async (env: Environment, folderName: string): Promise<TemplateConfig | null> => {
 
-    const existences: boolean = await checkPathExists(Path.join(env.packagePath, folderName, ConfigFileName));
+    const existences: boolean = await checkPathExists(getBarkTemplateConfigFilePath(env, folderName));
 
     if (!existences) {
         return null;

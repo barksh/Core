@@ -8,6 +8,7 @@ import * as Path from "path";
 import { Environment } from "../config/environment";
 import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
+import { ConfigFileName } from "../template/declare";
 import { unique } from "../util/random";
 import { EXTERNAL_PROTOCOL } from "./declare";
 import { checkPathExists } from "./file";
@@ -93,3 +94,5 @@ export const getRandomPackagePath = async (env: Environment, filename?: string):
     const uniqueFolderName: string = filename || unique();
     return Path.join(packagePath, uniqueFolderName);
 };
+
+export const getBarkTemplateConfigFilePath = (env: Environment, folder: string): string => Path.join(env.packagePath, folder, ConfigFileName);
