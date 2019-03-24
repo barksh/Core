@@ -20,10 +20,12 @@ export enum TEMPLATE_METHOD {
     EJS = 'EJS',
 }
 
+export type Description = string;
+
 export type TemplateConfig = {
 
     readonly templateMethod: TEMPLATE_METHOD;
-    readonly replacements: Record<string, string>;
+    readonly replacements: Record<string, Description>;
 };
 
 export const getDefaultTemplateConfig = (): TemplateConfig => {
