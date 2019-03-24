@@ -4,17 +4,44 @@
  * @description Package
  */
 
+import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
-import { checkPathExists } from "../io/file";
+import { checkPathExists, readTextFile } from "../io/file";
 import { getBarkTemplateConfigFilePath } from "../io/util";
+import { ERROR_CODE } from "../panic/declare";
+import { Panic } from "../panic/panic";
+import { safeParseJSON } from "../util/safe";
 import { TemplateConfig } from "./declare";
 
-export const getPackageInstruction = async (env: Environment, folderName: string): Promise<TemplateConfig | null> => {
+export const verifyTemplateConfig = (config: TemplateConfig): boolean => {
 
-    const existences: boolean = await checkPathExists(getBarkTemplateConfigFilePath(env, folderName));
+    if (!config.templateMethod) {
+        return false;
+    }
+
+    return true;
+};
+
+export const getPackageTemplateConfigByBarkTemplate = async (env: Environment, template: BarkTemplate): Promise<TemplateConfig | null> => {
+
+    return await getPackageTemplateConfigByFoldername(env, template.folderName);
+};
+
+export const getPackageTemplateConfigByFoldername = async (env: Environment, folderName: string): Promise<TemplateConfig | null> => {
+
+    const configFilePath: string = getBarkTemplateConfigFilePath(env, folderName);
+    const existences: boolean = await checkPathExists(configFilePath);
 
     if (!existences) {
         return null;
     }
-    return null;
+
+    const content: string = await readTextFile(configFilePath);
+    const parsed: TemplateConfig = safeParseJSON(content, Panic.code(ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED, folderName));
+
+    if (!verifyTemplateConfig(parsed)) {
+        throw Panic.code(ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED, folderName);
+    }
+
+    return parsed;
 };
