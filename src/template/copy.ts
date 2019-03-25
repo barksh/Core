@@ -5,15 +5,18 @@
  */
 
 import * as Path from "path";
-import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
-import { recursiveDoExcludeFileName } from "../io/file";
+import { Template } from "../config/template";
+import { readTextFile, recursiveDoExcludeFileName } from "../io/file";
 import { ConfigFileName } from "./declare";
+import { parseContent } from "./parse";
 
-export const parseAndCopyTemplate = async (env: Environment, template: BarkTemplate, replacements: Record<string, string>, targetPath: string): Promise<void> => {
+export const parseAndCopyTemplate = async (env: Environment, template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> => {
 
-    const templatePath: string = Path.join(env.packagePath, template.folderName);
+    const templatePath: string = Path.join(env.packagePath, template.template.folderName);
     await recursiveDoExcludeFileName(templatePath, async (file: string) => {
-        console.log(file);
+
+        const content: string = await readTextFile(file);
+        const parsed: string = parseContent(template.config.templateMethod, content, replacements);
     }, [ConfigFileName]);
 };

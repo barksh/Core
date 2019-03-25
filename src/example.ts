@@ -7,6 +7,7 @@
 import * as Path from "path";
 import { BarkTemplate } from "./config/declare";
 import { Environment } from "./config/environment";
+import { Template } from "./config/template";
 import { Core } from "./core";
 
 (async () => {
@@ -20,7 +21,6 @@ import { Core } from "./core";
                     name: 'test',
                     version: '',
                     folderName: 'test',
-                    replacements: {},
                 },
             ],
             sources: [],
@@ -29,13 +29,14 @@ import { Core } from "./core";
         .setTemporaryPath(Path.join(appDataPath, 'temp'));
     try {
         const core: Core = Core.withEnvironment(env);
-        const template: BarkTemplate | null = core.attempt('test');
+        const template: Template | null = await core.attempt('test');
 
         if (!template) {
             throw new Error('no template');
         }
 
-        console.log(await core.read(template));
+        console.log(template);
+        await core.init(template, {}, Path.join(appDataPath, 'example'));
     } catch (err) {
         console.log(err);
     }

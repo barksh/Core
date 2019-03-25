@@ -18,7 +18,6 @@ export type BarkTemplate = {
     readonly name: string;
     readonly version: string;
     readonly folderName: string;
-    readonly replacements: Record<string, string>;
 };
 
 export type BarkConfig = {

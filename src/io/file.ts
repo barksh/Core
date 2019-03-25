@@ -90,7 +90,8 @@ export const recursiveDo = async (
             }
             const files: string[] = await getDirectoryFiles(path);
             for (const file of files) {
-                await recursiveDo(file, fileFunction, directoryFunction);
+                const appended: string = Path.join(path, file);
+                await recursiveDo(appended, fileFunction, directoryFunction);
             }
         }
     } else if (status.isFile()) {
@@ -112,7 +113,8 @@ export const recursiveDoExcludeFileName = async (
     if (status.isDirectory()) {
         const files: string[] = await getDirectoryFiles(path);
         for (const file of files) {
-            await recursiveDoExcludeFileName(file, fileFunction, excludes);
+            const appended: string = Path.join(path, file);
+            await recursiveDoExcludeFileName(appended, fileFunction, excludes);
         }
     } else if (status.isFile()) {
         if (!excludes.includes(Path.basename(path))) {
