@@ -18,6 +18,8 @@ export enum ERROR_CODE {
 
     DECOMPRESS_FILE_FAILED = 1645,
 
+    EJS_PARSE_FAILED = 2010,
+
     TEMPLATE_NOT_INSTALLED = 4001,
     TEMPLATE_NOT_EXIST = 4002,
 
@@ -45,6 +47,8 @@ export const ERROR_LIST = {
     [ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED]: 'Failed verify template: "{}" config file',
 
     [ERROR_CODE.DECOMPRESS_FILE_FAILED]: 'Decompress file failed from, "{}"',
+
+    [ERROR_CODE.EJS_PARSE_FAILED]: 'Ejs file parse failed, message: "{}"',
 
     [ERROR_CODE.TEMPLATE_NOT_INSTALLED]: 'Wanted template: "{}" not installed',
     [ERROR_CODE.TEMPLATE_NOT_EXIST]: 'Wanted template: "{}" not exist',

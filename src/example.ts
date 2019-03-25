@@ -5,7 +5,6 @@
  */
 
 import * as Path from "path";
-import { BarkTemplate } from "./config/declare";
 import { Environment } from "./config/environment";
 import { Template } from "./config/template";
 import { Core } from "./core";
@@ -36,7 +35,7 @@ import { Core } from "./core";
         }
 
         await core.init(template, {
-            hello: 'world',
+            hello: 'test hello ',
         }, Path.join(appDataPath, 'example'));
     } catch (err) {
         console.log(err);

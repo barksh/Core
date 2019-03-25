@@ -7,8 +7,13 @@
 export const ConfigFileName = '.bark.config.json';
 
 export type TemplateQueryInfo = {
-    name: string;
-    version: string | VERSION_QUERY;
+
+    readonly scripts?: {
+        beforeInstall?: string[],
+        afterInstall?: string[],
+    },
+    readonly name: string;
+    readonly version: string | VERSION_QUERY;
 };
 
 export enum VERSION_QUERY {
