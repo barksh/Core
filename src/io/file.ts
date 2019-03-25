@@ -6,6 +6,7 @@
 
 import * as Crypto from "crypto";
 import * as Fs from "fs";
+import * as Path from "path";
 
 export const UTF8 = 'utf8';
 
@@ -106,6 +107,19 @@ export const recursiveDoExcludeFileName = async (
     excludes: string[],
 ): Promise<void> => {
 
+    const status: Fs.Stats = await getPathStatus(path);
+
+    if (status.isDirectory()) {
+        const files: string[] = await getDirectoryFiles(path);
+        for (const file of files) {
+            await recursiveDoExcludeFileName(file, fileFunction, excludes);
+        }
+    } else if (status.isFile()) {
+        if (!excludes.includes(Path.basename(path))) {
+            await fileFunction(path);
+        }
+    }
+    return;
 };
 
 export const checkPathExists = (path: string): Promise<boolean> =>
