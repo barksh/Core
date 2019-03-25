@@ -24,10 +24,10 @@ export const verifyTemplateConfig = (config: TemplateConfig): boolean => {
 
 export const getPackageTemplateConfigByBarkTemplate = async (env: Environment, template: BarkTemplate): Promise<TemplateConfig | null> => {
 
-    return await getPackageTemplateConfigByFoldername(env, template.folderName);
+    return await getPackageTemplateConfigByFolderName(env, template.folderName);
 };
 
-export const getPackageTemplateConfigByFoldername = async (env: Environment, folderName: string): Promise<TemplateConfig | null> => {
+export const getPackageTemplateConfigByFolderName = async (env: Environment, folderName: string): Promise<TemplateConfig | null> => {
 
     const configFilePath: string = getBarkTemplateConfigFilePath(env, folderName);
     const existences: boolean = await checkPathExists(configFilePath);

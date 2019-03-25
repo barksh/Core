@@ -28,8 +28,10 @@ export const parseTemplateQuery = (query: string): TemplateQueryInfo => {
 export const searchTemplateFromConfig = (config: BarkConfig, info: TemplateQueryInfo): BarkTemplate | null => {
 
     for (const template of config.templates) {
-        if (template.name === info.name && template.version === info.version) {
-            return template;
+        if (template.name === info.name) {
+            if (template.version === info.version || info.version === VERSION_QUERY.ANY) {
+                return template;
+            }
         }
     }
     return null;
