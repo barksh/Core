@@ -4,13 +4,13 @@
  * @description Core
  */
 
-import { BarkTemplate } from "./config/declare";
-import { Environment } from "./config/environment";
-import { Template } from "./config/template";
-import { parseAndCopyTemplate } from "./template/copy";
-import { getDefaultTemplateConfig, TemplateConfig } from "./template/declare";
-import { getPackageTemplateConfigByBarkTemplate } from "./template/package";
-import { searchTemplateFromEnvironmentByQuery } from "./template/template";
+import { BarkTemplate } from "../config/declare";
+import { Environment } from "../config/environment";
+import { Template } from "../config/template";
+import { parseAndCopyTemplate } from "../template/copy";
+import { getDefaultTemplateConfig, TemplateConfig } from "../template/declare";
+import { getPackageTemplateConfigByBarkTemplate } from "../template/package";
+import { searchTemplateFromEnvironmentByQuery } from "../template/template";
 
 export class Core {
 

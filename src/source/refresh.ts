@@ -4,7 +4,8 @@
  * @description Refresh
  */
 
-import { BarkSource } from "../config/declare";
+import { BarkConfig, BarkSource } from "../config/declare";
+import { Environment } from "../config/environment";
 import { getExternalData } from "../io/external";
 import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
@@ -39,4 +40,23 @@ export const updateSourceFromExternal = async (source: BarkSource): Promise<Bark
     }
 
     return source;
+};
+
+export const updateAllSourceFromExternal = async (env: Environment): Promise<Environment> => {
+
+    const newSourceList: BarkSource[] = [];
+    for (const source of env.config.sources) {
+        const newSource: BarkSource = await updateSourceFromExternal(source);
+        newSourceList.push(newSource);
+    }
+
+    const newConfig: BarkConfig = {
+        ...env.config,
+        sources: newSourceList,
+    };
+
+    const newEnvironment: Environment = env.clone();
+    newEnvironment.setConfig(newConfig);
+
+    return newEnvironment;
 };

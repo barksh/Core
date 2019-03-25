@@ -15,11 +15,15 @@ export class Environment {
         return new Environment();
     }
 
-    private _packagePath: string | null = null;
-    private _temporaryPath: string | null = null;
-    private _config: BarkConfig | null = null;
+    private _packagePath: string | null;
+    private _temporaryPath: string | null;
+    private _config: BarkConfig | null;
 
     private constructor() {
+
+        this._packagePath = null;
+        this._temporaryPath = null;
+        this._config = null;
     }
 
     public get config(): BarkConfig {
@@ -51,6 +55,19 @@ export class Environment {
     public setTemporaryPath(path: string): this {
         this._temporaryPath = path;
         return this;
+    }
+
+    public clone(): Environment {
+
+        const newEnv: Environment = Environment.create();
+        newEnv._config = {
+            sources: [...this._config.sources],
+            templates: [...this._config.templates],
+        };
+        newEnv._temporaryPath = this._temporaryPath;
+        newEnv._packagePath = this._packagePath;
+
+        return newEnv;
     }
 
     public setConfig(config: BarkConfig): this {
