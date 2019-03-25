@@ -100,6 +100,14 @@ export const recursiveDo = async (
     return;
 };
 
+export const recursiveDoExcludeFileName = async (
+    path: string,
+    fileFunction: (file: string) => Promise<void>,
+    excludes: string[],
+): Promise<void> => {
+
+};
+
 export const checkPathExists = (path: string): Promise<boolean> =>
     new Promise<boolean>((resolve: (exist: boolean) => void) => {
         Fs.exists(path, (exists: boolean) => {
