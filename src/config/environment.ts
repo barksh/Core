@@ -60,10 +60,7 @@ export class Environment {
     public clone(): Environment {
 
         const newEnv: Environment = Environment.create();
-        newEnv._config = {
-            sources: [...this._config.sources],
-            templates: [...this._config.templates],
-        };
+        newEnv._config = this._getClonedConfig();
         newEnv._temporaryPath = this._temporaryPath;
         newEnv._packagePath = this._packagePath;
 
@@ -77,5 +74,18 @@ export class Environment {
         }
         this._config = config;
         return this;
+    }
+
+    private _getClonedConfig(): BarkConfig | null {
+
+        if (!this._config) {
+            return null;
+        }
+
+        const newConfig: BarkConfig = {
+            sources: [...this._config.sources],
+            templates: [...this._config.templates],
+        };
+        return newConfig;
     }
 }
