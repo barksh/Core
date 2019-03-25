@@ -7,16 +7,24 @@
 import * as Path from "path";
 import { Environment } from "../config/environment";
 import { Template } from "../config/template";
-import { readTextFile, recursiveDoExcludeFileName } from "../io/file";
+import { readTextFile, recursiveDoExcludeFileName, writeTextFile } from "../io/file";
+import { Ensure } from "../util/ensure";
 import { ConfigFileName } from "./declare";
 import { parseContent } from "./parse";
 
 export const parseAndCopyTemplate = async (env: Environment, template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> => {
 
     const templatePath: string = Path.join(env.packagePath, template.template.folderName);
-    await recursiveDoExcludeFileName(templatePath, async (file: string) => {
+    const ensure: Ensure = Ensure.create();
+
+    await recursiveDoExcludeFileName(templatePath, async (file: string, relative: string[]) => {
 
         const content: string = await readTextFile(file);
         const parsed: string = parseContent(template.config.templateMethod, content, replacements);
+
+        const targetFile: string = Path.join(targetPath, ...relative);
+
+        await ensure.ensure(targetFile);
+        await writeTextFile(targetFile, parsed);
     }, [ConfigFileName]);
 };

@@ -104,21 +104,22 @@ export const recursiveDo = async (
 
 export const recursiveDoExcludeFileName = async (
     path: string,
-    fileFunction: (file: string) => Promise<void>,
+    fileFunction: (file: string, relative: string[]) => Promise<void>,
     excludes: string[],
+    relative: string[] = [],
 ): Promise<void> => {
 
     const status: Fs.Stats = await getPathStatus(path);
 
     if (status.isDirectory()) {
-        const files: string[] = await getDirectoryFiles(path);
-        for (const file of files) {
-            const appended: string = Path.join(path, file);
-            await recursiveDoExcludeFileName(appended, fileFunction, excludes);
+        const subpaths: string[] = await getDirectoryFiles(path);
+        for (const subpath of subpaths) {
+            const appended: string = Path.join(path, subpath);
+            await recursiveDoExcludeFileName(appended, fileFunction, excludes, [...relative, subpath]);
         }
     } else if (status.isFile()) {
         if (!excludes.includes(Path.basename(path))) {
-            await fileFunction(path);
+            await fileFunction(path, relative);
         }
     }
     return;
