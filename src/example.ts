@@ -35,8 +35,9 @@ import { Core } from "./core";
             throw new Error('no template');
         }
 
-        console.log(template);
-        await core.init(template, {}, Path.join(appDataPath, 'example'));
+        await core.init(template, {
+            hello: 'world',
+        }, Path.join(appDataPath, 'example'));
     } catch (err) {
         console.log(err);
     }

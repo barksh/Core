@@ -29,8 +29,6 @@ export class Ensure {
                 await attemptMarkDir(each);
             }
         }
-        console.log(path);
-        console.log(this._cache.size);
         return;
     }
 

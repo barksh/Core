@@ -8,6 +8,7 @@ import * as Path from "path";
 import { Environment } from "../config/environment";
 import { Template } from "../config/template";
 import { readTextFile, recursiveDoExcludeFileName, writeTextFile } from "../io/file";
+import { getPathWithoutExtName } from "../io/util";
 import { Ensure } from "../util/ensure";
 import { ConfigFileName } from "./declare";
 import { parseContent } from "./parse";
@@ -25,6 +26,8 @@ export const parseAndCopyTemplate = async (env: Environment, template: Template,
         const targetFile: string = Path.join(targetPath, ...relative);
 
         await ensure.ensure(targetFile);
-        await writeTextFile(targetFile, parsed);
+
+        const pathWithoutExtName = getPathWithoutExtName(targetFile);
+        await writeTextFile(pathWithoutExtName, parsed);
     }, [ConfigFileName]);
 };
