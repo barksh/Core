@@ -7,6 +7,7 @@
 import * as Path from "path";
 import { Environment } from "../config/environment";
 import { Template } from "../config/template";
+import { HOOKS } from "../hook/declare";
 import { readTextFile, recursiveDoExcludeFileName, writeTextFile } from "../io/file";
 import { getPathWithoutExtName } from "../io/util";
 import { Ensure } from "../util/ensure";
@@ -34,6 +35,7 @@ export const parseAndCopyTemplate = async (
 
         const pathWithoutExtName = getPathWithoutExtName(targetFile);
 
+        env.hook.call(HOOKS.PARSE_FILE, file);
         await writeTextFile(pathWithoutExtName, parsed);
     }, [ConfigFileName]);
 };
