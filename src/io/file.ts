@@ -110,8 +110,6 @@ export const recursiveDoExcludeFileName = async (
 ): Promise<void> => {
 
     const status: Fs.Stats = await getPathStatus(path);
-    console.log(status.isFile());
-
     if (status.isDirectory()) {
         const subpaths: string[] = await getDirectoryFiles(path);
         for (const subpath of subpaths) {

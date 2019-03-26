@@ -74,7 +74,7 @@ export const parseGithubProtocol = (url: string): string => {
 export const getRandomTempFilePath = async (env: Environment, extension: string, filename?: string): Promise<string> => {
 
     const tempPath: string = env.temporaryPath;
-    await Ensure.create().ensure(tempPath);
+    await Ensure.create().ensureFolder(tempPath);
 
     const uniqueFileName: string = (filename || unique()) + '.' + extension;
     return Path.join(tempPath, uniqueFileName);
@@ -83,7 +83,7 @@ export const getRandomTempFilePath = async (env: Environment, extension: string,
 export const getRandomPackagePath = async (env: Environment, filename?: string): Promise<string> => {
 
     const packagePath: string = env.packagePath;
-    await Ensure.create().ensure(packagePath);
+    await Ensure.create().ensureFolder(packagePath);
 
     const uniqueFolderName: string = filename || unique();
     return Path.join(packagePath, uniqueFolderName);

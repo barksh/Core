@@ -34,7 +34,6 @@ export const parseAndCopyTemplate = async (
 
         const pathWithoutExtName = getPathWithoutExtName(targetFile);
 
-        console.log(file);
         await writeTextFile(pathWithoutExtName, parsed);
     }, [ConfigFileName]);
 };

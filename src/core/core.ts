@@ -35,7 +35,10 @@ export class Core {
 
     public async install(query: string): Promise<Environment> {
 
-        return await installAction(this._env, query);
+        const newEnv: Environment = await installAction(this._env, query);
+        this.setEnvironment(newEnv);
+
+        return newEnv;
     }
 
     public async attempt(query: string): Promise<Template | null> {

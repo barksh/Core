@@ -34,12 +34,27 @@ export class Ensure {
         return;
     }
 
+    public async ensureFolder(path: string): Promise<void> {
+        const splited: string[] = this._split(path);
+        const ensurer: string[] = this._recursive(splited, true);
+
+        for (const each of ensurer) {
+            if (!this._cache.has(each)) {
+                this._cache.add(each);
+                await attemptMarkDir(each);
+            }
+        }
+        return;
+    }
+
     private _split(path: string): string[] {
         return path.split(Path.sep);
     }
 
-    private _recursive(list: string[]): string[] {
-        return list.map((_: string, index: number): string =>
-            list.slice(0, index + 1).join(Path.sep)).filter(Boolean);
+    private _recursive(list: string[], includeLast?: boolean): string[] {
+        return list.map((_: string, index: number): string => {
+            const includedIndex: number = includeLast ? index + 1 : index;
+            return list.slice(0, includedIndex).join(Path.sep);
+        }).filter(Boolean);
     }
 }
