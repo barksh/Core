@@ -7,14 +7,16 @@
 export type FunctionArguments<T> = T extends (...args: infer U) => any ? U : never;
 export type FunctionReturn<T> = T extends (...args: any) => infer U ? U : never;
 
+export type VoidWithArgs<Args extends any[]> = (...args: Args) => void;
+
 export enum HOOKS {
 
     PARSE_FILE = "PARSE_FILE",
-    USER_INPUT = "USER_INPUT",
+    EXIT = "EXIT",
 }
 
-export type HookCallbacks = {
+export type HookCallbackArgs = {
 
-    [HOOKS.PARSE_FILE]: (filename: string) => void;
-    [HOOKS.USER_INPUT]: (input: string) => void;
+    [HOOKS.PARSE_FILE]: [string];
+    [HOOKS.EXIT]: [];
 };

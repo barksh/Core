@@ -4,7 +4,7 @@
  * @description Manager
  */
 
-import { FunctionArguments, HookCallbacks, HOOKS } from "./declare";
+import { HookCallbackArgs, HOOKS, VoidWithArgs } from "./declare";
 import { Hook } from "./hook";
 
 export class HookManager {
@@ -14,21 +14,21 @@ export class HookManager {
         return new HookManager();
     }
 
-    private readonly _hooks: Array<Hook<any, any>>;
+    private readonly _hooks: Array<Hook<any>>;
 
-    private constructor(hooks?: Array<Hook<any, any>>) {
+    private constructor(hooks?: Array<Hook<any>>) {
 
         this._hooks = hooks || [];
     }
 
     public clone(): HookManager {
 
-        return new HookManager(this._hooks.map((hook: Hook<any, any>) => hook.clone()));
+        return new HookManager(this._hooks.map((hook: Hook<any>) => hook.clone()));
     }
 
-    public call<T extends HOOKS, Args extends FunctionArguments<HookCallbacks[T]>>(key: T, ...args: Args): void {
+    public call<T extends HOOKS, Args extends HookCallbackArgs[T]>(key: T, ...args: Args): void {
 
-        const hook: Hook<T, HookCallbacks[T]> | null = this._match(key);
+        const hook: Hook<T> | null = this._match(key);
 
         if (hook) {
             hook.call(...args);
@@ -36,9 +36,9 @@ export class HookManager {
         return;
     }
 
-    public on<T extends HOOKS>(key: T, callback: HookCallbacks[T]): this {
+    public on<T extends HOOKS>(key: T, callback: VoidWithArgs<HookCallbackArgs[T]>): this {
 
-        const hook: Hook<T, HookCallbacks[T]> | null = this._match(key);
+        const hook: Hook<T> | null = this._match(key);
 
         if (hook) {
             hook.addCallback(callback);
@@ -48,7 +48,7 @@ export class HookManager {
         return this;
     }
 
-    private _match<T extends HOOKS>(key: T): Hook<T, HookCallbacks[T]> | null {
+    private _match<T extends HOOKS>(key: T): Hook<T> | null {
 
         for (const hook of this._hooks) {
             if (hook.match(key)) {

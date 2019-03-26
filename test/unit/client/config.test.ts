@@ -5,11 +5,9 @@
  * @override
  */
 
-import { Mock, Sandbox } from "@sudoo/mock";
 import { fail } from "assert";
 import { expect } from "chai";
 import * as Chance from "chance";
-import * as func_CLIENT_CONFIG from "../../../src/client/config";
 import { getOrInitConfig } from "../../../src/client/config";
 import { BarkConfig, getDefaultConfig } from "../../../src/config/declare";
 import { ERROR_CODE } from "../../../src/panic/declare";

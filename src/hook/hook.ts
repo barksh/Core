@@ -4,26 +4,26 @@
  * @description Hook
  */
 
-import { FunctionArguments, HookCallbacks, HOOKS } from "./declare";
+import { HookCallbackArgs, HOOKS, VoidWithArgs } from "./declare";
 
-export class Hook<K extends HOOKS, V extends HookCallbacks[K]> {
+export class Hook<K extends HOOKS> {
 
-    public static create<K extends HOOKS, V extends HookCallbacks[K]>(when: K, then?: V) {
+    public static create<K extends HOOKS>(when: K, then?: VoidWithArgs<HookCallbackArgs[K]>) {
 
         const hooks = then ? [then] : [];
-        return new Hook<K, V>(when, hooks);
+        return new Hook<K>(when, hooks);
     }
 
     private readonly _key: K;
-    private readonly _callbacks: V[];
+    private readonly _callbacks: Array<VoidWithArgs<HookCallbackArgs[K]>>;
 
-    private constructor(when: K, then: V[]) {
+    private constructor(when: K, then: Array<VoidWithArgs<HookCallbackArgs[K]>>) {
 
         this._key = when;
         this._callbacks = then;
     }
 
-    public call<T extends HOOKS, Args extends FunctionArguments<HookCallbacks[T]>>(...args: Args): void {
+    public call<T extends HOOKS, Args extends HookCallbackArgs[K]>(...args: Args): void {
 
         for (const callback of this._callbacks) {
 
@@ -34,13 +34,13 @@ export class Hook<K extends HOOKS, V extends HookCallbacks[K]> {
     }
 
 
-    public addCallback(then: V): this {
+    public addCallback(then: VoidWithArgs<HookCallbackArgs[K]>): this {
 
         this._callbacks.push(then);
         return this;
     }
 
-    public clone(): Hook<K, V> {
+    public clone(): Hook<K> {
 
         return new Hook(this._key, [...this._callbacks]);
     }
