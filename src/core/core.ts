@@ -11,6 +11,7 @@ import { parseAndCopyTemplate } from "../template/copy";
 import { getDefaultTemplateConfig, TemplateConfig } from "../template/declare";
 import { getPackageTemplateConfigByBarkTemplate } from "../template/package";
 import { searchTemplateFromEnvironmentByQuery } from "../template/template";
+import { installAction } from "./actions";
 
 export class Core {
 
@@ -19,11 +20,22 @@ export class Core {
         return new Core(env);
     }
 
-    private readonly _env: Environment;
+    private _env: Environment;
 
     private constructor(env: Environment) {
 
         this._env = env;
+    }
+
+    public setEnvironment(env: Environment): this {
+
+        this._env = env;
+        return this;
+    }
+
+    public async install(query: string): Promise<Environment> {
+
+        return await installAction(this._env, query);
     }
 
     public async attempt(query: string): Promise<Template | null> {
@@ -41,7 +53,7 @@ export class Core {
         return Template.create(getDefaultTemplateConfig(), template);
     }
 
-    public async init(template: Template, replacements: Record<string, string>, targetPath: string) {
+    public async init(template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> {
 
         return parseAndCopyTemplate(this._env, template, replacements, targetPath);
     }

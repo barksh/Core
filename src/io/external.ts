@@ -72,7 +72,7 @@ export const downloadFile = (url: string, targetPath: string): Promise<void> =>
         });
     });
 
-export const downloadAndDecompress = async (env: Environment, url: string): Promise<void> => {
+export const downloadAndDecompress = async (env: Environment, url: string): Promise<string> => {
 
     const tempFilePath: string = await getRandomTempFilePath(env, 'zip');
     await downloadFile(url, tempFilePath);
@@ -81,22 +81,24 @@ export const downloadAndDecompress = async (env: Environment, url: string): Prom
     const packagePath: string = await getRandomPackagePath(env, hash);
 
     await decompressZipFile(tempFilePath, packagePath);
+    return hash;
 };
 
-export const fetchAndDecompressFromAnyExternalByProtocol = async (env: Environment, protocol: EXTERNAL_PROTOCOL, url: string): Promise<void> => {
+export const fetchAndDecompressFromAnyExternalByProtocol = async (env: Environment, protocol: EXTERNAL_PROTOCOL, url: string): Promise<string> => {
 
     switch (protocol) {
         case EXTERNAL_PROTOCOL.GITHUB: {
             const parsed: string = parseGithubProtocol(url);
-            await downloadAndDecompress(env, parsed);
-            return;
+            const packageHash: string = await downloadAndDecompress(env, parsed);
+            return packageHash;
         }
         default: throw Panic.code(ERROR_CODE.NOT_IMPLEMENTED);
     }
 };
 
-export const fetchAndDecompressFromAnyExternal = async (env: Environment, url: string): Promise<void> => {
+export const fetchAndDecompressFromAnyExternal = async (env: Environment, url: string): Promise<string> => {
 
     const protocol: EXTERNAL_PROTOCOL = parseExternalProtocol(url);
-    await fetchAndDecompressFromAnyExternalByProtocol(env, protocol, url);
+    const packageHash: string = await fetchAndDecompressFromAnyExternalByProtocol(env, protocol, url);
+    return packageHash;
 };

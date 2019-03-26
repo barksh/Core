@@ -6,7 +6,7 @@
 
 import { BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
-import { TemplateQueryInfo } from "../template/declare";
+import { TemplateQueryInfo, VERSION_QUERY } from "../template/declare";
 import { ExternalTemplate } from "./declare";
 
 export const findUrlFromSourcesByEnvironment = (env: Environment, info: TemplateQueryInfo): ExternalTemplate | null => {
@@ -15,8 +15,11 @@ export const findUrlFromSourcesByEnvironment = (env: Environment, info: Template
 
     for (const source of sources) {
         for (const template of source.structure.templates) {
-            if (template.name === info.name && template.version === info.version) {
-                return template;
+
+            if (template.name === info.name) {
+                if (template.version === info.version || info.version === VERSION_QUERY.ANY) {
+                    return template;
+                }
             }
         }
     }

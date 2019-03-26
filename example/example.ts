@@ -19,10 +19,22 @@ import { Template } from "../src/config/template";
                 {
                     name: 'test',
                     version: '',
-                    folderName: 'test',
+                    folderName: '2248a1f906aab69e5ce263b9099f998d',
                 },
             ],
-            sources: [],
+            sources: [
+                {
+                    url: 'https://google.com',
+                    lastUpdate: new Date(),
+                    structure: {
+                        templates: [{
+                            name: 'new',
+                            url: 'github://WMXPY/Ghoti-CLI-templates/master/dist/react-ssr.zip',
+                            version: '1.0.0',
+                        }],
+                    },
+                },
+            ],
         })
         .setPackagePath(Path.join(appDataPath, 'package'))
         .setTemporaryPath(Path.join(appDataPath, 'temp'));
@@ -37,6 +49,9 @@ import { Template } from "../src/config/template";
         await core.init(template, {
             hello: 'test hello ',
         }, Path.join(appDataPath, 'example'));
+
+        // const newEnv = await core.install('new');
+        // console.log(newEnv);
     } catch (err) {
         console.log(err);
     }

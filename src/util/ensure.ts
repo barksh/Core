@@ -22,7 +22,9 @@ export class Ensure {
 
     public async ensure(path: string): Promise<void> {
 
-        const ensurer: string[] = this._recursive(this._split(path));
+        const splited: string[] = this._split(path);
+        const ensurer: string[] = this._recursive(splited);
+
         for (const each of ensurer) {
             if (!this._cache.has(each)) {
                 this._cache.add(each);
@@ -38,6 +40,6 @@ export class Ensure {
 
     private _recursive(list: string[]): string[] {
         return list.map((_: string, index: number): string =>
-            list.slice(0, index).join(Path.sep)).filter(Boolean);
+            list.slice(0, index + 1).join(Path.sep)).filter(Boolean);
     }
 }

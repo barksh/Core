@@ -9,9 +9,9 @@ import { Environment } from "../config/environment";
 import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
 import { ConfigFileName } from "../template/declare";
+import { Ensure } from "../util/ensure";
 import { unique } from "../util/random";
 import { EXTERNAL_PROTOCOL } from "./declare";
-import { checkPathExists } from "./file";
 
 export const splitPath = (path: string): string[] => path.split(Path.sep);
 
@@ -74,11 +74,8 @@ export const parseGithubProtocol = (url: string): string => {
 export const getRandomTempFilePath = async (env: Environment, extension: string, filename?: string): Promise<string> => {
 
     const tempPath: string = env.temporaryPath;
-    const exists: boolean = await checkPathExists(tempPath);
+    await Ensure.create().ensure(tempPath);
 
-    if (!exists) {
-        throw Panic.code(ERROR_CODE.PATH_NOT_EXIST, tempPath);
-    }
     const uniqueFileName: string = (filename || unique()) + '.' + extension;
     return Path.join(tempPath, uniqueFileName);
 };
@@ -86,11 +83,8 @@ export const getRandomTempFilePath = async (env: Environment, extension: string,
 export const getRandomPackagePath = async (env: Environment, filename?: string): Promise<string> => {
 
     const packagePath: string = env.packagePath;
-    const exists: boolean = await checkPathExists(packagePath);
+    await Ensure.create().ensure(packagePath);
 
-    if (!exists) {
-        throw Panic.code(ERROR_CODE.PATH_NOT_EXIST, packagePath);
-    }
     const uniqueFolderName: string = filename || unique();
     return Path.join(packagePath, uniqueFolderName);
 };

@@ -4,7 +4,15 @@
  * @description Config
  */
 
-import { BarkConfig } from "./declare";
+import { BarkConfig, BarkTemplate } from "./declare";
+
+export const addTemplate = (previous: BarkConfig, template: BarkTemplate): BarkConfig => {
+
+    return {
+        ...previous,
+        templates: [...previous.templates, template],
+    };
+};
 
 export const verifyBarkConfig = (config: BarkConfig): boolean => {
 
