@@ -7,7 +7,16 @@
 import { BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
 import { TemplateQueryInfo, VERSION_QUERY } from "../template/declare";
-import { ExternalTemplate } from "./declare";
+import { ExternalSourceStructure, ExternalTemplate } from "./declare";
+
+export const updateBarkSourceFromExternalSourceStructure = (source: BarkSource ,structure: ExternalSourceStructure): BarkSource => {
+
+    return {
+        ...source,
+        lastUpdate: new Date(),
+        structure,
+    };
+};
 
 export const findUrlFromSourcesByEnvironment = (env: Environment, info: TemplateQueryInfo): ExternalTemplate | null => {
 

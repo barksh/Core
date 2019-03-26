@@ -11,6 +11,7 @@ import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
 import { safeParseJSON } from "../util/safe";
 import { ExternalSourceStructure, ExternalTemplate } from "./declare";
+import { updateBarkSourceFromExternalSourceStructure } from "./source";
 
 export const verifyExternalSourceStructure = (structure: ExternalSourceStructure): boolean => {
 
@@ -39,7 +40,7 @@ export const updateSourceFromExternal = async (source: BarkSource): Promise<Bark
         throw Panic.code(ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED);
     }
 
-    return source;
+    return updateBarkSourceFromExternalSourceStructure(source, parsed);
 };
 
 export const updateAllSourceFromExternal = async (env: Environment): Promise<Environment> => {

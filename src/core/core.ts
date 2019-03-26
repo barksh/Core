@@ -7,6 +7,7 @@
 import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
 import { Template } from "../config/template";
+import { updateAllSourceFromExternal } from "../source/refresh";
 import { parseAndCopyTemplate } from "../template/copy";
 import { getDefaultTemplateConfig, TemplateConfig } from "../template/declare";
 import { getPackageTemplateConfigByBarkTemplate } from "../template/package";
@@ -41,14 +42,6 @@ export class Core {
         return this;
     }
 
-    public async install(query: string): Promise<Environment> {
-
-        const newEnv: Environment = await installAction(this._env, query);
-        this._privateUpdateEnvironment(newEnv);
-
-        return newEnv;
-    }
-
     public async attempt(query: string): Promise<Template | null> {
 
         const template: BarkTemplate | null = searchTemplateFromEnvironmentByQuery(this._env, query);
@@ -67,6 +60,22 @@ export class Core {
     public async init(template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> {
 
         return parseAndCopyTemplate(this._env, template, replacements, targetPath);
+    }
+
+    public async install(query: string): Promise<Environment> {
+
+        const newEnv: Environment = await installAction(this._env, query);
+        this._privateUpdateEnvironment(newEnv);
+
+        return newEnv;
+    }
+
+    public async update(): Promise<Environment> {
+
+        const newEnv: Environment = await updateAllSourceFromExternal(this._env);
+        this._privateUpdateEnvironment(newEnv);
+
+        return newEnv;
     }
 
     private _privateUpdateEnvironment(newEnv: Environment): this {

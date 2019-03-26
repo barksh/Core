@@ -18,7 +18,7 @@ import { Template } from "../src/config/template";
             templates: [],
             sources: [
                 {
-                    url: 'https://google.com',
+                    url: 'http://www.mocky.io/v2/5c9a995a3500004c00d0c6f8',
                     lastUpdate: new Date(),
                     structure: {
                         templates: [{
@@ -35,17 +35,19 @@ import { Template } from "../src/config/template";
     try {
         const core: Core = Core.withEnvironment(env);
 
-        await core.install('test');
+        // await core.install('test');
 
-        const template: Template | null = await core.attempt('test');
+        // const template: Template | null = await core.attempt('test');
 
-        if (!template) {
-            throw new Error('no template');
-        }
+        // if (!template) {
+        //     throw new Error('no template');
+        // }
 
-        await core.init(template, {
-            hello: 'test hello ',
-        }, Path.join(appDataPath, 'example'));
+        // await core.init(template, {
+        //     hello: 'test hello ',
+        // }, Path.join(appDataPath, 'example'));
+
+        console.log(await core.update());
 
     } catch (err) {
         console.log(err);
