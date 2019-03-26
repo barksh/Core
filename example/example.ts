@@ -7,7 +7,6 @@
 import * as Path from "path";
 import { Core } from "../src";
 import { Environment } from "../src/config/environment";
-import { Template } from "../src/config/template";
 
 (async () => {
 

@@ -7,13 +7,14 @@
 import { BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
 import { TemplateQueryInfo, VERSION_QUERY } from "../template/declare";
+import { getCurrentDate } from "../util/date";
 import { ExternalSourceStructure, ExternalTemplate } from "./declare";
 
-export const updateBarkSourceFromExternalSourceStructure = (source: BarkSource ,structure: ExternalSourceStructure): BarkSource => {
+export const updateBarkSourceFromExternalSourceStructure = (source: BarkSource, structure: ExternalSourceStructure): BarkSource => {
 
     return {
         ...source,
-        lastUpdate: new Date(),
+        lastUpdate: getCurrentDate(),
         structure,
     };
 };
