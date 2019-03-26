@@ -4,6 +4,7 @@
  * @description Environment
  */
 
+import { HookManager } from "../hook/manager";
 import { ERROR_CODE } from "../panic/declare";
 import { Panic } from "../panic/panic";
 import { verifyBarkConfig } from "./config";
@@ -19,11 +20,20 @@ export class Environment {
     private _temporaryPath: string | null;
     private _config: BarkConfig | null;
 
-    private constructor() {
+    private readonly _hookManager: HookManager;
+
+    private constructor(hookManager?: HookManager) {
 
         this._packagePath = null;
         this._temporaryPath = null;
         this._config = null;
+
+        this._hookManager = hookManager || HookManager.create();
+    }
+
+    public get hook(): HookManager {
+
+        return this._hookManager;
     }
 
     public get config(): BarkConfig {
@@ -59,7 +69,7 @@ export class Environment {
 
     public clone(): Environment {
 
-        const newEnv: Environment = Environment.create();
+        const newEnv: Environment = new Environment(this._hookManager.clone());
         newEnv._config = this._getClonedConfig();
         newEnv._temporaryPath = this._temporaryPath;
         newEnv._packagePath = this._packagePath;

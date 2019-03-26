@@ -13,7 +13,12 @@ import { Ensure } from "../util/ensure";
 import { ConfigFileName } from "./declare";
 import { parseContent } from "./parse";
 
-export const parseAndCopyTemplate = async (env: Environment, template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> => {
+export const parseAndCopyTemplate = async (
+    env: Environment,
+    template: Template,
+    replacements: Record<string, string>,
+    targetPath: string,
+): Promise<void> => {
 
     const templatePath: string = Path.join(env.packagePath, template.template.folderName);
     const ensure: Ensure = Ensure.create();
