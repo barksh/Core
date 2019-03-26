@@ -4,7 +4,7 @@
  * @description Manager
  */
 
-import { HookCallbacks, HOOKS } from "./declare";
+import { FunctionArguments, HookCallbacks, HOOKS } from "./declare";
 import { Hook } from "./hook";
 
 export class HookManager {
@@ -24,6 +24,16 @@ export class HookManager {
     public clone(): HookManager {
 
         return new HookManager(this._hooks.map((hook: Hook<any, any>) => hook.clone()));
+    }
+
+    public call<T extends HOOKS, Args extends FunctionArguments<HookCallbacks[T]>>(key: T, ...args: Args): void {
+
+        const hook: Hook<T, HookCallbacks[T]> | null = this._match(key);
+
+        if (hook) {
+            hook.call(...args);
+        }
+        return;
     }
 
     public on<T extends HOOKS>(key: T, callback: HookCallbacks[T]): this {

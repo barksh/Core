@@ -4,7 +4,7 @@
  * @description Hook
  */
 
-import { HookCallbacks, HOOKS } from "./declare";
+import { FunctionArguments, HookCallbacks, HOOKS } from "./declare";
 
 export class Hook<K extends HOOKS, V extends HookCallbacks[K]> {
 
@@ -22,6 +22,17 @@ export class Hook<K extends HOOKS, V extends HookCallbacks[K]> {
         this._key = when;
         this._callbacks = then;
     }
+
+    public call<T extends HOOKS, Args extends FunctionArguments<HookCallbacks[T]>>(...args: Args): void {
+
+        for (const callback of this._callbacks) {
+
+            const fixed: any = callback as any;
+            fixed(...args);
+        }
+        return null as any;
+    }
+
 
     public addCallback(then: V): this {
 

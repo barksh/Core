@@ -32,7 +32,6 @@ export class Environment {
     }
 
     public get hook(): HookManager {
-
         return this._hookManager;
     }
 
