@@ -15,16 +15,18 @@ import { installAction } from "./actions";
 
 export class Core {
 
-    public static withEnvironment(env: Environment): Core {
+    public static withEnvironment(env: Environment, immutable?: boolean): Core {
 
-        return new Core(env);
+        return new Core(env, immutable || false);
     }
 
     private _env: Environment;
+    private _enablePrivateUpdateEnv: boolean;
 
-    private constructor(env: Environment) {
+    private constructor(env: Environment, immutable: boolean) {
 
         this._env = env;
+        this._enablePrivateUpdateEnv = !immutable;
     }
 
     public setEnvironment(env: Environment): this {
@@ -33,10 +35,16 @@ export class Core {
         return this;
     }
 
+    public useImmutable(): this {
+
+        this._enablePrivateUpdateEnv = false;
+        return this;
+    }
+
     public async install(query: string): Promise<Environment> {
 
         const newEnv: Environment = await installAction(this._env, query);
-        this.setEnvironment(newEnv);
+        this._privateUpdateEnvironment(newEnv);
 
         return newEnv;
     }
@@ -59,5 +67,13 @@ export class Core {
     public async init(template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> {
 
         return parseAndCopyTemplate(this._env, template, replacements, targetPath);
+    }
+
+    private _privateUpdateEnvironment(newEnv: Environment): this {
+
+        if (this._enablePrivateUpdateEnv) {
+            this.setEnvironment(newEnv);
+        }
+        return this;
     }
 }
