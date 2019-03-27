@@ -39,3 +39,18 @@ export const parseAndCopyTemplate = async (
         await writeTextFile(pathWithoutExtName, parsed);
     }, [ConfigFileName]);
 };
+
+export const copyAllFiles = async (from: string, to: string): Promise<void> => {
+
+    const ensure: Ensure = Ensure.create();
+
+    await recursiveDoExcludeFileName(from, async (file: string, relative: string[]) => {
+
+        const content: string = await readTextFile(file);
+
+        const targetFile: string = Path.join(to, ...relative);
+
+        await ensure.ensure(targetFile);
+        await writeTextFile(targetFile, content);
+    }, []);
+};

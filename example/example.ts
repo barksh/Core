@@ -48,8 +48,9 @@ import { Environment } from "../src/config/environment";
 
         // console.log(await core.update());
 
-        console.log(await core.source('http://www.mocky.io/v2/5c9a995a3500004c00d0c6f8'));
+        // console.log(await core.source('http://www.mocky.io/v2/5c9a995a3500004c00d0c6f8'));
 
+        console.log(await core.installFromLocal('hello', 'world', Path.join(appDataPath, 'package', '2248a1f906aab69e5ce263b9099f998d')));
     } catch (err) {
         console.log(err);
     }

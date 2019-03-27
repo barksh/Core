@@ -9,7 +9,8 @@ import { Template } from "../config/template";
 import { addSourceFromURLToEnvironment } from "../source/init";
 import { updateAllSourceFromExternal } from "../source/refresh";
 import { parseAndCopyTemplate } from "../template/copy";
-import { attemptAction, installAction } from "./actions";
+import { attemptAction } from "./actions";
+import { installAction, installFromLocalAction } from "./install";
 
 export class Core {
 
@@ -60,6 +61,14 @@ export class Core {
     public async install(query: string): Promise<Environment> {
 
         const newEnv: Environment = await installAction(this._env, query);
+        this._privateUpdateEnvironment(newEnv);
+
+        return newEnv;
+    }
+
+    public async installFromLocal(name: string, version: string, path: string): Promise<Environment> {
+
+        const newEnv: Environment = await installFromLocalAction(this._env, name, version, path);
         this._privateUpdateEnvironment(newEnv);
 
         return newEnv;
