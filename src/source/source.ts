@@ -19,6 +19,18 @@ export const updateBarkSourceFromExternalSourceStructure = (source: BarkSource, 
     };
 };
 
+export const getSourceFromUrlByEnvironment = (env: Environment, url: string): BarkSource | null => {
+
+    const sources: BarkSource[] = env.config.sources;
+
+    for (const source of sources) {
+        if (source.url === url) {
+            return source;
+        }
+    }
+    return null;
+};
+
 export const findUrlFromSourcesByEnvironment = (env: Environment, info: TemplateQueryInfo): ExternalTemplate | null => {
 
     const sources: BarkSource[] = env.config.sources;

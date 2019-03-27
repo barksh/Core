@@ -46,7 +46,9 @@ import { Environment } from "../src/config/environment";
         //     hello: 'test hello ',
         // }, Path.join(appDataPath, 'example'));
 
-        console.log(await core.update());
+        // console.log(await core.update());
+
+        console.log(await core.source('http://www.mocky.io/v2/5c9a995a3500004c00d0c6f8'));
 
     } catch (err) {
         console.log(err);

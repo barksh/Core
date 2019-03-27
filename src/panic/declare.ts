@@ -22,10 +22,13 @@ export enum ERROR_CODE {
 
     TEMPLATE_NOT_INSTALLED = 4001,
     TEMPLATE_NOT_EXIST = 4002,
+    TEMPLATE_ALREADY_EXIST = 4003,
 
     TEMPLATE_NAME_ALREADY_EXIST = 4011,
 
     TEMPLATE_NOT_EXIST_FROM_EXTERNAL = 4101,
+
+    SOURCE_ALREADY_EXIST = 4205,
 
     INVALID_EXTERNAL_URL = 5050,
     INVALID_EXTERNAL_PROTOCOL = 5051,
@@ -54,10 +57,13 @@ export const ERROR_LIST = {
 
     [ERROR_CODE.TEMPLATE_NOT_INSTALLED]: 'Wanted template: "{}" not installed',
     [ERROR_CODE.TEMPLATE_NOT_EXIST]: 'Wanted template: "{}" not exist',
+    [ERROR_CODE.TEMPLATE_ALREADY_EXIST]: 'Template: "{}" already exist',
 
     [ERROR_CODE.TEMPLATE_NAME_ALREADY_EXIST]: 'Template: "{}" already exist',
 
     [ERROR_CODE.TEMPLATE_NOT_EXIST_FROM_EXTERNAL]: 'Template: "{}" not exist from external',
+
+    [ERROR_CODE.SOURCE_ALREADY_EXIST]: 'Source: "{}" already exist',
 
     [ERROR_CODE.INVALID_EXTERNAL_URL]: 'Invalid external url, "{}"',
     [ERROR_CODE.INVALID_EXTERNAL_PROTOCOL]: 'Invalid external protocol, "{}"',
