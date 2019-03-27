@@ -4,15 +4,12 @@
  * @description Core
  */
 
-import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
 import { Template } from "../config/template";
+import { addSourceFromURLToEnvironment } from "../source/init";
 import { updateAllSourceFromExternal } from "../source/refresh";
 import { parseAndCopyTemplate } from "../template/copy";
-import { getDefaultTemplateConfig, TemplateConfig } from "../template/declare";
-import { getPackageTemplateConfigByBarkTemplate } from "../template/package";
-import { searchTemplateFromEnvironmentByQuery } from "../template/template";
-import { installAction } from "./actions";
+import { attemptAction, installAction } from "./actions";
 
 export class Core {
 
@@ -44,17 +41,15 @@ export class Core {
 
     public async attempt(query: string): Promise<Template | null> {
 
-        const template: BarkTemplate | null = searchTemplateFromEnvironmentByQuery(this._env, query);
+        return await attemptAction(this._env, query);
+    }
 
-        if (!template) {
-            return null;
-        }
+    public async source(url: string): Promise<Environment> {
 
-        const attempt: TemplateConfig | null = await getPackageTemplateConfigByBarkTemplate(this._env, template);
-        if (attempt) {
-            return Template.create(attempt, template);
-        }
-        return Template.create(getDefaultTemplateConfig(), template);
+        const newEnv: Environment = await addSourceFromURLToEnvironment(this._env, url);
+        this._privateUpdateEnvironment(newEnv);
+
+        return newEnv;
     }
 
     public async init(template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> {
