@@ -4,8 +4,13 @@
  * @description Index
  */
 
-export { BarkConfig } from "./config/declare";
+export { BarkConfig, BarkSource, BarkTemplate } from "./config/declare";
 export { Environment } from "./config/environment";
 export { Template } from "./config/template";
 export { Core } from "./core/core";
+export { HookCallbackArgs, HOOKS } from "./hook/declare";
+export { EXTERNAL_PROTOCOL } from "./io/declare";
+export { ERROR_CODE } from "./panic/declare";
+export { ExternalSourceStructure, ExternalTemplate } from "./source/declare";
+export { ConfigFileName, Description, getDefaultTemplateConfig, TemplateConfig, TemplateQueryInfo, TEMPLATE_METHOD, VERSION_QUERY } from "./template/declare";
 
