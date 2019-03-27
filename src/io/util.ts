@@ -99,8 +99,19 @@ export const getPathWithNewExtName = (path: string, newExt: string): string => {
     return Path.join(parsed.dir, parsed.name + '.' + extWithoutDot);
 };
 
-export const getPathWithoutExtName = (path: string): string => {
+export const getPathWithoutExtName = (path: string, when?: string): string => {
 
     const parsed: Path.ParsedPath = Path.parse(path);
+
+    if (when) {
+        const parsedWhen: string = when.replace('.', '').toLowerCase();
+        const parsedExt: string = parsed.ext.replace('.', '').toLowerCase();
+
+        if (parsedWhen === parsedExt) {
+            return Path.join(parsed.dir, parsed.name);
+        }
+
+        return path;
+    }
     return Path.join(parsed.dir, parsed.name);
 };

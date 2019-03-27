@@ -11,7 +11,7 @@ import { HOOKS } from "../hook/declare";
 import { readTextFile, recursiveDoExcludeFileName, writeTextFile } from "../io/file";
 import { getPathWithoutExtName } from "../io/util";
 import { Ensure } from "../util/ensure";
-import { ConfigFileName } from "./declare";
+import { ConfigFileName, getExtNameLooksLike, TEMPLATE_METHOD } from "./declare";
 import { parseContent } from "./parse";
 
 export const parseAndCopyTemplate = async (
@@ -27,13 +27,14 @@ export const parseAndCopyTemplate = async (
     await recursiveDoExcludeFileName(templatePath, async (file: string, relative: string[]) => {
 
         const content: string = await readTextFile(file);
-        const parsed: string = parseContent(template.config.templateMethod, content, replacements);
+        const method: TEMPLATE_METHOD = template.config.templateMethod;
+        const parsed: string = parseContent(method, content, replacements);
 
         const targetFile: string = Path.join(targetPath, ...relative);
 
         await ensure.ensure(targetFile);
 
-        const pathWithoutExtName = getPathWithoutExtName(targetFile);
+        const pathWithoutExtName = getPathWithoutExtName(targetFile, getExtNameLooksLike(method));
 
         env.hook.call(HOOKS.PARSE_FILE, file);
         await writeTextFile(pathWithoutExtName, parsed);

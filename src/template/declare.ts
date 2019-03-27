@@ -4,6 +4,8 @@
  * @description Declare
  */
 
+import { ERROR_CODE } from "../panic/declare";
+import { Panic } from "../panic/panic";
 export const ConfigFileName = '.bark.config.json';
 
 export type TemplateQueryInfo = {
@@ -44,4 +46,14 @@ export const getDefaultTemplateConfig = (): TemplateConfig => {
         templateMethod: TEMPLATE_METHOD.EJS,
         replacements: {},
     };
+};
+
+export const getExtNameLooksLike = (method: TEMPLATE_METHOD): string => {
+
+    switch (method) {
+        case TEMPLATE_METHOD.EJS: return '.ejs';
+        case TEMPLATE_METHOD.GHOTI: return '.ghoti';
+        case TEMPLATE_METHOD.RELATIVE:
+        default: throw Panic.code(ERROR_CODE.NOT_IMPLEMENTED);
+    }
 };
