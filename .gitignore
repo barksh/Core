@@ -20,6 +20,9 @@ lib-cov
 # Test path
 test_barksh
 
+# Build
+app
+
 # Coverage directory used by tools like istanbul
 coverage
 

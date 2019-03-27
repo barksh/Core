@@ -45,7 +45,7 @@ export const installAction = async (env: Environment, query: string): Promise<En
     const installed: BarkTemplate | null = searchTemplateFromConfig(env.config, info);
 
     if (installed) {
-        return;
+        return env;
     }
 
     const template: ExternalTemplate | null = findUrlFromSourcesByEnvironment(env, info);
