@@ -25,6 +25,8 @@ export enum VERSION_QUERY {
 export enum TEMPLATE_METHOD {
 
     EJS = 'EJS',
+    GHOTI = 'GHOTI',
+    RELATIVE = 'RELATIVE',
 }
 
 export type Description = string;
