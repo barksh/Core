@@ -8,10 +8,13 @@ import * as Path from "path";
 import { Environment } from "../config/environment";
 import { Template } from "../config/template";
 import { HOOKS } from "../hook/declare";
-import { readTextFile, recursiveDoExcludeFileName, writeTextFile } from "../io/file";
+import { checkPathExists, readTextFile, recursiveDoExcludeFileName, writeTextFile } from "../io/file";
 import { getPathWithoutExtName } from "../io/util";
+import { ERROR_CODE } from "../panic/declare";
+import { Panic } from "../panic/panic";
 import { Ensure } from "../util/ensure";
-import { ConfigFileName, getExtNameLooksLike, TEMPLATE_METHOD } from "./declare";
+import { ConfigFileName, getExtNameLooksLike, TemplateConfig, TEMPLATE_METHOD } from "./declare"; // tslint:disable-line
+import { getPackageTemplateConfigByOriginPath } from "./package";
 import { parseContent } from "./parse";
 
 export const parseAndCopyDirect = async (
@@ -21,12 +24,25 @@ export const parseAndCopyDirect = async (
     targetPath: string,
 ): Promise<void> => {
 
+    const exist: boolean = await checkPathExists(targetPath);
+
+    if (!exist) {
+        throw Panic.code(ERROR_CODE.ORIGIN_FOLDER_NOT_EXIST, path);
+    }
+
+    const config: TemplateConfig | null = await getPackageTemplateConfigByOriginPath(targetPath);
+
+    if (!config) {
+        throw Panic.code(ERROR_CODE.CONFIG_IS_REQUIRED_FOR_FOLDER_INIT, path);
+    }
+
+    const method: TEMPLATE_METHOD = config.templateMethod;
+
     const ensure: Ensure = Ensure.create();
 
     await recursiveDoExcludeFileName(path, async (file: string, relative: string[]) => {
 
         const content: string = await readTextFile(file);
-        const method: TEMPLATE_METHOD = TEMPLATE_METHOD.EJS; // TODO
         const parsed: string = parseContent(method, content, replacements);
 
         const targetFile: string = Path.join(targetPath, ...relative);
@@ -48,12 +64,13 @@ export const parseAndCopyTemplate = async (
 ): Promise<void> => {
 
     const templatePath: string = Path.join(env.packagePath, template.template.folderName);
+    const method: TEMPLATE_METHOD = template.config.templateMethod;
+
     const ensure: Ensure = Ensure.create();
 
     await recursiveDoExcludeFileName(templatePath, async (file: string, relative: string[]) => {
 
         const content: string = await readTextFile(file);
-        const method: TEMPLATE_METHOD = template.config.templateMethod;
         const parsed: string = parseContent(method, content, replacements);
 
         const targetFile: string = Path.join(targetPath, ...relative);

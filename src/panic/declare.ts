@@ -18,6 +18,9 @@ export enum ERROR_CODE {
 
     DECOMPRESS_FILE_FAILED = 1645,
 
+    ORIGIN_FOLDER_NOT_EXIST = 2001,
+    CONFIG_IS_REQUIRED_FOR_FOLDER_INIT = 2002,
+
     EJS_PARSE_FAILED = 2010,
 
     TEMPLATE_NOT_INSTALLED = 4001,
@@ -52,6 +55,9 @@ export const ERROR_LIST = {
     [ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED]: 'Failed verify template: "{}" config file',
 
     [ERROR_CODE.DECOMPRESS_FILE_FAILED]: 'Decompress file failed from, "{}"',
+
+    [ERROR_CODE.ORIGIN_FOLDER_NOT_EXIST]: 'Origin path: "{}" not exist',
+    [ERROR_CODE.CONFIG_IS_REQUIRED_FOR_FOLDER_INIT]: 'Config file is required for init from folder, "{}"',
 
     [ERROR_CODE.EJS_PARSE_FAILED]: 'Ejs file parse failed, message: "{}"',
 
