@@ -8,7 +8,7 @@ import { Environment } from "../config/environment";
 import { Template } from "../config/template";
 import { addSourceFromURLToEnvironment } from "../source/init";
 import { updateAllSourceFromExternal } from "../source/refresh";
-import { parseAndCopyTemplate } from "../template/copy";
+import { parseAndCopyDirect, parseAndCopyTemplate } from "../template/copy";
 import { attemptAction } from "./actions";
 import { installAction, installFromLocalAction } from "./install";
 
@@ -58,7 +58,12 @@ export class Core {
         return parseAndCopyTemplate(this._env, template, replacements, targetPath);
     }
 
-    public async install(query: string): Promise<Environment> {
+    public async direct(from: string, replacements: Record<string, string>, targetPath: string): Promise<void> {
+
+        return parseAndCopyDirect(this._env, from, replacements, targetPath);
+    }
+
+    public async installFromSource(query: string): Promise<Environment> {
 
         const newEnv: Environment = await installAction(this._env, query);
         this._privateUpdateEnvironment(newEnv);
