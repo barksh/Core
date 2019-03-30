@@ -6,8 +6,7 @@
 
 import { BarkConfig, getDefaultConfig } from "../config/declare";
 import { readTextFile, writeTextFile } from "../io/file";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 
 export const getOrInitConfig = async (path: string): Promise<BarkConfig> => {
 
@@ -17,7 +16,7 @@ export const getOrInitConfig = async (path: string): Promise<BarkConfig> => {
             const barkConfig: BarkConfig = JSON.parse(file);
             return barkConfig;
         } catch (error) {
-            throw Panic.code(ERROR_CODE.CONFIG_PARSE_FAILED);
+            throw panic.code(ERROR_CODE.CONFIG_PARSE_FAILED);
         }
     }
     const defaultConfig: BarkConfig = getDefaultConfig();

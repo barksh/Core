@@ -6,8 +6,7 @@
 
 import * as Path from "path";
 import { Environment } from "../config/environment";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 import { ConfigFileName } from "../template/declare";
 import { Ensure } from "../util/ensure";
 import { unique } from "../util/random";
@@ -23,7 +22,7 @@ export const resolveUrl = (url: string): {
     const splited: string[] = url.split(/:\/\/|\//g);
 
     if (splited.length < 2) {
-        throw Panic.code(ERROR_CODE.INVALID_EXTERNAL_URL, url);
+        throw panic.code(ERROR_CODE.INVALID_EXTERNAL_URL, url);
     }
 
     const firstElement: string = splited.shift() as string;
@@ -43,7 +42,7 @@ export const resolveUrl = (url: string): {
             protocol: EXTERNAL_PROTOCOL.FILE,
             rest: splited,
         };
-        default: throw Panic.code(ERROR_CODE.INVALID_EXTERNAL_PROTOCOL, protocol);
+        default: throw panic.code(ERROR_CODE.INVALID_EXTERNAL_PROTOCOL, protocol);
     }
 };
 
@@ -65,7 +64,7 @@ export const parseGithubProtocol = (url: string): string => {
     } = resolveUrl(url);
 
     if (protocol !== EXTERNAL_PROTOCOL.GITHUB) {
-        throw Panic.code(ERROR_CODE.INTERNAL_ISSUE);
+        throw panic.code(ERROR_CODE.INTERNAL_ISSUE);
     }
 
     return 'https://raw.githubusercontent.com/' + rest.join('/');

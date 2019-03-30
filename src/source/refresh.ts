@@ -7,8 +7,7 @@
 import { BarkConfig, BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
 import { getExternalData } from "../io/external";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 import { safeParseJSON } from "../util/safe";
 import { ExternalSourceStructure, ExternalTemplate } from "./declare";
 import { updateBarkSourceFromExternalSourceStructure } from "./source";
@@ -34,10 +33,10 @@ export const verifyExternalSourceStructure = (structure: ExternalSourceStructure
 export const updateSourceFromExternal = async (source: BarkSource): Promise<BarkSource> => {
 
     const info: string = await getExternalData(source.url);
-    const parsed: ExternalSourceStructure = safeParseJSON(info, Panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
+    const parsed: ExternalSourceStructure = safeParseJSON(info, panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
 
     if (!verifyExternalSourceStructure(parsed)) {
-        throw Panic.code(ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED);
+        throw panic.code(ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED);
     }
 
     return updateBarkSourceFromExternalSourceStructure(source, parsed);

@@ -5,8 +5,7 @@
  */
 
 import { HookManager } from "../hook/manager";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 import { verifyBarkConfig } from "./config";
 import { BarkConfig } from "./declare";
 
@@ -37,21 +36,21 @@ export class Environment {
 
     public get config(): BarkConfig {
         if (!this._config) {
-            throw Panic.code(ERROR_CODE.ENVIRONMENT_NOT_SETTLED, 'Config');
+            throw panic.code(ERROR_CODE.ENVIRONMENT_NOT_SETTLED, 'Config');
         }
         return this._config;
     }
 
     public get temporaryPath(): string {
         if (!this._temporaryPath) {
-            throw Panic.code(ERROR_CODE.ENVIRONMENT_NOT_SETTLED, 'Temporary Path');
+            throw panic.code(ERROR_CODE.ENVIRONMENT_NOT_SETTLED, 'Temporary Path');
         }
         return this._temporaryPath;
     }
 
     public get packagePath(): string {
         if (!this._packagePath) {
-            throw Panic.code(ERROR_CODE.ENVIRONMENT_NOT_SETTLED, 'Package Path');
+            throw panic.code(ERROR_CODE.ENVIRONMENT_NOT_SETTLED, 'Package Path');
         }
         return this._packagePath;
     }
@@ -79,7 +78,7 @@ export class Environment {
     public setConfig(config: BarkConfig): this {
 
         if (!verifyBarkConfig(config)) {
-            throw Panic.code(ERROR_CODE.INVALID_CONFIG);
+            throw panic.code(ERROR_CODE.INVALID_CONFIG);
         }
         this._config = config;
         return this;

@@ -8,8 +8,7 @@ import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
 import { checkPathExists, readTextFile } from "../io/file";
 import { getBarkTemplateConfigFilePath, getBarkTemplateConfigFilePathByOriginPath } from "../io/util";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 import { safeParseJSON } from "../util/safe";
 import { TemplateConfig } from "./declare";
 
@@ -37,10 +36,10 @@ export const getPackageTemplateConfigByOriginPath = async (path: string): Promis
     }
 
     const content: string = await readTextFile(configFilePath);
-    const parsed: TemplateConfig = safeParseJSON(content, Panic.code(ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED, path));
+    const parsed: TemplateConfig = safeParseJSON(content, panic.code(ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED, path));
 
     if (!verifyTemplateConfig(parsed)) {
-        throw Panic.code(ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED, path);
+        throw panic.code(ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED, path);
     }
 
     return parsed;
@@ -56,10 +55,10 @@ export const getPackageTemplateConfigByFolderName = async (env: Environment, fol
     }
 
     const content: string = await readTextFile(configFilePath);
-    const parsed: TemplateConfig = safeParseJSON(content, Panic.code(ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED, folderName));
+    const parsed: TemplateConfig = safeParseJSON(content, panic.code(ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED, folderName));
 
     if (!verifyTemplateConfig(parsed)) {
-        throw Panic.code(ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED, folderName);
+        throw panic.code(ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED, folderName);
     }
 
     return parsed;

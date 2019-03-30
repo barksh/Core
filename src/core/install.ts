@@ -9,8 +9,7 @@ import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
 import { fetchAndDecompressFromAnyExternal } from "../io/external";
 import { getRandomPackagePath } from "../io/util";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 import { ExternalTemplate } from "../source/declare";
 import { findUrlFromSourcesByEnvironment } from "../source/source";
 import { copyAllFiles } from "../template/copy";
@@ -51,7 +50,7 @@ export const installAction = async (env: Environment, query: string): Promise<En
     const template: ExternalTemplate | null = findUrlFromSourcesByEnvironment(env, info);
 
     if (!template) {
-        throw Panic.code(ERROR_CODE.TEMPLATE_NOT_EXIST_FROM_EXTERNAL, query);
+        throw panic.code(ERROR_CODE.TEMPLATE_NOT_EXIST_FROM_EXTERNAL, query);
     }
 
     const packagePath: string = await fetchAndDecompressFromAnyExternal(env, template.url);

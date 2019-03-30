@@ -8,8 +8,7 @@ import * as Fs from "fs";
 import * as Http from "http";
 import * as Https from "https";
 import { Environment } from "../config/environment";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 import { StringBuffer } from "../util/buffer/string";
 import { decompressZipFile } from "./compress";
 import { EXTERNAL_PROTOCOL } from "./declare";
@@ -92,7 +91,7 @@ export const fetchAndDecompressFromAnyExternalByProtocol = async (env: Environme
             const packageHash: string = await downloadAndDecompress(env, parsed);
             return packageHash;
         }
-        default: throw Panic.code(ERROR_CODE.NOT_IMPLEMENTED);
+        default: throw panic.code(ERROR_CODE.NOT_IMPLEMENTED);
     }
 };
 

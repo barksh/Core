@@ -7,8 +7,7 @@
 import { BarkConfig, BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
 import { getExternalData } from "../io/external";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 import { getCurrentDate } from "../util/date";
 import { safeParseJSON } from "../util/safe";
 import { ExternalSourceStructure } from "./declare";
@@ -20,14 +19,14 @@ export const addSourceFromURLToEnvironment = async (env: Environment, url: strin
     const template: BarkSource | null = getSourceFromUrlByEnvironment(env, url);
 
     if (template) {
-        throw Panic.code(ERROR_CODE.SOURCE_ALREADY_EXIST, url);
+        throw panic.code(ERROR_CODE.SOURCE_ALREADY_EXIST, url);
     }
 
     const info: string = await getExternalData(url);
-    const parsed: ExternalSourceStructure = safeParseJSON(info, Panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
+    const parsed: ExternalSourceStructure = safeParseJSON(info, panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
 
     if (!verifyExternalSourceStructure(parsed)) {
-        throw Panic.code(ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED);
+        throw panic.code(ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED);
     }
 
     const source: BarkSource = {

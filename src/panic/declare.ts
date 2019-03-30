@@ -4,6 +4,8 @@
  * @description Declare
  */
 
+import { Panic } from "connor";
+
 export const MODULE_NAME = 'BARKSH_CORE';
 
 export enum ERROR_CODE {
@@ -81,3 +83,5 @@ export const ERROR_LIST = {
     [ERROR_CODE.INVALID_CONFIG]: 'Invalid configuration',
     [ERROR_CODE.ENVIRONMENT_NOT_SETTLED]: 'Environment does not contain "{}" information',
 };
+
+export const panic: Panic<ERROR_CODE> = Panic.withDictionary(MODULE_NAME, ERROR_LIST);

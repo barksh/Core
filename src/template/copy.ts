@@ -10,8 +10,7 @@ import { Template } from "../config/template";
 import { HOOKS } from "../hook/declare";
 import { checkPathExists, readTextFile, recursiveDoExcludeFileName, writeTextFile } from "../io/file";
 import { getPathWithoutExtName } from "../io/util";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 import { Ensure } from "../util/ensure";
 import { ConfigFileName, getExtNameLooksLike, TemplateConfig, TEMPLATE_METHOD } from "./declare"; // tslint:disable-line
 import { getPackageTemplateConfigByOriginPath } from "./package";
@@ -27,13 +26,13 @@ export const parseAndCopyDirect = async (
     const exist: boolean = await checkPathExists(targetPath);
 
     if (!exist) {
-        throw Panic.code(ERROR_CODE.ORIGIN_FOLDER_NOT_EXIST, path);
+        throw panic.code(ERROR_CODE.ORIGIN_FOLDER_NOT_EXIST, path);
     }
 
     const config: TemplateConfig | null = await getPackageTemplateConfigByOriginPath(targetPath);
 
     if (!config) {
-        throw Panic.code(ERROR_CODE.CONFIG_IS_REQUIRED_FOR_FOLDER_INIT, path);
+        throw panic.code(ERROR_CODE.CONFIG_IS_REQUIRED_FOR_FOLDER_INIT, path);
     }
 
     const method: TEMPLATE_METHOD = config.templateMethod;

@@ -6,8 +6,7 @@
 
 import { _Map } from "@sudoo/bark/map";
 import { render } from "ejs";
-import { ERROR_CODE } from "../panic/declare";
-import { Panic } from "../panic/panic";
+import { ERROR_CODE, panic } from "../panic/declare";
 import { TEMPLATE_METHOD } from "./declare";
 
 export const parseEjsContent = (content: string, replacement: Record<string, string>): string => {
@@ -16,7 +15,7 @@ export const parseEjsContent = (content: string, replacement: Record<string, str
         const result: string = render(content, replacement);
         return result;
     } catch (error) {
-        throw Panic.code(ERROR_CODE.EJS_PARSE_FAILED, error.message);
+        throw panic.code(ERROR_CODE.EJS_PARSE_FAILED, error.message);
     }
 };
 
@@ -29,7 +28,7 @@ export const parseGhotiContent = (content: string, replacement: Record<string, s
         }, content);
         return result;
     } catch (error) {
-        throw Panic.code(ERROR_CODE.EJS_PARSE_FAILED, error.message);
+        throw panic.code(ERROR_CODE.EJS_PARSE_FAILED, error.message);
     }
 };
 
@@ -39,6 +38,6 @@ export const parseContent = (method: TEMPLATE_METHOD, content: string, replaceme
         case TEMPLATE_METHOD.EJS: return parseEjsContent(content, replacement);
         case TEMPLATE_METHOD.GHOTI: return parseGhotiContent(content, replacement);
         case TEMPLATE_METHOD.RELATIVE:
-        default: throw Panic.code(ERROR_CODE.NOT_IMPLEMENTED);
+        default: throw panic.code(ERROR_CODE.NOT_IMPLEMENTED);
     }
 };
