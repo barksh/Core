@@ -117,7 +117,6 @@ describe('Given [io-external] helper methods', (): void => {
         fetchAndDecompressFromAnyExternalByProtocolMock.mock(fetchAndDecompressFromAnyExternalByProtocolStack.func());
 
         const path: string = 'github://' + chance.string();
-        const targetPath: string = chance.string();
 
         const env: Environment = createMockEnvironment();
         await func_IO_EXTERNAL.fetchAndDecompressFromAnyExternal(env, path);
