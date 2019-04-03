@@ -4,12 +4,12 @@
  * @description Util
  */
 
+import { _Random } from "@sudoo/bark/random";
 import { Ensure } from "@sudoo/io";
 import * as Path from "path";
 import { Environment } from "../config/environment";
 import { ERROR_CODE, panic } from "../panic/declare";
 import { ConfigFileName } from "../template/declare";
-import { unique } from "../util/random";
 import { EXTERNAL_PROTOCOL } from "./declare";
 
 export const splitPath = (path: string): string[] => path.split(Path.sep);
@@ -75,7 +75,7 @@ export const getRandomTempFilePath = async (env: Environment, extension: string,
     const tempPath: string = env.temporaryPath;
     await Ensure.create().ensureFolder(tempPath);
 
-    const uniqueFileName: string = (filename || unique()) + '.' + extension;
+    const uniqueFileName: string = (filename || _Random.unique()) + '.' + extension;
     return Path.join(tempPath, uniqueFileName);
 };
 
@@ -84,7 +84,7 @@ export const getRandomPackagePath = async (env: Environment, filename?: string):
     const packagePath: string = env.packagePath;
     await Ensure.create().ensureFolder(packagePath);
 
-    const uniqueFolderName: string = filename || unique();
+    const uniqueFolderName: string = filename || _Random.unique();
     return Path.join(packagePath, uniqueFolderName);
 };
 

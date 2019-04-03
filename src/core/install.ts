@@ -4,6 +4,7 @@
  * @description Install
  */
 
+import { _Random } from "@sudoo/bark/random";
 import { addTemplate } from "../config/config";
 import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
@@ -15,7 +16,6 @@ import { findUrlFromSourcesByEnvironment } from "../source/source";
 import { copyAllFiles } from "../template/copy";
 import { TemplateQueryInfo } from "../template/declare";
 import { parseTemplateQuery, searchTemplateFromConfig } from "../template/template";
-import { unique } from "../util/random";
 
 export const installFromLocalAction = async (
     env: Environment,
@@ -24,7 +24,7 @@ export const installFromLocalAction = async (
     path: string,
 ): Promise<Environment> => {
 
-    const packageFolderName: string = unique();
+    const packageFolderName: string = _Random.unique();
     const packagePath: string = await getRandomPackagePath(env, packageFolderName);
 
     await copyAllFiles(path, packagePath);

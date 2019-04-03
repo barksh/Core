@@ -4,11 +4,11 @@
  * @description Refresh
  */
 
+import { _Json } from "@sudoo/bark/json";
 import { getExternalData } from "@sudoo/io";
 import { BarkConfig, BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
 import { ERROR_CODE, panic } from "../panic/declare";
-import { safeParseJSON } from "../util/safe";
 import { ExternalSourceStructure, ExternalTemplate } from "./declare";
 import { updateBarkSourceFromExternalSourceStructure } from "./source";
 
@@ -33,7 +33,7 @@ export const verifyExternalSourceStructure = (structure: ExternalSourceStructure
 export const updateSourceFromExternal = async (source: BarkSource): Promise<BarkSource> => {
 
     const info: string = await getExternalData(source.url);
-    const parsed: ExternalSourceStructure = safeParseJSON(info, panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
+    const parsed: ExternalSourceStructure = _Json.safeParse(info, panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
 
     if (!verifyExternalSourceStructure(parsed)) {
         throw panic.code(ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED);

@@ -4,12 +4,12 @@
  * @description Initial
  */
 
+import { _Json } from "@sudoo/bark/json";
 import { getExternalData } from "@sudoo/io";
 import { BarkConfig, BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
 import { ERROR_CODE, panic } from "../panic/declare";
 import { getCurrentDate } from "../util/date";
-import { safeParseJSON } from "../util/safe";
 import { ExternalSourceStructure } from "./declare";
 import { verifyExternalSourceStructure } from "./refresh";
 import { getSourceFromUrlByEnvironment } from "./source";
@@ -23,7 +23,7 @@ export const addSourceFromURLToEnvironment = async (env: Environment, url: strin
     }
 
     const info: string = await getExternalData(url);
-    const parsed: ExternalSourceStructure = safeParseJSON(info, panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
+    const parsed: ExternalSourceStructure = _Json.safeParse(info, panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
 
     if (!verifyExternalSourceStructure(parsed)) {
         throw panic.code(ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED);

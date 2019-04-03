@@ -4,12 +4,12 @@
  * @description Package
  */
 
+import { _Json } from "@sudoo/bark/json";
 import { pathExists, readTextFile } from "@sudoo/io";
 import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
 import { getBarkTemplateConfigFilePath, getBarkTemplateConfigFilePathByOriginPath } from "../io/util";
 import { ERROR_CODE, panic } from "../panic/declare";
-import { safeParseJSON } from "../util/safe";
 import { TemplateConfig } from "./declare";
 
 export const verifyTemplateConfig = (config: TemplateConfig): boolean => {
@@ -36,7 +36,7 @@ export const getPackageTemplateConfigByOriginPath = async (path: string): Promis
     }
 
     const content: string = await readTextFile(configFilePath);
-    const parsed: TemplateConfig = safeParseJSON(content, panic.code(ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED, path));
+    const parsed: TemplateConfig = _Json.safeParse(content, panic.code(ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED, path));
 
     if (!verifyTemplateConfig(parsed)) {
         throw panic.code(ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED, path);
@@ -55,7 +55,7 @@ export const getPackageTemplateConfigByFolderName = async (env: Environment, fol
     }
 
     const content: string = await readTextFile(configFilePath);
-    const parsed: TemplateConfig = safeParseJSON(content, panic.code(ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED, folderName));
+    const parsed: TemplateConfig = _Json.safeParse(content, panic.code(ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED, folderName));
 
     if (!verifyTemplateConfig(parsed)) {
         throw panic.code(ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED, folderName);
