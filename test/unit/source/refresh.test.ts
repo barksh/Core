@@ -5,14 +5,14 @@
  * @override
  */
 
+import * as SudooBarkJson from "@sudoo/bark/json";
+import * as SudooIO from "@sudoo/io";
 import { Mock, Sandbox } from "@sudoo/mock";
 import { expect } from "chai";
 import * as Chance from "chance";
 import { BarkSource } from "../../../src/config/declare";
-import * as func_IO_EXTERNAL from "../../../src/io/external";
 import * as func_SOURCE_REFRESH from "../../../src/source/refresh";
 import * as func_UTIL_DATE from "../../../src/util/date";
-import * as func_UTIL_SAFE from "../../../src/util/safe";
 
 describe('Given [source-refresh] helper methods', (): void => {
 
@@ -27,8 +27,8 @@ describe('Given [source-refresh] helper methods', (): void => {
         const verifyExternalSourceStructureStack = Sandbox.create();
         const getCurrentDateStack = Sandbox.create();
 
-        const getExternalDataMock = Mock.create(func_IO_EXTERNAL, 'getExternalData');
-        const safeParseJSONMock = Mock.create(func_UTIL_SAFE, 'safeParseJSON');
+        const getExternalDataMock = Mock.create(SudooIO, 'getExternalData');
+        const safeParseJSONMock = Mock.create(SudooBarkJson._Json, 'safeParse');
         const verifyExternalSourceStructureMock = Mock.create(func_SOURCE_REFRESH, 'verifyExternalSourceStructure');
         const getCurrentDateMock = Mock.create(func_UTIL_DATE, 'getCurrentDate');
 
