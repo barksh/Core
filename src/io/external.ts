@@ -4,72 +4,11 @@
  * @description External
  */
 
-import { md5File, removeFile } from "@sudoo/io";
-import * as Fs from "fs";
-import * as Http from "http";
-import * as Https from "https";
+import { decompressZipFile, downloadFile, md5File } from "@sudoo/io";
 import { Environment } from "../config/environment";
 import { ERROR_CODE, panic } from "../panic/declare";
-import { StringBuffer } from "../util/buffer/string";
-import { decompressZipFile } from "./compress";
 import { EXTERNAL_PROTOCOL } from "./declare";
 import { getRandomPackagePath, getRandomTempFilePath, parseExternalProtocol, parseGithubProtocol } from "./util";
-
-export const getHttpClient = (url: string) => {
-
-    if (url.substring(0, 5) === 'https') {
-        return Https;
-    }
-    return Http;
-};
-
-export const getExternalData = (url: string): Promise<string> =>
-    new Promise<string>((resolve: (data: string) => void, reject: (reason: Error) => void) => {
-
-        const client: typeof Http | typeof Https = getHttpClient(url);
-        const stringBuffer: StringBuffer = StringBuffer.create();
-
-        client.get(url, (response: Http.IncomingMessage) => {
-            response.on('data', (chunk: string) => {
-                stringBuffer.add(chunk);
-            });
-            response.on('end', () => {
-                resolve(stringBuffer.value);
-            });
-        }).on("error", (error: Error) => {
-            reject(error);
-        });
-    });
-
-export const downloadFile = (url: string, targetPath: string): Promise<void> =>
-    new Promise<void>((resolve: () => void, reject: (reason: Error) => void) => {
-
-        const client: typeof Http | typeof Https = getHttpClient(url);
-
-        const writeStream: Fs.WriteStream = Fs.createWriteStream(targetPath);
-        writeStream.on('finish', () => {
-            resolve();
-            writeStream.close();
-            return;
-        });
-        writeStream.on('error', (error: Error) => {
-            reject(error);
-            writeStream.close();
-            return;
-        });
-
-        const request: Http.ClientRequest = client.get(url, (response: Http.IncomingMessage) => {
-            response.pipe(writeStream);
-            return;
-        });
-        request.on('error', (error: Error) => {
-            removeFile(targetPath).then(() => {
-                reject(error);
-            }).catch(() => {
-                reject(error);
-            });
-        });
-    });
 
 export const downloadAndDecompress = async (env: Environment, url: string): Promise<string> => {
 

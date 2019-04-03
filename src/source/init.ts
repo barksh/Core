@@ -4,9 +4,9 @@
  * @description Initial
  */
 
+import { getExternalData } from "@sudoo/io";
 import { BarkConfig, BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
-import { getExternalData } from "../io/external";
 import { ERROR_CODE, panic } from "../panic/declare";
 import { getCurrentDate } from "../util/date";
 import { safeParseJSON } from "../util/safe";
