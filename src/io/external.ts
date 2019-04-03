@@ -4,6 +4,7 @@
  * @description External
  */
 
+import { md5File, removeFile } from "@sudoo/io";
 import * as Fs from "fs";
 import * as Http from "http";
 import * as Https from "https";
@@ -12,7 +13,6 @@ import { ERROR_CODE, panic } from "../panic/declare";
 import { StringBuffer } from "../util/buffer/string";
 import { decompressZipFile } from "./compress";
 import { EXTERNAL_PROTOCOL } from "./declare";
-import { getFileMd5, removeFile } from "./file";
 import { getRandomPackagePath, getRandomTempFilePath, parseExternalProtocol, parseGithubProtocol } from "./util";
 
 export const getHttpClient = (url: string) => {
@@ -76,7 +76,7 @@ export const downloadAndDecompress = async (env: Environment, url: string): Prom
     const tempFilePath: string = await getRandomTempFilePath(env, 'zip');
     await downloadFile(url, tempFilePath);
 
-    const hash: string = await getFileMd5(tempFilePath);
+    const hash: string = await md5File(tempFilePath);
     const packagePath: string = await getRandomPackagePath(env, hash);
 
     await decompressZipFile(tempFilePath, packagePath);

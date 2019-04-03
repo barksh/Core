@@ -4,9 +4,9 @@
  * @description Package
  */
 
+import { pathExists, readTextFile } from "@sudoo/io";
 import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
-import { checkPathExists, readTextFile } from "../io/file";
 import { getBarkTemplateConfigFilePath, getBarkTemplateConfigFilePathByOriginPath } from "../io/util";
 import { ERROR_CODE, panic } from "../panic/declare";
 import { safeParseJSON } from "../util/safe";
@@ -29,7 +29,7 @@ export const getPackageTemplateConfigByBarkTemplate = async (env: Environment, t
 export const getPackageTemplateConfigByOriginPath = async (path: string): Promise<TemplateConfig | null> => {
 
     const configFilePath: string = getBarkTemplateConfigFilePathByOriginPath(path);
-    const existences: boolean = await checkPathExists(configFilePath);
+    const existences: boolean = await pathExists(configFilePath);
 
     if (!existences) {
         return null;
@@ -48,7 +48,7 @@ export const getPackageTemplateConfigByOriginPath = async (path: string): Promis
 export const getPackageTemplateConfigByFolderName = async (env: Environment, folderName: string): Promise<TemplateConfig | null> => {
 
     const configFilePath: string = getBarkTemplateConfigFilePath(env, folderName);
-    const existences: boolean = await checkPathExists(configFilePath);
+    const existences: boolean = await pathExists(configFilePath);
 
     if (!existences) {
         return null;

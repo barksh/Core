@@ -4,11 +4,11 @@
  * @description Util
  */
 
+import { Ensure } from "@sudoo/io";
 import * as Path from "path";
 import { Environment } from "../config/environment";
 import { ERROR_CODE, panic } from "../panic/declare";
 import { ConfigFileName } from "../template/declare";
-import { Ensure } from "../util/ensure";
 import { unique } from "../util/random";
 import { EXTERNAL_PROTOCOL } from "./declare";
 
