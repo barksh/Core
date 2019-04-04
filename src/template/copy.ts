@@ -12,7 +12,7 @@ import { HOOKS } from "../hook/declare";
 import { recursiveDoExcludeFileName } from "../io/file";
 import { getPathWithoutExtName } from "../io/util";
 import { ERROR_CODE, panic } from "../panic/declare";
-import { ConfigFileName, getExtNameLooksLike, TemplateConfig, TEMPLATE_METHOD } from "./declare"; // tslint:disable-line
+import { ConfigFileName, getExtNameLooksLike, TemplateConfig, PARSING_METHOD } from "./declare"; // tslint:disable-line
 import { getPackageTemplateConfigByOriginPath } from "./package";
 import { parseContent } from "./parse";
 
@@ -35,7 +35,7 @@ export const parseAndCopyDirect = async (
         throw panic.code(ERROR_CODE.CONFIG_IS_REQUIRED_FOR_FOLDER_INIT, path);
     }
 
-    const method: TEMPLATE_METHOD = config.templateMethod;
+    const method: PARSING_METHOD = config.templateMethod;
 
     const ensure: Ensure = Ensure.create();
 
@@ -63,7 +63,7 @@ export const parseAndCopyTemplate = async (
 ): Promise<void> => {
 
     const templatePath: string = Path.join(env.packagePath, template.template.folderName);
-    const method: TEMPLATE_METHOD = template.config.templateMethod;
+    const method: PARSING_METHOD = template.config.templateMethod;
 
     const ensure: Ensure = Ensure.create();
 

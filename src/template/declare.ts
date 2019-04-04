@@ -4,7 +4,9 @@
  * @description Declare
  */
 
+import * as Path from "path";
 import { ERROR_CODE, panic } from "../panic/declare";
+
 export const ConfigFileName = '.bark.config.json';
 
 export type TemplateQueryInfo = {
@@ -23,18 +25,18 @@ export enum VERSION_QUERY {
     ANY = 'ANY',
 }
 
-export enum TEMPLATE_METHOD {
+export enum PARSING_METHOD {
 
     EJS = 'EJS',
     GHOTI = 'GHOTI',
-    RELATIVE = 'RELATIVE',
+    NONE = 'NONE',
 }
 
 export type Description = string;
 
 export type TemplateConfig = {
 
-    readonly templateMethod: TEMPLATE_METHOD;
+    readonly templateMethod: PARSING_METHOD;
     readonly replacements: Record<string, Description>;
 };
 
@@ -42,17 +44,29 @@ export const getDefaultTemplateConfig = (): TemplateConfig => {
 
     return {
 
-        templateMethod: TEMPLATE_METHOD.EJS,
+        templateMethod: PARSING_METHOD.EJS,
         replacements: {},
     };
 };
 
-export const getExtNameLooksLike = (method: TEMPLATE_METHOD): string => {
+export const getParsingMethod = (path: string): PARSING_METHOD => {
+
+    const file: Path.ParsedPath = Path.parse(path);
+    const fileExt: string = file.ext.replace('.', '').toLowerCase();
+
+    switch (fileExt) {
+        case 'ejs': return PARSING_METHOD.EJS;
+        case 'ghoti': return PARSING_METHOD.GHOTI;
+        default: return PARSING_METHOD.NONE;
+    }
+};
+
+export const getExtNameLooksLike = (method: PARSING_METHOD): string => {
 
     switch (method) {
-        case TEMPLATE_METHOD.EJS: return '.ejs';
-        case TEMPLATE_METHOD.GHOTI: return '.ghoti';
-        case TEMPLATE_METHOD.RELATIVE:
+        case PARSING_METHOD.EJS: return '.ejs';
+        case PARSING_METHOD.GHOTI: return '.ghoti';
+        case PARSING_METHOD.NONE:
         default: throw panic.code(ERROR_CODE.NOT_IMPLEMENTED);
     }
 };

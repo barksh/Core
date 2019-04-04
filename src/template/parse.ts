@@ -7,7 +7,7 @@
 import { _Map } from "@sudoo/bark/map";
 import { render } from "ejs";
 import { ERROR_CODE, panic } from "../panic/declare";
-import { TEMPLATE_METHOD } from "./declare";
+import { PARSING_METHOD } from "./declare";
 
 export const parseEjsContent = (content: string, replacement: Record<string, string>): string => {
 
@@ -32,12 +32,12 @@ export const parseGhotiContent = (content: string, replacement: Record<string, s
     }
 };
 
-export const parseContent = (method: TEMPLATE_METHOD, content: string, replacement: Record<string, string>): string => {
+export const parseContent = (method: PARSING_METHOD, content: string, replacement: Record<string, string>): string => {
 
     switch (method) {
-        case TEMPLATE_METHOD.EJS: return parseEjsContent(content, replacement);
-        case TEMPLATE_METHOD.GHOTI: return parseGhotiContent(content, replacement);
-        case TEMPLATE_METHOD.RELATIVE:
+        case PARSING_METHOD.EJS: return parseEjsContent(content, replacement);
+        case PARSING_METHOD.GHOTI: return parseGhotiContent(content, replacement);
+        case PARSING_METHOD.NONE:
         default: throw panic.code(ERROR_CODE.NOT_IMPLEMENTED);
     }
 };
