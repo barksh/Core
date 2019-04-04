@@ -7,7 +7,7 @@
 export { BarkConfig, BarkSource, BarkTemplate } from "./config/declare";
 export { Environment } from "./config/environment";
 export { Template } from "./config/template";
-export { Core } from "./core/core";
+export { Core } from "./core";
 export { HookCallbackArgs, HOOKS } from "./hook/declare";
 export { EXTERNAL_PROTOCOL } from "./io/declare";
 export { ERROR_CODE } from "./panic/declare";
