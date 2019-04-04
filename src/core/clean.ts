@@ -11,7 +11,11 @@ import { Environment } from "../config/environment";
 
 export const cleanTempFiles = async (env: Environment): Promise<void> => {
 
-    await RMRFFolder(env.temporaryPath);
+    const tempFolders: string[] = await directoryFiles(env.temporaryPath);
+
+    for (const folder of tempFolders) {
+        await RMRFFolder(folder);
+    }
     return;
 };
 
