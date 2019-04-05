@@ -9,7 +9,7 @@ import { Template } from "./config/template";
 import { attemptAction } from "./core/actions";
 import { cleanInActivePackages, cleanTempFiles, getInActivePackageFullPaths } from "./core/clean";
 import { installAction, installFromLocalAction } from "./core/install";
-import { addSourceFromURLToEnvironment } from "./source/init";
+import { addSourceFromURLToEnvironment } from "./source/add";
 import { updateAllSourceFromExternal } from "./source/refresh";
 import { parseAndCopyDirect, parseAndCopyTemplate } from "./template/copy";
 

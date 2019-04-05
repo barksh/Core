@@ -8,6 +8,7 @@ import { ExternalSourceStructure } from "../source/declare";
 
 export type BarkSource = {
 
+    readonly name: string;
     readonly lastUpdate: Date | null;
     readonly structure: ExternalSourceStructure;
     readonly url: string;

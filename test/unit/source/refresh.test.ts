@@ -40,6 +40,7 @@ describe('Given [source-refresh] helper methods', (): void => {
         getCurrentDateMock.mock(getCurrentDateStack.func(mockDate));
 
         const source: BarkSource = {
+            name: chance.string(),
             lastUpdate: mockDate,
             structure: {
                 templates: [],

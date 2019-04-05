@@ -5,6 +5,7 @@
  */
 
 import { _Json } from "@sudoo/bark/json";
+import { _Random } from "@sudoo/bark/random";
 import { getExternalData } from "@sudoo/io";
 import { BarkConfig, BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
@@ -14,7 +15,7 @@ import { ExternalSourceStructure } from "./declare";
 import { verifyExternalSourceStructure } from "./refresh";
 import { getSourceFromUrlByEnvironment } from "./source";
 
-export const addSourceFromURLToEnvironment = async (env: Environment, url: string): Promise<Environment> => {
+export const addSourceFromURLToEnvironment = async (env: Environment, url: string, name?: string): Promise<Environment> => {
 
     const template: BarkSource | null = getSourceFromUrlByEnvironment(env, url);
 
@@ -30,6 +31,7 @@ export const addSourceFromURLToEnvironment = async (env: Environment, url: strin
     }
 
     const source: BarkSource = {
+        name: name || _Random.unique(),
         url,
         lastUpdate: getCurrentDate(),
         structure: parsed,
