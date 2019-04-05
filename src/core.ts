@@ -29,6 +29,11 @@ export class Core {
         this._enablePrivateUpdateEnv = !immutable;
     }
 
+    public get environment(): Environment {
+
+        return this._env;
+    }
+
     public setEnvironment(env: Environment): this {
 
         this._env = env;
@@ -41,12 +46,12 @@ export class Core {
         return this;
     }
 
-    public async attempt(query: string): Promise<Template | null> {
+    public async attemptFindTemplate(query: string): Promise<Template | null> {
 
         return await attemptAction(this._env, query);
     }
 
-    public async source(url: string): Promise<Environment> {
+    public async addSource(url: string): Promise<Environment> {
 
         const newEnv: Environment = await addSourceFromURLToEnvironment(this._env, url);
         this._privateUpdateEnvironment(newEnv);
@@ -54,12 +59,12 @@ export class Core {
         return newEnv;
     }
 
-    public async init(template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> {
+    public async initTemplate(template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> {
 
         return parseAndCopyTemplate(this._env, template, replacements, targetPath);
     }
 
-    public async direct(from: string, replacements: Record<string, string>, targetPath: string): Promise<void> {
+    public async directCopy(from: string, replacements: Record<string, string>, targetPath: string): Promise<void> {
 
         return parseAndCopyDirect(this._env, from, replacements, targetPath);
     }
@@ -80,7 +85,7 @@ export class Core {
         return newEnv;
     }
 
-    public async update(): Promise<Environment> {
+    public async updateAllSources(): Promise<Environment> {
 
         const newEnv: Environment = await updateAllSourceFromExternal(this._env);
         this._privateUpdateEnvironment(newEnv);
