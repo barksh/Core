@@ -13,7 +13,7 @@ import { ERROR_CODE, panic } from "../panic/declare";
 import { getCurrentDate } from "../util/date";
 import { ExternalSourceStructure } from "./declare";
 import { verifyExternalSourceStructure } from "./refresh";
-import { getSourceFromUrlByEnvironment } from "./source";
+import { findSourceIndexByName, getSourceFromUrlByEnvironment } from "./source";
 
 export const addSourceFromURLToEnvironment = async (env: Environment, url: string, name?: string): Promise<Environment> => {
 
@@ -44,5 +44,21 @@ export const addSourceFromURLToEnvironment = async (env: Environment, url: strin
         ...newConfig,
         sources: [...newConfig.sources, source],
     });
+    return newEnv;
+};
+
+export const removeSourceFromEnvironment = (env: Environment, name: string): Environment => {
+
+    const index: number | null = findSourceIndexByName(env, name);
+    if (typeof index !== 'number') {
+        throw panic.code(ERROR_CODE.SOURCE_NAME_NOT_FOUND, name);
+    }
+
+    const newEnv: Environment = env.clone();
+    const newConfig: BarkConfig = newEnv.config;
+
+    newConfig.sources.splice(index, 1);
+
+    newEnv.setConfig(newConfig);
     return newEnv;
 };

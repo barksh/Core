@@ -17,6 +17,7 @@ import { Environment } from "../src/config/environment";
             templates: [],
             sources: [
                 {
+                    name: 'test',
                     url: 'http://www.mocky.io/v2/5c9a995a3500004c00d0c6f8',
                     lastUpdate: new Date(),
                     structure: {

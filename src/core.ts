@@ -4,12 +4,13 @@
  * @description Core
  */
 
+import { BarkConfig } from "./config/declare";
 import { Environment } from "./config/environment";
 import { Template } from "./config/template";
 import { attemptAction } from "./core/actions";
 import { cleanInActivePackages, cleanTempFiles, getInActivePackageFullPaths } from "./core/clean";
 import { installAction, installFromLocalAction } from "./core/install";
-import { addSourceFromURLToEnvironment } from "./source/add";
+import { addSourceFromURLToEnvironment } from "./source/mutate";
 import { updateAllSourceFromExternal } from "./source/refresh";
 import { parseAndCopyDirect, parseAndCopyTemplate } from "./template/copy";
 
@@ -29,8 +30,10 @@ export class Core {
         this._enablePrivateUpdateEnv = !immutable;
     }
 
+    public get config(): BarkConfig {
+        return this._env.config;
+    }
     public get environment(): Environment {
-
         return this._env;
     }
 
@@ -51,12 +54,21 @@ export class Core {
         return await attemptAction(this._env, query);
     }
 
-    public async addSource(url: string): Promise<Environment> {
+    public async addSource(url: string, name?: string): Promise<Environment> {
 
-        const newEnv: Environment = await addSourceFromURLToEnvironment(this._env, url);
+        const newEnv: Environment = await addSourceFromURLToEnvironment(this._env, url, name);
         this._privateUpdateEnvironment(newEnv);
 
         return newEnv;
+    }
+
+    public removeSource(name: string): Environment {
+
+        // const newEnv: Environment = await addSourceFromURLToEnvironment(this._env, url, name);
+        // this._privateUpdateEnvironment(newEnv);
+
+        // return newEnv;
+        return this._env;
     }
 
     public async initTemplate(template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> {
