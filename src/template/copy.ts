@@ -12,7 +12,7 @@ import { HOOKS } from "../hook/declare";
 import { recursiveDoExcludeFileName } from "../io/file";
 import { getPathWithoutExtName } from "../io/util";
 import { ERROR_CODE, panic } from "../panic/declare";
-import { ConfigFileName, getExtNameLooksLike, TemplateConfig, PARSING_METHOD } from "./declare"; // tslint:disable-line
+import { ConfigFileName, getParsingMethod, PARSING_METHOD, shouldRemoveExtNameByPath, TemplateConfig } from "./declare"; // tslint:disable-line
 import { getPackageTemplateConfigByOriginPath } from "./package";
 import { parseContent } from "./parse";
 
@@ -35,20 +35,23 @@ export const parseAndCopyDirect = async (
         throw panic.code(ERROR_CODE.CONFIG_IS_REQUIRED_FOR_FOLDER_INIT, path);
     }
 
-    const method: PARSING_METHOD = config.templateMethod;
-
     const ensure: Ensure = Ensure.create();
 
     await recursiveDoExcludeFileName(path, async (file: string, relative: string[]) => {
 
         const content: string = await readTextFile(file);
-        const parsed: string = parseContent(method, content, replacements);
+
+        const parsingMethod: PARSING_METHOD = getParsingMethod(file);
+        const parsed: string = parseContent(parsingMethod, content, replacements);
 
         const targetFile: string = Path.join(targetPath, ...relative);
 
         await ensure.ensure(targetFile);
 
-        const pathWithoutExtName = getPathWithoutExtName(targetFile, getExtNameLooksLike(method));
+        const pathWithoutExtName: string =
+            shouldRemoveExtNameByPath(file)
+                ? getPathWithoutExtName(targetFile)
+                : targetFile;
 
         env.hook.call(HOOKS.PARSE_FILE, file);
         await writeTextFile(pathWithoutExtName, parsed);
@@ -63,20 +66,23 @@ export const parseAndCopyTemplate = async (
 ): Promise<void> => {
 
     const templatePath: string = Path.join(env.packagePath, template.template.folderName);
-    const method: PARSING_METHOD = template.config.templateMethod;
-
     const ensure: Ensure = Ensure.create();
 
     await recursiveDoExcludeFileName(templatePath, async (file: string, relative: string[]) => {
 
         const content: string = await readTextFile(file);
-        const parsed: string = parseContent(method, content, replacements);
+
+        const parsingMethod: PARSING_METHOD = getParsingMethod(file);
+        const parsed: string = parseContent(parsingMethod, content, replacements);
 
         const targetFile: string = Path.join(targetPath, ...relative);
 
         await ensure.ensure(targetFile);
 
-        const pathWithoutExtName = getPathWithoutExtName(targetFile, getExtNameLooksLike(method));
+        const pathWithoutExtName: string =
+            shouldRemoveExtNameByPath(file)
+                ? getPathWithoutExtName(targetFile)
+                : targetFile;
 
         env.hook.call(HOOKS.PARSE_FILE, file);
         await writeTextFile(pathWithoutExtName, parsed);

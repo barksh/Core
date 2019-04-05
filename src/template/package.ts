@@ -14,10 +14,6 @@ import { TemplateConfig } from "./declare";
 
 export const verifyTemplateConfig = (config: TemplateConfig): boolean => {
 
-    if (!config.templateMethod) {
-        return false;
-    }
-
     return true;
 };
 

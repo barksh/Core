@@ -36,18 +36,13 @@ export type Description = string;
 
 export type TemplateConfig = {
 
-    readonly templateMethod: PARSING_METHOD;
     readonly replacements: Record<string, Description>;
 };
 
-export const getDefaultTemplateConfig = (): TemplateConfig => {
+export const getDefaultTemplateConfig = (): TemplateConfig => ({
 
-    return {
-
-        templateMethod: PARSING_METHOD.EJS,
-        replacements: {},
-    };
-};
+    replacements: {},
+});
 
 export const getParsingMethod = (path: string): PARSING_METHOD => {
 
@@ -68,5 +63,16 @@ export const getExtNameLooksLike = (method: PARSING_METHOD): string => {
         case PARSING_METHOD.GHOTI: return '.ghoti';
         case PARSING_METHOD.NONE:
         default: throw panic.code(ERROR_CODE.NOT_IMPLEMENTED);
+    }
+};
+
+export const shouldRemoveExtNameByPath = (path: string): boolean => {
+
+    const parsedPath: Path.ParsedPath = Path.parse(path);
+
+    switch (parsedPath.ext.replace('.', '').toLowerCase()) {
+        case 'ejs':
+        case 'ghoti': return true;
+        default: return false;
     }
 };
