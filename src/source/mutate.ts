@@ -47,6 +47,24 @@ export const addSourceFromURLToEnvironment = async (env: Environment, url: strin
     return newEnv;
 };
 
+export const replaceSourceFormEnvironment = (env: Environment, name: string, newSource: BarkSource): Environment => {
+
+    const newEnvironment: Environment = env.clone();
+
+    const newConfig: BarkConfig = {
+        ...newEnvironment.config,
+        sources: newEnvironment.config.sources.map((value: BarkSource) => {
+            if (value.name === name) {
+                return newSource;
+            }
+            return value;
+        }),
+    };
+
+    newEnvironment.setConfig(newConfig);
+    return newEnvironment;
+};
+
 export const removeSourceFromEnvironment = (env: Environment, name: string): Environment => {
 
     const index: number | null = findSourceIndexByName(env, name);

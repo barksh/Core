@@ -10,8 +10,8 @@ import { Template } from "./config/template";
 import { attemptAction } from "./core/actions";
 import { cleanInActivePackages, cleanTempFiles, getInActivePackageFullPaths } from "./core/clean";
 import { installAction, installFromLocalAction } from "./core/install";
-import { addSourceFromURLToEnvironment } from "./source/mutate";
-import { updateAllSourceFromExternal } from "./source/refresh";
+import { addSourceFromURLToEnvironment, removeSourceFromEnvironment } from "./source/mutate";
+import { updateAllSourceFromExternal, updateSourceFromExternalByName } from "./source/refresh";
 import { parseAndCopyDirect, parseAndCopyTemplate } from "./template/copy";
 
 export class Core {
@@ -64,11 +64,10 @@ export class Core {
 
     public removeSource(name: string): Environment {
 
-        // const newEnv: Environment = await addSourceFromURLToEnvironment(this._env, url, name);
-        // this._privateUpdateEnvironment(newEnv);
+        const newEnv: Environment = removeSourceFromEnvironment(this._env, name);
+        this._privateUpdateEnvironment(newEnv);
 
-        // return newEnv;
-        return this._env;
+        return newEnv;
     }
 
     public async initTemplate(template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> {
@@ -100,6 +99,14 @@ export class Core {
     public async updateAllSources(): Promise<Environment> {
 
         const newEnv: Environment = await updateAllSourceFromExternal(this._env);
+        this._privateUpdateEnvironment(newEnv);
+
+        return newEnv;
+    }
+
+    public async updateSource(name: string): Promise<Environment> {
+
+        const newEnv: Environment = await updateSourceFromExternalByName(this._env, name);
         this._privateUpdateEnvironment(newEnv);
 
         return newEnv;

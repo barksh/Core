@@ -10,7 +10,8 @@ import { BarkConfig, BarkSource } from "../config/declare";
 import { Environment } from "../config/environment";
 import { ERROR_CODE, panic } from "../panic/declare";
 import { ExternalSourceStructure, ExternalTemplate } from "./declare";
-import { updateBarkSourceFromExternalSourceStructure } from "./source";
+import { replaceSourceFormEnvironment } from "./mutate";
+import { findSourceByName, updateBarkSourceFromExternalSourceStructure } from "./source";
 
 export const verifyExternalSourceStructure = (structure: ExternalSourceStructure): boolean => {
 
@@ -40,6 +41,18 @@ export const updateSourceFromExternal = async (source: BarkSource): Promise<Bark
     }
 
     return updateBarkSourceFromExternalSourceStructure(source, parsed);
+};
+
+export const updateSourceFromExternalByName = async (env: Environment, name: string): Promise<Environment> => {
+
+    const source: BarkSource | null = findSourceByName(env, name);
+
+    if (!source) {
+        throw panic.code(ERROR_CODE.SOURCE_NAME_NOT_FOUND, name);
+    }
+
+    const newSource: BarkSource = await updateSourceFromExternal(source);
+    return replaceSourceFormEnvironment(env, name, newSource);
 };
 
 export const updateAllSourceFromExternal = async (env: Environment): Promise<Environment> => {

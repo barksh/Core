@@ -48,6 +48,18 @@ export const findUrlFromSourcesByEnvironment = (env: Environment, info: Template
     return null;
 };
 
+export const findSourceByName = (env: Environment, name: string): BarkSource | null => {
+
+    const sources: BarkSource[] = env.config.sources;
+
+    for (const source of sources) {
+        if (source.name === name) {
+            return source;
+        }
+    }
+    return null;
+};
+
 export const findSourceIndexByName = (env: Environment, name: string): number | null => {
 
     const sources: BarkSource[] = env.config.sources;
