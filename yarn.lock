@@ -7,10 +7,17 @@
   resolved "https://registry.yarnpkg.com/@sudoo/bark/-/bark-2.4.1.tgz#a9671a3be0dc2dd7c1ae8ebb85974d4700d2229a"
   integrity sha512-28C4IgEqIeUWwU+kCKBJJzM02jqDsJ9oimF9/h9t1sPdWhNoJ7Px+LenZXlJY2+o5TA0hTiRZlwIn9oKf33A+Q==
 
-"@sudoo/io@^0.1.0":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@sudoo/io/-/io-0.1.1.tgz#d8676c3abf9a2529faeed7fdf23f4294a79d16f7"
-  integrity sha512-/ajaVUNvxfvyju3nJwOhZHldfh4TAzA64X7aGxGw4cAF0SD7wCguOZ5ONT51fYsN5rdeZq4+4Nw1GzpKmEoAOQ==
+"@sudoo/bark@^2.5.0":
+  version "2.5.0"
+  resolved "https://registry.yarnpkg.com/@sudoo/bark/-/bark-2.5.0.tgz#309de93a9d9c68c0aa7db5ab315e5e6cd902e73a"
+  integrity sha512-1C57p5tVxIrnhpqCJatVI/0Nvypk5HLRAMqN61l8GB3rqKd/Kf3VxhFnHHrQaj1jjpb5CHfz3sGjaMQCW6tC5g==
+
+"@sudoo/io@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@sudoo/io/-/io-1.0.0.tgz#d77118ca868048f12586cc263c210caa118996fa"
+  integrity sha512-c0w/5t6rzmmBysu7gq7LDnZvIhXV/LpyuvpmcQEIB9XsSb/3YsZv3HcecpsuT67kIYGHyjKwyo5FYaK8oQlcHg==
+  dependencies:
+    "@sudoo/bark" "^2.5.0"
 
 "@sudoo/mock@^1.2.0":
   version "1.2.0"
