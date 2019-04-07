@@ -14,6 +14,7 @@ export enum ERROR_CODE {
 
     EXTERNAL_SOURCE_PARSE_FAILED = 1603,
     EXTERNAL_SOURCE_VERIFY_FAILED = 1604,
+    EXTERNAL_SOURCE_FETCH_FAILED = 1605,
 
     TEMPLATE_CONFIG_PARSE_FAILED = 1613,
     TEMPLATE_CONFIG_VERIFY_FAILED = 1614,
@@ -53,6 +54,7 @@ export const ERROR_LIST = {
 
     [ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED]: 'Failed parse external source file',
     [ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED]: 'Failed verify external source file',
+    [ERROR_CODE.EXTERNAL_SOURCE_FETCH_FAILED]: 'Failed fetch external source: "{}"',
 
     [ERROR_CODE.TEMPLATE_CONFIG_PARSE_FAILED]: 'Failed parse template: "{}" config file',
     [ERROR_CODE.TEMPLATE_CONFIG_VERIFY_FAILED]: 'Failed verify template: "{}" config file',

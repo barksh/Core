@@ -23,7 +23,12 @@ export const addSourceFromURLToEnvironment = async (env: Environment, url: strin
         throw panic.code(ERROR_CODE.SOURCE_ALREADY_EXIST, url);
     }
 
-    const info: string = await getExternalTextByProtocol(url);
+    const info: string | null = await getExternalTextByProtocol(url);
+
+    if (!info) {
+        throw panic.code(ERROR_CODE.EXTERNAL_SOURCE_FETCH_FAILED, url);
+    }
+
     const parsed: ExternalSourceStructure = _Json.safeParse(info, panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
 
     if (!verifyExternalSourceStructure(parsed)) {
