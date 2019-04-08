@@ -5,7 +5,7 @@
  */
 
 import * as Path from "path";
-import { Core, Template } from "../src";
+import { Core } from "../src";
 import { Environment } from "../src/config/environment";
 
 (async () => {
