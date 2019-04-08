@@ -11,10 +11,6 @@ export const ConfigFileName = '.bark.config.json';
 
 export type TemplateQueryInfo = {
 
-    readonly scripts?: {
-        beforeInstall?: string[],
-        afterInstall?: string[],
-    },
     readonly name: string;
     readonly version: string | VERSION_QUERY;
 };
@@ -36,7 +32,11 @@ export type Description = string;
 
 export type TemplateConfig = {
 
-    readonly replacements: Record<string, Description>;
+    readonly replacements?: Record<string, Description>;
+    readonly scripts?: {
+        beforeInstall?: string[],
+        afterInstall?: string[],
+    },
 };
 
 export const getDefaultTemplateConfig = (): TemplateConfig => ({
