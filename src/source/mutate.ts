@@ -15,7 +15,7 @@ import { ExternalSourceStructure } from "./declare";
 import { verifyExternalSourceStructure } from "./refresh";
 import { findSourceIndexByName, getSourceFromUrlByEnvironment } from "./source";
 
-export const addSourceFromURLToEnvironment = async (env: Environment, url: string, name?: string): Promise<Environment> => {
+export const addSourceFromURLToEnvironment = async (env: Environment, url: string, nameFromUser?: string): Promise<Environment> => {
 
     const template: BarkSource | null = getSourceFromUrlByEnvironment(env, url);
 
@@ -35,8 +35,10 @@ export const addSourceFromURLToEnvironment = async (env: Environment, url: strin
         throw panic.code(ERROR_CODE.EXTERNAL_SOURCE_VERIFY_FAILED);
     }
 
+    const nameFromSource: string | undefined = parsed.name;
+
     const source: BarkSource = {
-        name: name || _Random.unique(),
+        name: nameFromUser || nameFromSource || _Random.unique(),
         url,
         lastUpdate: getCurrentDate(),
         structure: parsed,
