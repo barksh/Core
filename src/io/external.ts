@@ -14,6 +14,7 @@ export const downloadAndDecompress = async (env: Environment, url: string): Prom
     await getExternalFileByProtocol(url, tempFilePath);
 
     const hash: string = await md5File(tempFilePath);
+
     const packagePath: string = await getRandomPackagePath(env, hash);
 
     await decompressZipFile(tempFilePath, packagePath);
