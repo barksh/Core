@@ -6,7 +6,7 @@
 
 export type ExternalTemplate = {
 
-    readonly name: string;
+    readonly name?: string;
     readonly url: string;
     readonly version: string;
 };
