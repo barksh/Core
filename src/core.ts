@@ -18,17 +18,19 @@ export class Core {
 
     public static withEnvironment(env: Environment, immutable?: boolean): Core {
 
-        return new Core(env, immutable || false);
+        return new Core(env, immutable || true);
     }
 
     private _env: Environment;
-    private _enablePrivateUpdateEnv: boolean;
+    private _immutable: boolean;
 
     private constructor(env: Environment, immutable: boolean) {
 
         this._env = env;
-        this._enablePrivateUpdateEnv = !immutable;
+        this._immutable = immutable;
     }
+
+    // Env
 
     public get config(): BarkConfig {
         return this._env.config;
@@ -43,16 +45,13 @@ export class Core {
         return this;
     }
 
-    public useImmutable(): this {
+    public setImmutable(immutable: boolean): this {
 
-        this._enablePrivateUpdateEnv = false;
+        this._immutable = immutable;
         return this;
     }
 
-    public async attemptFindTemplate(query: string): Promise<Template | null> {
-
-        return await attemptAction(this._env, query);
-    }
+    // Core
 
     public async addSource(url: string, name?: string): Promise<Environment> {
 
@@ -62,22 +61,47 @@ export class Core {
         return newEnv;
     }
 
-    public removeSource(name: string): Environment {
+    public async attemptFindTemplate(query: string): Promise<Template | null> {
 
-        const newEnv: Environment = removeSourceFromEnvironment(this._env, name);
+        return await attemptAction(this._env, query);
+    }
+
+    public async cleanInActivePackages(): Promise<void> {
+
+        await cleanInActivePackages(this._env);
+        return;
+    }
+
+    public async cleanTempFiles(): Promise<void> {
+
+        await cleanTempFiles(this._env);
+        return;
+    }
+
+    public async directCopy(from: string, replacements: Record<string, string>, targetPath: string): Promise<Environment> {
+
+        await parseAndCopyDirect(this._env, from, replacements, targetPath);
+        return this._env;
+    }
+
+    public async getInActivePackages(): Promise<string[]> {
+
+        const inActivePackageFullPaths: string[] = await getInActivePackageFullPaths(this._env);
+        return inActivePackageFullPaths;
+    }
+
+    public async initTemplate(template: Template, replacements: Record<string, string>, targetPath: string): Promise<Environment> {
+
+        await parseAndCopyTemplate(this._env, template, replacements, targetPath);
+        return this._env;
+    }
+
+    public async installFromLocal(name: string, version: string, path: string): Promise<Environment> {
+
+        const newEnv: Environment = await installFromLocalAction(this._env, name, version, path);
         this._privateUpdateEnvironment(newEnv);
 
         return newEnv;
-    }
-
-    public async initTemplate(template: Template, replacements: Record<string, string>, targetPath: string): Promise<void> {
-
-        return parseAndCopyTemplate(this._env, template, replacements, targetPath);
-    }
-
-    public async directCopy(from: string, replacements: Record<string, string>, targetPath: string): Promise<void> {
-
-        return parseAndCopyDirect(this._env, from, replacements, targetPath);
     }
 
     public async installFromSource(query: string): Promise<Environment> {
@@ -88,12 +112,10 @@ export class Core {
         return newEnv;
     }
 
-    public async installFromLocal(name: string, version: string, path: string): Promise<Environment> {
+    public removeSource(name: string): Environment {
 
-        const newEnv: Environment = await installFromLocalAction(this._env, name, version, path);
-        this._privateUpdateEnvironment(newEnv);
-
-        return newEnv;
+        const newEnv: Environment = removeSourceFromEnvironment(this._env, name);
+        return this._privateUpdateEnvironment(newEnv);
     }
 
     public async updateAllSources(): Promise<Environment> {
@@ -112,29 +134,13 @@ export class Core {
         return newEnv;
     }
 
-    public async cleanTempFiles(): Promise<void> {
+    // Other
 
-        await cleanTempFiles(this._env);
-        return;
-    }
+    private _privateUpdateEnvironment(newEnv: Environment): Environment {
 
-    public async cleanInActivePackages(): Promise<void> {
-
-        await cleanInActivePackages(this._env);
-        return;
-    }
-
-    public async getInActivePackages(): Promise<string[]> {
-
-        const inActivePackageFullPaths: string[] = await getInActivePackageFullPaths(this._env);
-        return inActivePackageFullPaths;
-    }
-
-    private _privateUpdateEnvironment(newEnv: Environment): this {
-
-        if (this._enablePrivateUpdateEnv) {
+        if (!this._immutable) {
             this.setEnvironment(newEnv);
         }
-        return this;
+        return newEnv;
     }
 }
