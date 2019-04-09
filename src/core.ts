@@ -4,7 +4,7 @@
  * @description Core
  */
 
-import { BarkConfig } from "./config/declare";
+import { BarkConfig, BarkSource, BarkTemplate } from "./config/declare";
 import { Environment } from "./config/environment";
 import { Template } from "./config/template";
 import { attemptAction } from "./core/actions";
@@ -16,9 +16,9 @@ import { parseAndCopyDirect, parseAndCopyTemplate } from "./template/copy";
 
 export class Core {
 
-    public static withEnvironment(env: Environment, immutable?: boolean): Core {
+    public static withEnvironment(env: Environment, immutable: boolean = true): Core {
 
-        return new Core(env, immutable || true);
+        return new Core(env, immutable);
     }
 
     private _env: Environment;
@@ -78,7 +78,7 @@ export class Core {
         return;
     }
 
-    public async directCopy(from: string, replacements: Record<string, string>, targetPath: string): Promise<Environment> {
+    public async directParse(from: string, replacements: Record<string, string>, targetPath: string): Promise<Environment> {
 
         await parseAndCopyDirect(this._env, from, replacements, targetPath);
         return this._env;
@@ -88,6 +88,16 @@ export class Core {
 
         const inActivePackageFullPaths: string[] = await getInActivePackageFullPaths(this._env);
         return inActivePackageFullPaths;
+    }
+
+    public getSources(): BarkSource[] {
+
+        return this._env.config.sources;
+    }
+
+    public getTemplates(): BarkTemplate[] {
+
+        return this._env.config.templates;
     }
 
     public async initTemplate(template: Template, replacements: Record<string, string>, targetPath: string): Promise<Environment> {
