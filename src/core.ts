@@ -99,17 +99,13 @@ export class Core {
     public async installFromLocal(name: string, version: string, path: string): Promise<Environment> {
 
         const newEnv: Environment = await installFromLocalAction(this._env, name, version, path);
-        this._privateUpdateEnvironment(newEnv);
-
-        return newEnv;
+        return this._privateUpdateEnvironment(newEnv);
     }
 
     public async installFromSource(query: string): Promise<Environment> {
 
         const newEnv: Environment = await installAction(this._env, query);
-        this._privateUpdateEnvironment(newEnv);
-
-        return newEnv;
+        return this._privateUpdateEnvironment(newEnv);
     }
 
     public removeSource(name: string): Environment {
@@ -121,17 +117,13 @@ export class Core {
     public async updateAllSources(): Promise<Environment> {
 
         const newEnv: Environment = await updateAllSourceFromExternal(this._env);
-        this._privateUpdateEnvironment(newEnv);
-
-        return newEnv;
+        return this._privateUpdateEnvironment(newEnv);
     }
 
     public async updateSource(name: string): Promise<Environment> {
 
         const newEnv: Environment = await updateSourceFromExternalByName(this._env, name);
-        this._privateUpdateEnvironment(newEnv);
-
-        return newEnv;
+        return this._privateUpdateEnvironment(newEnv);
     }
 
     // Other
