@@ -38,7 +38,26 @@ export const installFromLocalAction = async (
     return newEnv;
 };
 
-export const installAction = async (env: Environment, query: string): Promise<Environment> => {
+export const installFromExternalAction = async (
+    env: Environment,
+    name: string,
+    version: string,
+    url: string,
+): Promise<Environment> => {
+
+    const packagePath: string = await fetchAndDecompressFromAnyExternal(env, url);
+
+    const newEnv: Environment = env.clone().setConfig(addTemplate(env.config, {
+        name,
+        version,
+        folderName: packagePath,
+    }));
+
+    return newEnv;
+};
+
+
+export const installFromSourceAction = async (env: Environment, query: string): Promise<Environment> => {
 
     const info: TemplateQueryInfo = parseTemplateQuery(query);
     const installed: BarkTemplate | null = searchTemplateFromConfig(env.config, info);
