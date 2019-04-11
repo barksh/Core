@@ -33,7 +33,12 @@ export const verifyExternalSourceStructure = (structure: ExternalSourceStructure
 
 export const updateSourceFromExternal = async (source: BarkSource): Promise<BarkSource> => {
 
-    const info: string = await getExternalTextByProtocol(source.url);
+    const info: string | null = await getExternalTextByProtocol(source.url);
+
+    if (!info) {
+        throw panic.code(ERROR_CODE.SOURCE_EXTERNAL_FILE_NOT_FOUND, source.url);
+    }
+
     const parsed: ExternalSourceStructure = _Json.safeParse(info, panic.code(ERROR_CODE.EXTERNAL_SOURCE_PARSE_FAILED));
 
     if (!verifyExternalSourceStructure(parsed)) {

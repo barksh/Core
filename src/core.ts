@@ -10,7 +10,7 @@ import { Template } from "./config/template";
 import { attemptAction } from "./core/actions";
 import { cleanInActivePackages, cleanTempFiles, getInActivePackageFullPaths } from "./core/clean";
 import { installAction, installFromLocalAction } from "./core/install";
-import { addSourceFromURLToEnvironment, removeSourceFromEnvironment } from "./source/mutate";
+import { addSourceFromURLToEnvironment, removeAllSourcesFromEnvironment, removeSourceFromEnvironment } from "./source/mutate";
 import { updateAllSourceFromExternal, updateSourceFromExternalByName } from "./source/refresh";
 import { parseAndCopyDirect, parseAndCopyTemplate } from "./template/copy";
 
@@ -115,6 +115,12 @@ export class Core {
     public async installFromSource(query: string): Promise<Environment> {
 
         const newEnv: Environment = await installAction(this._env, query);
+        return this._privateUpdateEnvironment(newEnv);
+    }
+
+    public removeAllSource(): Environment {
+
+        const newEnv: Environment = removeAllSourcesFromEnvironment(this._env);
         return this._privateUpdateEnvironment(newEnv);
     }
 

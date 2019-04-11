@@ -36,6 +36,7 @@ export enum ERROR_CODE {
 
     SOURCE_ALREADY_EXIST = 4205,
     SOURCE_NAME_NOT_FOUND = 4206,
+    SOURCE_EXTERNAL_FILE_NOT_FOUND = 4207,
 
     INVALID_EXTERNAL_URL = 5050,
     INVALID_EXTERNAL_PROTOCOL = 5051,
@@ -76,6 +77,7 @@ export const ERROR_LIST = {
 
     [ERROR_CODE.SOURCE_ALREADY_EXIST]: 'Source: "{}" already exist',
     [ERROR_CODE.SOURCE_NAME_NOT_FOUND]: 'Source name: "{}" not found',
+    [ERROR_CODE.SOURCE_EXTERNAL_FILE_NOT_FOUND]: 'Source external file: "{}" not found',
 
     [ERROR_CODE.INVALID_EXTERNAL_URL]: 'Invalid external url, "{}"',
     [ERROR_CODE.INVALID_EXTERNAL_PROTOCOL]: 'Invalid external protocol, "{}"',

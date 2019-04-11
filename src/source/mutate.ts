@@ -72,6 +72,18 @@ export const replaceSourceFormEnvironment = (env: Environment, name: string, new
     return newEnvironment;
 };
 
+export const removeAllSourcesFromEnvironment = (env: Environment): Environment => {
+
+    const newEnv: Environment = env.clone();
+    const newConfig: BarkConfig = {
+        ...newEnv.config,
+        sources: [],
+    };
+
+    newEnv.setConfig(newConfig);
+    return newEnv;
+};
+
 export const removeSourceFromEnvironment = (env: Environment, name: string): Environment => {
 
     const index: number | null = findSourceIndexByName(env, name);
