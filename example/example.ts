@@ -1,6 +1,6 @@
 /**
  * @author WMXPY
- * @namespace Core
+ * @namespace Example
  * @description Example
  */
 
