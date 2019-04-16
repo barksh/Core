@@ -4,7 +4,7 @@
  * @description External
  */
 
-import { decompressZipFile, getExternalFileByProtocol, md5File } from "@sudoo/io";
+import { dependableDecompressZipFile, getExternalFileByProtocol, md5File } from "@sudoo/io";
 import { Environment } from "../config/environment";
 import { getRandomPackagePath, getRandomTempFilePath } from "./util";
 
@@ -17,7 +17,7 @@ export const downloadAndDecompress = async (env: Environment, url: string): Prom
 
     const packagePath: string = await getRandomPackagePath(env, hash);
 
-    await decompressZipFile(tempFilePath, packagePath);
+    await dependableDecompressZipFile(tempFilePath, packagePath);
     return hash;
 };
 
