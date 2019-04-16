@@ -20,13 +20,13 @@
   "homepage": "https://github.com/barksh/Core#readme",
   "dependencies": {
     "@sudoo/bark": "^2.5.1",
-    "@sudoo/io": "^1.2.1",
+    "@sudoo/io": "^1.4.0",
     "connor": "^2.4.0",
     "ejs": "^2.6.1"
   },
   "devDependencies": {
     "@sudoo/mock": "^1.2.0",
-    "@sudoo/triforce": "^1.5.0",
+    "@sudoo/triforce": "^1.6.0",
     "@types/ejs": "^2.6.3"
   },
   "nyc": {
