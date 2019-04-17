@@ -13,6 +13,7 @@ import { installFromExternalAction, installFromLocalAction, installFromSourceAct
 import { addSourceFromURLToEnvironment, removeAllSourcesFromEnvironment, removeSourceFromEnvironment } from "./source/mutate";
 import { updateAllSourceFromExternal, updateSourceFromExternalByName } from "./source/refresh";
 import { parseAndCopyDirect, parseAndCopyTemplate } from "./template/copy";
+import { getFilesFromTemplateByTemplate } from "./template/package";
 
 export class Core {
 
@@ -88,6 +89,11 @@ export class Core {
 
         const inActivePackageFullPaths: string[] = await getInActivePackageFullPaths(this._env);
         return inActivePackageFullPaths;
+    }
+
+    public async getTemplateFiles(template: Template): Promise<string[]> {
+
+        return await getFilesFromTemplateByTemplate(this._env, template);
     }
 
     public getSources(): BarkSource[] {

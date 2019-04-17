@@ -90,6 +90,8 @@ export const getRandomPackagePath = async (env: Environment, filename?: string):
 
 export const getBarkTemplateConfigFilePathByOriginPath = (originPath: string): string => Path.join(originPath, ConfigFileName);
 
+export const getBarkPackageFolderPath = (env: Environment, folder: string): string => Path.join(env.packagePath, folder);
+
 export const getBarkTemplateConfigFilePath = (env: Environment, folder: string): string => Path.join(env.packagePath, folder, ConfigFileName);
 
 export const getPathWithNewExtName = (path: string, newExt: string): string => {

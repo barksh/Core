@@ -34,14 +34,15 @@ import { Environment } from "../src/config/environment";
         .setTemporaryPath(Path.join(appDataPath, 'temp'));
     try {
         const core: Core = Core.withEnvironment(env);
+        core.setImmutable(false);
 
         await core.installFromSource('test');
 
         const template: Template | null = await core.attemptFindTemplate('test');
 
-        // if (!template) {
-        //     throw new Error('no template');
-        // }
+        if (!template) {
+            throw new Error('no template');
+        }
 
         await core.initTemplate(template, {
             title: 'test hello',
