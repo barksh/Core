@@ -39,6 +39,12 @@ export class Core {
     public get environment(): Environment {
         return this._env;
     }
+    public getSources(): BarkSource[] {
+        return this._env.sources;
+    }
+    public getTemplates(): BarkTemplate[] {
+        return this._env.templates;
+    }
 
     public setEnvironment(env: Environment): this {
 
@@ -94,16 +100,6 @@ export class Core {
     public async getTemplateFiles(template: Template): Promise<string[]> {
 
         return await getFilesFromTemplateByTemplate(this._env, template);
-    }
-
-    public getSources(): BarkSource[] {
-
-        return this._env.config.sources;
-    }
-
-    public getTemplates(): BarkTemplate[] {
-
-        return this._env.config.templates;
     }
 
     public async initTemplate(template: Template, replacements: Record<string, string>, targetPath: string): Promise<Environment> {
