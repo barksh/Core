@@ -37,6 +37,24 @@ export const searchTemplateFromConfig = (config: BarkConfig, info: TemplateQuery
     return null;
 };
 
+export const removeTemplateFromConfig = (config: BarkConfig, info: TemplateQueryInfo): BarkConfig => {
+
+    const newTemplates: BarkTemplate[] = config.templates.reduce((previous: BarkTemplate[], current: BarkTemplate) => {
+
+        if (current.name === info.name) {
+            if (current.version === info.version || info.version === VERSION_QUERY.ANY) {
+                return previous;
+            }
+        }
+        return previous.concat(current);
+    }, [] as BarkTemplate[]);
+
+    return {
+        ...config,
+        templates: newTemplates,
+    };
+};
+
 export const searchTemplateFromEnvironmentByQuery = (env: Environment, query: string): BarkTemplate | null => {
 
     const templateInfo: TemplateQueryInfo = parseTemplateQuery(query);

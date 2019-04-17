@@ -12,6 +12,7 @@ import { cleanInActivePackages, cleanTempFiles, getInActivePackageFullPaths } fr
 import { installFromExternalAction, installFromLocalAction, installFromSourceAction } from "./core/install";
 import { addSourceFromURLToEnvironment, removeAllSourcesFromEnvironment, removeSourceFromEnvironment } from "./source/mutate";
 import { updateAllSourceFromExternal, updateSourceFromExternalByName } from "./source/refresh";
+import { removeAllTemplates, removeTemplate } from "./template/clean";
 import { parseAndCopyDirect, parseAndCopyTemplate } from "./template/copy";
 import { getFilesFromTemplateByTemplate } from "./template/package";
 
@@ -126,9 +127,21 @@ export class Core {
         return this._privateUpdateEnvironment(newEnv);
     }
 
-    public removeAllSource(): Environment {
+    public async removeAllTemplates(): Promise<Environment> {
+
+        const newEnv: Environment = await removeAllTemplates(this._env);
+        return this._privateUpdateEnvironment(newEnv);
+    }
+
+    public removeAllSources(): Environment {
 
         const newEnv: Environment = removeAllSourcesFromEnvironment(this._env);
+        return this._privateUpdateEnvironment(newEnv);
+    }
+
+    public async removeTemplate(query: string): Promise<Environment> {
+
+        const newEnv: Environment = await removeTemplate(this._env, query);
         return this._privateUpdateEnvironment(newEnv);
     }
 
