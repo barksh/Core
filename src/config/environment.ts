@@ -4,6 +4,7 @@
  * @description Environment
  */
 
+import * as Path from "path";
 import { HookManager } from "../hook/manager";
 import { ERROR_CODE, panic } from "../panic/declare";
 import { verifyBarkConfig } from "./config";
@@ -65,6 +66,16 @@ export class Environment {
             throw panic.code(ERROR_CODE.ENVIRONMENT_NOT_SETTLED, 'Package Path');
         }
         return this._packagePath;
+    }
+
+    public joinTemporaryPath(...paths: string[]): string {
+
+        return Path.join(this.temporaryPath, ...paths);
+    }
+
+    public joinPackagePath(...paths: string[]): string {
+
+        return Path.join(this.packagePath, ...paths);
     }
 
     public setPackagePath(path: string): this {
