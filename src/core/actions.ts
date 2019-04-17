@@ -25,4 +25,3 @@ export const attemptAction = async (env: Environment, query: string): Promise<Te
     }
     return Template.create(getDefaultTemplateConfig(), template);
 };
-

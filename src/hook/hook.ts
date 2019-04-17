@@ -23,7 +23,7 @@ export class Hook<K extends HOOKS> {
         this._callbacks = then;
     }
 
-    public call<T extends HOOKS, Args extends HookCallbackArgs[K]>(...args: Args): void {
+    public call<Args extends HookCallbackArgs[K]>(...args: Args): void {
 
         for (const callback of this._callbacks) {
 

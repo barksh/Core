@@ -56,7 +56,6 @@ export const installFromExternalAction = async (
     return newEnv;
 };
 
-
 export const installFromSourceAction = async (env: Environment, query: string): Promise<Environment> => {
 
     const info: TemplateQueryInfo = parseTemplateQuery(query);
@@ -76,7 +75,7 @@ export const installFromSourceAction = async (env: Environment, query: string): 
 
     const newEnv: Environment = env.clone().setConfig(addTemplate(env.config, {
         name: info.name,
-        version: info.version,
+        version: template.version,
         folderName: packagePath,
     }));
 
