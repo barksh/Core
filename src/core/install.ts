@@ -22,9 +22,9 @@ export const installFromLocalAction = async (
     name: string,
     version: string,
     path: string,
+    packageFolderName: string =  _Random.unique(),
 ): Promise<Environment> => {
 
-    const packageFolderName: string = _Random.unique();
     const packagePath: string = await getRandomPackagePath(env, packageFolderName);
 
     await copyAllFiles(path, packagePath);

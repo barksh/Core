@@ -112,9 +112,9 @@ export class Core {
         return this._privateUpdateEnvironment(newEnv);
     }
 
-    public async installFromLocal(name: string, version: string, path: string): Promise<Environment> {
+    public async installFromLocal(name: string, version: string, path: string, packageFolderName?: string): Promise<Environment> {
 
-        const newEnv: Environment = await installFromLocalAction(this._env, name, version, path);
+        const newEnv: Environment = await installFromLocalAction(this._env, name, version, path, packageFolderName);
         return this._privateUpdateEnvironment(newEnv);
     }
 

@@ -7,7 +7,7 @@
 import { HookManager } from "../hook/manager";
 import { ERROR_CODE, panic } from "../panic/declare";
 import { verifyBarkConfig } from "./config";
-import { BarkConfig } from "./declare";
+import { BarkConfig, BarkSource, BarkTemplate } from "./declare";
 
 export class Environment {
 
@@ -31,14 +31,26 @@ export class Environment {
     }
 
     public get hook(): HookManager {
+
         return this._hookManager;
     }
 
     public get config(): BarkConfig {
+
         if (!this._config) {
             throw panic.code(ERROR_CODE.ENVIRONMENT_NOT_SETTLED, 'Config');
         }
         return this._config;
+    }
+
+    public get templates(): BarkTemplate[] {
+
+        return this.config.templates;
+    }
+
+    public get sources(): BarkSource[] {
+
+        return this.config.sources;
     }
 
     public get temporaryPath(): string {
