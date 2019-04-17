@@ -44,6 +44,7 @@ export enum ERROR_CODE {
     INTERNAL_ISSUE = 9000,
     NOT_IMPLEMENTED = 9001,
     PATH_NOT_EXIST = 9002,
+    FALSE_CORE_CALL = 9003,
 
     INVALID_CONFIG = 9100,
     ENVIRONMENT_NOT_SETTLED = 9101,
@@ -85,6 +86,7 @@ export const ERROR_LIST = {
     [ERROR_CODE.INTERNAL_ISSUE]: 'Internal error',
     [ERROR_CODE.NOT_IMPLEMENTED]: 'Not implemented',
     [ERROR_CODE.PATH_NOT_EXIST]: 'Path "{}" Not exist',
+    [ERROR_CODE.FALSE_CORE_CALL]: 'Call core failed',
 
     [ERROR_CODE.INVALID_CONFIG]: 'Invalid configuration',
     [ERROR_CODE.ENVIRONMENT_NOT_SETTLED]: 'Environment does not contain "{}" information',

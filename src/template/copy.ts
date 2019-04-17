@@ -65,6 +65,10 @@ export const parseAndCopyTemplate = async (
     targetPath: string,
 ): Promise<void> => {
 
+    if (!template) {
+        throw panic.code(ERROR_CODE.FALSE_CORE_CALL);
+    }
+
     const templatePath: string = Path.join(env.packagePath, template.template.folderName);
     const ensure: Ensure = Ensure.create();
 

@@ -20,7 +20,7 @@
   "homepage": "https://github.com/barksh/Core#readme",
   "dependencies": {
     "@sudoo/bark": "^2.5.1",
-    "@sudoo/io": "^1.4.0",
+    "@sudoo/io": "^1.5.0",
     "connor": "^2.4.0",
     "ejs": "^2.6.1"
   },
