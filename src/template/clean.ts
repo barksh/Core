@@ -4,7 +4,7 @@
  * @description Clean
  */
 
-import { RMRFFolder } from "@sudoo/io";
+import { directoryFiles, RMRFFolder } from "@sudoo/io";
 import { BarkConfig, BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
 import { ERROR_CODE, panic } from "../panic/declare";
@@ -31,5 +31,17 @@ export const removeAllTemplates = async (env: Environment): Promise<Environment>
 
     const newEnv: Environment = env.clone();
 
-    return newEnv; // WIP
+    const templateFolders: string[] = await directoryFiles(env.temporaryPath);
+
+    for (const folder of templateFolders) {
+        await RMRFFolder(folder);
+    }
+
+    const newConfig: BarkConfig = {
+        ...newEnv.config,
+        templates: [],
+    };
+
+    newEnv.setConfig(newConfig);
+    return newEnv;
 };
