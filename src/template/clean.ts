@@ -5,10 +5,11 @@
  */
 
 import { RMRFFolder } from "@sudoo/io";
-import { BarkTemplate } from "../config/declare";
+import { BarkConfig, BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
 import { ERROR_CODE, panic } from "../panic/declare";
-import { searchTemplateFromEnvironmentByQuery } from "./template";
+import { TemplateQueryInfo } from "./declare";
+import { parseTemplateQuery, removeTemplateFromConfig, searchTemplateFromEnvironmentByQuery } from "./template";
 
 export const removeTemplate = async (env: Environment, query: string): Promise<Environment> => {
 
@@ -21,7 +22,9 @@ export const removeTemplate = async (env: Environment, query: string): Promise<E
 
     await RMRFFolder(env.joinPackagePath(template.folderName));
 
-    return newEnv; // WIP
+    const info: TemplateQueryInfo = parseTemplateQuery(query);
+    const newConfig: BarkConfig = removeTemplateFromConfig(newEnv.config, info);
+    return newEnv.setConfig(newConfig);
 };
 
 export const removeAllTemplates = async (env: Environment): Promise<Environment> => {
