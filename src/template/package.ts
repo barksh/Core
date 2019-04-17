@@ -5,12 +5,21 @@
  */
 
 import { _Json } from "@sudoo/bark/json";
-import { pathExists, readTextFile } from "@sudoo/io";
+import { digFolder, Folder, pathExists, readTextFile } from "@sudoo/io";
 import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
-import { getBarkTemplateConfigFilePath, getBarkTemplateConfigFilePathByOriginPath } from "../io/util";
+import { Template } from "../config/template";
+import { getBarkPackageFolderPath, getBarkTemplateConfigFilePath, getBarkTemplateConfigFilePathByOriginPath } from "../io/util";
 import { ERROR_CODE, panic } from "../panic/declare";
 import { TemplateConfig } from "./declare";
+
+export const getFilesFromTemplateByTemplate = async (env: Environment, template: Template): Promise<string[]> => {
+
+    const path: string = getBarkPackageFolderPath(env, template.template.folderName);
+    const folder: Folder = await digFolder(path);
+
+    return folder.getAllFilePaths();
+};
 
 export const verifyTemplateConfig = (config: TemplateConfig): boolean => {
 
