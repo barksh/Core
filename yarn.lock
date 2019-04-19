@@ -23,6 +23,13 @@
   resolved "https://registry.yarnpkg.com/@sudoo/bark/-/bark-2.5.1.tgz#b898c0c302a2ccf8cb881a57f15474569b91cf32"
   integrity sha512-vVkZtwRFbx5jtZzyZI8ZcdDEWYJN3H1Tb/PwzoxpPIf8KkzNftQL4VW+9tVfrNiw/MHyY92HWQDjKsY4WONQGQ==
 
+"@sudoo/di@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@sudoo/di/-/di-1.0.1.tgz#4121f2c332c977de84c019c41ff88c7120d20491"
+  integrity sha512-XuQf/bAciauBb4d5S97GWd8Ls55Wsoi0I7MBV813BPO05rEg0gEaAvqvOil5zm0V+CxCsl8IB3Kuq4+0lkggsw==
+  dependencies:
+    connor "^2.4.0"
+
 "@sudoo/io@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@sudoo/io/-/io-1.5.0.tgz#1448a59f4402dcaa5624f241fff5081baa7014b1"

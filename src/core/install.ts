@@ -10,7 +10,9 @@ import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
 import { fetchAndDecompressFromAnyExternal } from "../io/external";
 import { getRandomPackagePath } from "../io/util";
+import { Log } from "../log/log";
 import { ERROR_CODE, panic } from "../panic/declare";
+import { AutoWire } from "../services/di";
 import { ExternalTemplate } from "../source/declare";
 import { findUrlFromSourcesByEnvironment } from "../source/source";
 import { copyAllFiles } from "../template/copy";
@@ -22,7 +24,7 @@ export const installFromLocalAction = async (
     name: string,
     version: string,
     path: string,
-    packageFolderName: string =  _Random.unique(),
+    packageFolderName: string = _Random.unique(),
 ): Promise<Environment> => {
 
     const packagePath: string = await getRandomPackagePath(env, packageFolderName);
@@ -56,13 +58,19 @@ export const installFromExternalAction = async (
     return newEnv;
 };
 
-export const installFromSourceAction = async (env: Environment, query: string): Promise<Environment> => {
+export const installFromSourceAction = async (env: Environment, query: string, replace: boolean = true): Promise<Environment> => {
+
+    const log: Log = AutoWire('log');
 
     const info: TemplateQueryInfo = parseTemplateQuery(query);
     const installed: BarkTemplate | null = searchTemplateFromConfig(env.config, info);
 
     if (installed) {
-        return env;
+        if (replace) log.log('Package installed.. replacing');
+        else {
+            log.log('Package installed');
+            return env;
+        }
     }
 
     const template: ExternalTemplate | null = findUrlFromSourcesByEnvironment(env, info);
