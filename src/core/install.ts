@@ -8,7 +8,6 @@ import { _Random } from "@sudoo/bark/random";
 import { addTemplate } from "../config/config";
 import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
-import { HOOKS } from "../hook/declare";
 import { fetchAndDecompressFromAnyExternal } from "../io/external";
 import { getRandomPackagePath } from "../io/util";
 import { ERROR_CODE, panic } from "../panic/declare";
@@ -18,6 +17,17 @@ import { copyAllFiles } from "../template/copy";
 import { TemplateQueryInfo } from "../template/declare";
 import { parseTemplateQuery, searchTemplateFromConfig } from "../template/template";
 
+const ensureTemplateNotExist = (env: Environment, info: TemplateQueryInfo): void => {
+
+    const installed: BarkTemplate | null = searchTemplateFromConfig(env.config, info);
+
+    if (installed) {
+        throw panic.code(ERROR_CODE.TEMPLATE_ALREADY_EXIST, info.name + '@' + info.version);
+    }
+
+    return;
+};
+
 export const installFromLocalAction = async (
     env: Environment,
     name: string,
@@ -25,6 +35,11 @@ export const installFromLocalAction = async (
     path: string,
     packageFolderName: string = _Random.unique(),
 ): Promise<Environment> => {
+
+    ensureTemplateNotExist(env, {
+        name,
+        version,
+    });
 
     const packagePath: string = await getRandomPackagePath(env, packageFolderName);
 
@@ -46,6 +61,11 @@ export const installFromExternalAction = async (
     url: string,
 ): Promise<Environment> => {
 
+    ensureTemplateNotExist(env, {
+        name,
+        version,
+    });
+
     const packagePath: string = await fetchAndDecompressFromAnyExternal(env, url);
 
     const newEnv: Environment = env.clone().setConfig(addTemplate(env.config, {
@@ -57,18 +77,10 @@ export const installFromExternalAction = async (
     return newEnv;
 };
 
-export const installFromSourceAction = async (env: Environment, query: string, replace: boolean = true): Promise<Environment> => {
+export const installFromSourceAction = async (env: Environment, query: string): Promise<Environment> => {
 
     const info: TemplateQueryInfo = parseTemplateQuery(query);
-    const installed: BarkTemplate | null = searchTemplateFromConfig(env.config, info);
-
-    if (installed) {
-        if (replace) env.hook.call(HOOKS.PACKAGE_ALREADY_INSTALLED_REPLACE);
-        else {
-            env.hook.call(HOOKS.PACKAGE_ALREADY_INSTALLED_ABORT);
-            return env;
-        }
-    }
+    ensureTemplateNotExist(env, info);
 
     const template: ExternalTemplate | null = findUrlFromSourcesByEnvironment(env, info);
 
