@@ -10,8 +10,6 @@ import { Template } from "./config/template";
 import { attemptAction } from "./core/actions";
 import { cleanInActivePackages, cleanTempFiles, getInActivePackageFullPaths } from "./core/clean";
 import { installFromExternalAction, installFromLocalAction, installFromSourceAction } from "./core/install";
-import { Log } from "./log/log";
-import { inject } from "./services/di";
 import { addSourceFromURLToEnvironment, removeAllSourcesFromEnvironment, removeSourceFromEnvironment } from "./source/mutate";
 import { updateAllSourceFromExternal, updateSourceFromExternalByName } from "./source/refresh";
 import { removeAllTemplates, removeTemplate } from "./template/clean";
@@ -163,12 +161,6 @@ export class Core {
 
         const newEnv: Environment = await updateSourceFromExternalByName(this._env, name);
         return this._privateUpdateEnvironment(newEnv);
-    }
-
-    public useVerbose(): this {
-
-        inject.refreshService(Log, false);
-        return this;
     }
 
     // Other

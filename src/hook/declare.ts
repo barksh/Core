@@ -11,12 +11,15 @@ export type VoidWithArgs<Args extends any[]> = (...args: Args) => void;
 
 export enum HOOKS {
 
+    PACKAGE_ALREADY_INSTALLED_ABORT = "PACKAGE_ALREADY_INSTALLED_ABORT",
+    PACKAGE_ALREADY_INSTALLED_REPLACE = "PACKAGE_ALREADY_INSTALLED_REPLACE",
     PARSE_FILE = "PARSE_FILE",
     EXIT = "EXIT",
 }
 
 export type HookCallbackArgs = {
-
+    [HOOKS.PACKAGE_ALREADY_INSTALLED_ABORT]: [],
+    [HOOKS.PACKAGE_ALREADY_INSTALLED_REPLACE]: [],
     [HOOKS.PARSE_FILE]: [string];
     [HOOKS.EXIT]: [];
 };
