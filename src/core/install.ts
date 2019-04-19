@@ -62,15 +62,15 @@ export const installFromExternalAction = async (
 
 export const installFromSourceAction = async (env: Environment, query: string, replace: boolean = true): Promise<Environment> => {
 
-    const log: Log = AutoWire('log');
+    const log: Log = AutoWire(Log);
 
     const info: TemplateQueryInfo = parseTemplateQuery(query);
     const installed: BarkTemplate | null = searchTemplateFromConfig(env.config, info);
 
     if (installed) {
-        if (replace) log.log(fPrint(TEXT.PACKAGE_ALREADY_INSTALLED_REPLACE));
+        if (replace) log.verbose(fPrint(TEXT.PACKAGE_ALREADY_INSTALLED_REPLACE));
         else {
-            log.log(fPrint(TEXT.PACKAGE_ALREADY_INSTALLED_ABORT));
+            log.verbose(fPrint(TEXT.PACKAGE_ALREADY_INSTALLED_ABORT));
             return env;
         }
     }

@@ -6,17 +6,15 @@
 
 import { Injectable } from "../services/di";
 
-@Injectable('log')
+@Injectable()
 export class Log {
 
-    private readonly _verbose: boolean;
+    public constructor(private readonly _verbose: boolean = false) { }
 
-    public constructor() {
+    public verbose(...args: any[]) {
 
-        this._verbose = process.env.NODE_ENV === 'development' && process.env.LOG_LEVEL === 'verbose';
-    }
-
-    public log(...args: any[]) {
-        console.log(...args);
+        if (this._verbose) {
+            console.log(...args);
+        }
     }
 }

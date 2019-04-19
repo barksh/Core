@@ -1,6 +1,6 @@
 {
   "name": "@barksh/core",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": ":dog: Bark Core",
   "directories": {
     "doc": "docs"
@@ -20,7 +20,7 @@
   "homepage": "https://github.com/barksh/Core#readme",
   "dependencies": {
     "@sudoo/bark": "^2.5.1",
-    "@sudoo/di": "^1.0.1",
+    "@sudoo/di": "^1.2.0",
     "@sudoo/internationalization": "^1.0.0",
     "@sudoo/io": "^1.5.0",
     "connor": "^2.4.0",
