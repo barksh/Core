@@ -8,6 +8,8 @@ import { _Random } from "@sudoo/bark/random";
 import { addTemplate } from "../config/config";
 import { BarkTemplate } from "../config/declare";
 import { Environment } from "../config/environment";
+import { TEXT } from "../i18n/declare";
+import { fPrint } from "../i18n/i18n";
 import { fetchAndDecompressFromAnyExternal } from "../io/external";
 import { getRandomPackagePath } from "../io/util";
 import { Log } from "../log/log";
@@ -66,9 +68,9 @@ export const installFromSourceAction = async (env: Environment, query: string, r
     const installed: BarkTemplate | null = searchTemplateFromConfig(env.config, info);
 
     if (installed) {
-        if (replace) log.log('Package installed.. replacing');
+        if (replace) log.log(fPrint(TEXT.PACKAGE_ALREADY_INSTALLED_REPLACE));
         else {
-            log.log('Package installed');
+            log.log(fPrint(TEXT.PACKAGE_ALREADY_INSTALLED_ABORT));
             return env;
         }
     }
