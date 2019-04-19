@@ -50,7 +50,7 @@ export enum ERROR_CODE {
     ENVIRONMENT_NOT_SETTLED = 9101,
 }
 
-export const ERROR_LIST = {
+export const ERROR_LIST: Record<ERROR_CODE, string> = {
 
     [ERROR_CODE.CONFIG_PARSE_FAILED]: 'Failed parsing config file',
 
