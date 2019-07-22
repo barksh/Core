@@ -194,9 +194,9 @@ concat-map@0.0.1:
   integrity sha1-2Klr13/Wjfd5OnMDajug1UBdR3s=
 
 connor@^2.4.0:
-  version "2.4.0"
-  resolved "https://registry.yarnpkg.com/connor/-/connor-2.4.0.tgz#af25da66e2bc5d9861595b2992ccda2bb4316d73"
-  integrity sha512-8Kwp8LEWxJyW/n5ApHAi34WvxblPzOODXMso3OZJE/gpWdK6vRl7MhVy4/ZSCrIjHvWNNOumhbvEM4GocQgdcA==
+  version "2.6.0"
+  resolved "https://registry.yarnpkg.com/connor/-/connor-2.6.0.tgz#1ffc2ebc60c2fa0908afd22bc763c74fd6dd4a0f"
+  integrity sha512-8y18++OijPHvT3C8d57Z2I3xTFgLJU4hyphsty19kja1KqtgZDFmBwRPZ2zaJHlJZzMAvztVClv30WAaT2l6SA==
 
 debug@3.1.0:
   version "3.1.0"
